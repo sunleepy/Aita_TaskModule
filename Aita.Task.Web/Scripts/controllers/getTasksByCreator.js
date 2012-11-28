@@ -35,16 +35,19 @@ function GetTasksByCreatorCtrl($scope, $rootScope, $http, $location, $routeParam
     }
     //选择任务来源
     $scope.chooseSource = function (source) {
-        if (source.isChoose === undefined) {
-            source.isChoose = false;
-        }
-        source.isChoose = !source.isChoose;
-
+        switchSourceDictBySource(source);
         reloadPage();
     }
     //任务来源的图标
     $scope.sourceIcon = function (source) {
-        return source.isChoose ? 'btn btn-primary source' : 'btn source';
+        var k = 'sourceKey_' + source.type + '_' + source.id;
+        for (var i = 0; i < $scope.sourceDict.length; i++) {
+            var currentPair = $scope.sourceDict[i];
+            if (k == currentPair.key) {
+                return currentPair.value ? 'btn btn-primary source' : 'btn source';
+            }
+        }
+        return 'btn source';
     }
     $scope.getFormatDate = function (date) {
         //        return moment(date).format('YYYY-MM-DD HH:mm:ss');
@@ -70,8 +73,8 @@ function GetTasksByCreatorCtrl($scope, $rootScope, $http, $location, $routeParam
         url += '?userId=' + userId;
         url += params;
         url = escape(url);
-        $('#loading-cooper').show();
-        $('#main-cooper').hide();
+        //$('#loading-cooper').show();
+        //$('#main-cooper').hide();
 
         $http.get(urls.map_url + '?url=' + url + '&_=' + new Date().getTime())
         .success(function (data, status, headers, config) {
@@ -80,10 +83,12 @@ function GetTasksByCreatorCtrl($scope, $rootScope, $http, $location, $routeParam
                 $scope.meAssignToOther = data.data.meAssignToOther;
                 $scope.sources = data.data.sources;
 
+                refreshSourceDictBySources($scope.sources);
+
                 $scope.tasks = data.data.tasks;
 
                 $('#main-cooper').show();
-                $('#loading-cooper').hide();
+                //$('#loading-cooper').hide();
             }
             else {
                 alert(data.data);
@@ -95,18 +100,65 @@ function GetTasksByCreatorCtrl($scope, $rootScope, $http, $location, $routeParam
     }
     //重新刷新页面
     function reloadPage() {
-        var arr = [];
-        for (var i = 0; i < $scope.sources.length; i++) {
-            var source = $scope.sources[i];
-            if (source.isChoose !== undefined && source.isChoose) {
-                arr.push(source);
-            }
-            var sourcesJson = angular.toJson(arr);
-        }
-        var params = '&key=&isAssignee=' + $scope.isMeAssigntoMe + '&isAssignedToOther=' + $scope.isMeAssignToOther + '&externalTaskSourceJson=' + sourcesJson;
+        var sourcesJson = angular.toJson(toJsonSourceDictTrue());
+        var key = $('#keyWord').val();
+        var params = '&key=' + key + '&isAssignee=' + $scope.isMeAssigntoMe + '&isAssignedToOther=' + $scope.isMeAssignToOther + '&externalTaskSourceJson=' + sourcesJson;
         initPage(params);
     }
     ////////////////////////////////////////////////////////////////////////////////////////
+    //事件绑定
+    $('#keyWord').keyup(function () {
+        reloadPage();
+    });
+    ////////////////////////////////////////////////////////////////////////////////////////
+    //外部来源筛选条件处理和判断
+    function refreshSourceDictBySources(sources) {
+        $.each($scope.sources, function (i, source) {
+            if (source.type > 0) {
+                var k = 'sourceKey_' + source.type + '_' + source.id;
+                var i = 0;
+                for (; i < $scope.sourceDict.length; i++) {
+                    var currentPair = $scope.sourceDict[i];
+                    if (k == currentPair.key) {
+                        break;
+                    }
+                }
+                if (i == $scope.sourceDict.length) {
+                    var pair = { key: k, value: false };
+                    $scope.sourceDict.push(pair);
+                }
+            }
+        });
+    }
+    function switchSourceDictBySource(source) {
+        var k = 'sourceKey_' + source.type + '_' + source.id;
+        for (var i = 0; i < $scope.sourceDict.length; i++) {
+            var currentPair = $scope.sourceDict[i];
+            if (k == currentPair.key) {
+                currentPair.value = !currentPair.value;
+                break;
+            }
+        }
+    }
+    function toJsonSourceDictTrue() {
+        var arr = [];
+        for (var i = 0; i < $scope.sources.length; i++) {
+            var source = $scope.sources[i];
+            var k = 'sourceKey_' + source.type + '_' + source.id;
+            var j = 0;
+            for (; j < $scope.sourceDict.length; j++) {
+                var currentPair = $scope.sourceDict[j];
+                if (k == currentPair.key && currentPair.value == true) {
+                    arr.push(source);
+                    break;
+                }
+            }
+        }
+        return arr;
+    }
+    ////////////////////////////////////////////////////////////////////////////////////////
+    //外部来源索引
+    $scope.sourceDict = [];
     $scope.isMeAssigntoMe = false;
     $scope.isMeAssignToOther = false;
     initPage('&key=&isAssignee=false&isAssignedToOther=false&externalTaskSourceJson=');

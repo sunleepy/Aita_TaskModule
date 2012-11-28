@@ -14,17 +14,19 @@
     <script src="/Scripts/controllers/getTasksByCreator.js"></script>
 </head>
 <body>
-    <div id="loading-cooper" style="display:none;">
-        <div class="progress progress-striped active" style="width: 250px; margin: auto;
-            margin-top: 40px;">
-            <div class="bar" style="width: 100%;">
-                loading...</div>
-        </div>
-    </div>
-    <div id="main-cooper" class="container-fluid" style="margin-top:10px;display:none;" ng-app="aitatask">
-        <div ng-controller="GetTasksByCreatorCtrl">
+    <div class="container-fluid" style="margin-top:10px;" ng-app="aitatask">
+        <div>
             <h4>我创建的任务</h4>
             <hr />
+        </div>
+        <div id="loading-cooper" style="display:none;">
+            <div class="progress progress-striped active" style="width: 250px; margin: auto;
+                margin-top: 40px;">
+                <div class="bar" style="width: 100%;">
+                    loading...</div>
+            </div>
+        </div>
+        <div id="main-cooper" ng-controller="GetTasksByCreatorCtrl" style="display:none;">
         <div class="option">
             <button ng-class="meAssigntoMeIcon()" ng-Click="chooseMeAssigntoMe()">
             {{meAssigntoMe.name}}({{meAssigntoMe.count}})</button>
@@ -32,6 +34,8 @@
             {{meAssignToOther.name}}({{meAssignToOther.count}})</button>
             <button ng-class="sourceIcon(s)" ng-repeat="s in sources" ng-Click="chooseSource(s)">
             {{s.name}}({{s.count}})</button>
+            <br />
+            <input id="keyWord" type="text" placeholder="请输入关键字" class="input-medium" />
         </div>
         <div class="list">
             <table class="todolist table">
