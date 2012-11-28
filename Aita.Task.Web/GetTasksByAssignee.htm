@@ -73,13 +73,18 @@
                         <td>
                             {{t.source}}
                         </td>
-                        <td class="cell_summary" ng-click="openUrl(t)">
-                            <div class="summary">{{t.subject}}<span style="color:Gray;">&nbsp; &nbsp; -&nbsp; &nbsp; {{t.body}}</span></div>
+                        <td class="cell_summary">
+                            <a ng-href="{{openUrl(t)}}" target="_blank">{{t.subject}}&nbsp; &nbsp; -&nbsp; &nbsp; {{t.body}}</a>
                         </td>
                         <td>
-                            <span id="picker_{{t.id}}" onclick="openWdatePicker('picker_{{t.id}}');">
+                            <span id="picker_{{t.id}}" onclick="openWdatePicker('{{t.id}}');">
                                 {{getFormatDate(t.dueTime)}}</span> 
-                             <img src="/content/images/priority_{{getFormatPriority(t.priority)}}.png" /> 
+                            <img id="priority_{{t.id}}" src="/content/images/priority_{{getFormatPriority(t.priority)}}.png" ng-click="showPriorityPanel(t)"/>
+                            <div id="showPriority_{{t.id}}" style="border:1px solid #000; width:50px; height:80px; display:none;">
+                                <img tag="0" src="/content/images/priority_0.png" /><br />
+                                <img tag="1" src="/content/images/priority_1.png" /><br />
+                                <img tag="2" src="/content/images/priority_2.png" /><br />
+                            </div>
                         </td>
                     </tr>
                 </tbody>
@@ -97,14 +102,15 @@
                                     <td>
                                         {{t.source}}
                                     </td>
-                                    <td class="cell_summary" ng-click="openUrl(t)">
-                                        <div class="summary">{{t.subject}}<span style="color:Gray;">&nbsp; &nbsp; -&nbsp; &nbsp; {{t.body}}</span></div>
+                                    <td class="cell_summary">
+                                        <a ng-href="{{openUrl(t)}}" target="_blank">{{t.subject}}&nbsp; &nbsp; -&nbsp; &nbsp; {{t.body}}</a>
+                                        <!--<div class="summary">{{t.subject}}<span style="color:Gray;">&nbsp; &nbsp; -&nbsp; &nbsp; {{t.body}}</span></div>-->
                                     </td>
                                     <td>
                                         <span id="picker_{{t.id}}" onclick="openWdatePicker('{{t.id}}');">
                                             {{getFormatDate(t.dueTime)}}</span> 
-                                        <img id="priority_{{t.id}}" src="/content/images/priority_{{getFormatPriority(t.priority)}}.png" ng-click="showPriorityPanel(t)"/>
-                                        <div id="showPriority_{{t.id}}" style="border:1px solid #000; width:50px; height:80px; display:none;">
+                                        <img id="priority2_{{t.id}}" src="/content/images/priority_{{getFormatPriority(t.priority)}}.png" ng-click="showPriorityPanel2(t)"/>
+                                        <div id="showPriority2_{{t.id}}" style="border:1px solid #000; width:50px; height:80px; display:none;">
                                             <img tag="0" src="/content/images/priority_0.png" /><br />
                                             <img tag="1" src="/content/images/priority_1.png" /><br />
                                             <img tag="2" src="/content/images/priority_2.png" /><br />

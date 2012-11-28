@@ -12,10 +12,7 @@ function GetTasksByAssigneeCtrl($scope, $rootScope, $http, $location, $routePara
             };
             $http.post(urls.map_url + '?url=' + urls.changeCompleted_url + '&_=' + new Date().getTime(), data)
                 .success(function (data, status, headers, config) {
-                    if (data.state == 0) {
-                        alert('更新成功!');
-                    }
-                    else {
+                    if (data.state != 0) {
                         alert(data.data);
                     }
                 })
@@ -80,10 +77,10 @@ function GetTasksByAssigneeCtrl($scope, $rootScope, $http, $location, $routePara
     }
     $scope.openUrl = function (task) {
         if (task.isEditable) {
-            location.href = '/TaskInfo.htm?userId=' + userId + '&taskId=' + task.id;
+            return '/TaskInfo.htm?userId=' + userId + '&taskId=' + task.id;
         }
         else {
-            location.href = task.relatedUrl;
+            return task.relatedUrl;
         }
     }
     $scope.equalDisplayMode = function (d) {
@@ -100,18 +97,39 @@ function GetTasksByAssigneeCtrl($scope, $rootScope, $http, $location, $routePara
             };
             $http.post(urls.map_url + '?url=' + urls.changePriority_url + '&_=' + new Date().getTime(), data)
                 .success(function (data, status, headers, config) {
-                    if (data.state == 0) {
-                        alert('更新成功!');
-                    }
-                    else {
+                    if (data.state != 0) {
                         alert(data.data);
                     }
                     $('#showPriority_' + task.id).hide();
+                    $('#priority_' + task.id).attr('src', '/content/images/priority_' + choosePriority + '.png');
                 })
                 .error(function (data, status, headers, config) {
                     alert('error:' + data);
                     $('#showPriority_' + task.id).hide();
                 });
+        });
+    }
+    $scope.showPriorityPanel2 = function (task) {
+        $('#showPriority2_' + task.id).show();
+
+        $('#showPriority2_' + task.id + ' img').unbind().bind('click', function () {
+            var choosePriority = $(this).attr('tag');
+            var data = {
+                id: task.id,
+                priority: choosePriority
+            };
+            $http.post(urls.map_url + '?url=' + urls.changePriority_url + '&_=' + new Date().getTime(), data)
+            .success(function (data, status, headers, config) {
+                if (data.state != 0) {
+                    alert(data.data);
+                }
+                $('#showPriority2_' + task.id).hide();
+                $('#priority2_' + task.id).attr('src', '/content/images/priority_' + choosePriority + '.png');
+            })
+            .error(function (data, status, headers, config) {
+                alert('error:' + data);
+                $('#showPriority2_' + task.id).hide();
+            });
         });
     }
     ////////////////////////////////////////////////////////////////////////////////////////
@@ -144,8 +162,9 @@ function GetTasksByAssigneeCtrl($scope, $rootScope, $http, $location, $routePara
         }
         else if (displayMode == 2) {
 
-            $http.post(urls.map_url + '?url=' + urls.getTasksByAssignee_url + '&_=' + new Date().getTime(), data)
+        $http.post(urls.map_url + '?url=' + urls.getTasksByAssignee_url + '&_=' + new Date().getTime(), data)
                 .success(function (data, status, headers, config) {
+                    //TODO,排序group
                     if (data.state == 0) {
                         $scope.meAssigntoMe = data.data.meAssigntoMe;
                         $scope.otherAssignToMe = data.data.otherAssignToMe;
@@ -257,6 +276,7 @@ function GetTasksByAssigneeCtrl($scope, $rootScope, $http, $location, $routePara
     $scope.isMeAssigntoMe = false;
     $scope.isOtherAssignToMe = false;
     $scope.isCompletedOption = '';
+    $scope.userId = userId;
     var data = {
         userId: userId,
         isCreator: 'false',
