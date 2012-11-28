@@ -198,6 +198,7 @@
     <Content Include="Scripts\controllers\getTasksByCreator.js" />
     <Content Include="Scripts\controllers\taskInfo.js" />
     <Content Include="Scripts\modules\aitatask.js" />
+    <Content Include="TaskInfo.htm" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
