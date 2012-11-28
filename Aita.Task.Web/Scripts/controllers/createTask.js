@@ -3,7 +3,7 @@ function CreateTaskCtrl($scope, $rootScope, $http, $location, $routeParams, $ele
     $scope.userInfoUrl = urls.map_url + '?url=url_userInfo&_=' + new Date().getTime();
     $scope.findUserUrl = urls.map_url + '?url=url_findUser&_=' + new Date().getTime();
     $scope.createTaskUrl = urls.map_url + '?url=url_createTask&_=' + new Date().getTime();
-    $scope.redirectUrl = "GetTasksByCreator.htm?userId=" + userId + "&key=&isAssignee=false&isAssignedToOther=false&externalTaskSourceJson=";
+    $scope.redirectUrl = "GetTasksByCreator.htm?userId=" + userId;
 
     $scope.subject = null;
     $scope.body = null;
@@ -19,18 +19,17 @@ function CreateTaskCtrl($scope, $rootScope, $http, $location, $routeParams, $ele
                 dropListUrl: $scope.findUserUrl,
                 ifRepeat: false,
                 maxDrop: 11,
-                maxToken: 999,
+                maxToken: 1,
                 initData: [{ id: userId, name: result.data.displayName }]
             });
         }
         else {
-            alert(result.data);
             $("#assigneeSelector").Selector(
             {
                 dropListUrl: $scope.findUserUrl,
                 ifRepeat: false,
                 maxDrop: 11,
-                maxToken: 999,
+                maxToken: 1,
                 initData: []
             });
         }
@@ -52,21 +51,13 @@ function CreateTaskCtrl($scope, $rootScope, $http, $location, $routeParams, $ele
         $(this).toggleClass("active");
     });
 
-    //期望完成时间
-    $('#dueTime').datepicker({ format: 'yyyy-mm-dd' })
-            .on('changeDate', function (e) {
-                var value = e.date.valueOf();
-                $scope.dueTime = new Date(value);
-                $('#dueTime').datepicker('hide');
-            });
-
     //Save Button
     $scope.saveTask = function () {
         var data = {
             userId: userId,
             subject: $scope.subject,
             body: $scope.body,
-            dueTime: $scope.dueTime,
+            dueTime: $("#dueTime").val(),
             priority: $scope.priority,
             assigneeUserId: $("#assigneeUserId").val(),
             relatedUserJson: $("#relatedUserIds").val()

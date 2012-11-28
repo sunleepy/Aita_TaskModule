@@ -277,6 +277,10 @@ function GetTasksByAssigneeCtrl($scope, $rootScope, $http, $location, $routePara
     $scope.isOtherAssignToMe = false;
     $scope.isCompletedOption = '';
     $scope.userId = userId;
+    if (displayMode == null 
+        || displayMode == '') {
+        displayMode = 1;
+    }
     var data = {
         userId: userId,
         isCreator: 'false',

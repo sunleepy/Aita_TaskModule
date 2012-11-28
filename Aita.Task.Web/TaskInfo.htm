@@ -14,9 +14,7 @@
     <link type="text/css" rel="stylesheet" href="http://wfstatic.alibaba-inc.com/resources/public/css/jscore/jscore.css" />
     <link type="text/css" rel="stylesheet" href="http://wfstatic.alibaba-inc.com/resources/public/css/jscore/ui.css" />
     <script type="text/javascript" src="/Content/angular/angular-1.0.1.min.js"></script>
-    <script type="text/javascript" src="/Content/bootstrap/js/bootstrap-datepicker.js"></script>
-    <script type="text/javascript" src="/Content/bootstrap/js/locales/bootstrap-datepicker.zh-CN.js"
-        charset="UTF-8"></script>
+    <script type="text/javascript" src="/Content/My97DatePicker/WdatePicker.js"></script>
     <script type="text/javascript" src="/Content/js/moment.min.js"></script>
     <script type="text/javascript" src="/Scripts/modules/aitatask.js"></script>
     <script type="text/javascript" src="/Scripts/controllers/taskInfo.js"></script>
@@ -138,7 +136,7 @@
                     </tr>
                     <tr>
                         <td class="detail-item ng-binding">
-                            优先级
+                            紧急度
                         </td>
                         <td class="detail-content">
                             <div id="priority" class="btn-group" data-toggle="buttons-radio" title="指定任务希望在何时处理">
@@ -159,7 +157,7 @@
                             期望完成日期
                         </td>
                         <td class="detail-content">
-                            <input id="duetime" type="text" class="input-small" value="" />
+                            <input id="duetime" type="text" class="input-small" value="" ng-model="duetime" onfocus="WdatePicker({el: 'duetime'});" />
                             <i class="icon-bell"></i>
                         </td>
                     </tr>

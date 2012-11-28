@@ -1,10 +1,8 @@
 ﻿function TaskInfoCtrl($scope, $rootScope, $http, $location, $routeParams, $element, urls, userId, taskId) {
 
-    $scope.userInfoUrl = urls.map_url + '?url=url_userInfo&_=' + new Date().getTime();
     $scope.findUserUrl = urls.map_url + '?url=url_findUser&_=' + new Date().getTime();
-    $scope.createTaskUrl = urls.map_url + '?url=url_createTask&_=' + new Date().getTime();
+    $scope.updateTaskUrl = urls.map_url + '?url=url_updateTask&_=' + new Date().getTime();
     $scope.taskInfoUrl = urls.map_url + '?url=url_taskInfo&_=' + new Date().getTime();
-    $scope.redirectUrl = "GetTasksByCreator.htm?userId=" + userId + "&key=&isAssignee=false&isAssignedToOther=false&externalTaskSourceJson=";
 
     $scope.editMode = false;
 
@@ -37,15 +35,6 @@
                 $('#priority button').removeClass('active');
                 $('#priority button[value=' + result.data.priority + ']').toggleClass("active");
 
-                //设置期望完成日期控件
-                $('#duetime').datepicker({ format: 'yyyy-mm-dd' })
-                    .on('changeDate', function (e) {
-                        var value = e.date.valueOf();
-                        $scope.dueTime = new Date(value);
-                        $('#duetime').datepicker('hide');
-                    });
-                $('#duetime').datepicker('setValue', $scope.duetime);
-
                 //设置相关人员
                 if (result.data.assignee != null && result.data.assignee != "") {
                     var assigneeUser = [ { id: result.data.assignee.id, name: result.data.assignee.displayname }];
@@ -54,7 +43,7 @@
                         dropListUrl: $scope.findUserUrl,
                         ifRepeat: false,
                         maxDrop: 11,
-                        maxToken: 999,
+                        maxToken: 1,
                         initData: assigneeUser
                     });
                 }
@@ -79,15 +68,6 @@
         });
     }
 
-    //相关人员
-    $("#relatedSelector").Selector(
-        {
-            dropListUrl: $scope.findUserUrl,
-            ifRepeat: true,
-            maxDrop: 11,
-            maxToken: 999
-        });
-
     //优先级
     $("#priority button").click(function (e) {
         $scope.priority = $(this).val();
@@ -97,7 +77,31 @@
 
     //点击保存按钮的响应函数
     $scope.save = function () {
-        $scope.editMode = false;
+
+        var data = {
+            id: taskId,
+            userId: userId,
+            subject: $scope.subject,
+            body: $scope.body,
+            dueTime: $("#duetime").val(),
+            priority: $scope.priority,
+            assigneeUserId: $("#assigneeUserId").val(),
+            relatedUserJson: $("#relatedUserIds").val(),
+            isCompleted: 0
+        };
+
+        //send http post request
+        $http.post($scope.updateTaskUrl, data).success(function (result, status, headers, config) {
+            if (result.state == 0) {
+                $scope.editMode = false;
+                $scope.duetime = data.dueTime;
+                $scope.assignee = result.data.assignee;
+                $scope.related = result.data.related;
+            }
+            else {
+                alert(result.data);
+            }
+        });
     };
 
     //点击编辑按钮的响应函数
