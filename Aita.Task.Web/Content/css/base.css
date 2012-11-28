@@ -7,9 +7,14 @@ ul.nav-tabs {
 .container-fluid .option
 {
 }
+.container-fluid .option button
+{
+    margin-bottom:4px;
+}
 .container-fluid .option button.source
 {
     margin-right:4px;
+    
 }
 .todolist
 {
