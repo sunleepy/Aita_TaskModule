@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <title>我创建的任务</title>
+    <title>与我相关的任务</title>
     <link type="text/css" rel="Stylesheet" href="/content/bootstrap/css/bootstrap.min.css" />
     <link type="text/css" rel="Stylesheet" href="/content/css/base.css" />
     <script src="/Content/jquery/jquery-1.7.2.min.js"></script>
@@ -10,12 +10,12 @@
     <script src="/Content/My97DatePicker/WdatePicker.js"></script>
     <script src="/Scripts/enterprise.js"></script>
     <script src="/Scripts/modules/aitatask.js"></script>
-    <script src="/Scripts/controllers/getTasksByCreator.js"></script>
+    <script src="/Scripts/controllers/getRelatedTasks.js"></script>
 </head>
 <body>
     <div class="container-fluid" style="margin-top:10px;" ng-app="aitatask">
         <div>
-            <h4>我创建的任务</h4>
+            <h4>与我相关的任务</h4>
             <hr />
         </div>
         <div id="loading-cooper" style="display:none;">
@@ -25,12 +25,10 @@
                     loading...</div>
             </div>
         </div>
-        <div id="main-cooper" ng-controller="GetTasksByCreatorCtrl" style="display:none;">
+        <div id="main-cooper" ng-controller="GetRelatedTasksCtrl" style="display:none;">
         <div class="option">
-            <button ng-class="meAssigntoMeIcon()" ng-Click="chooseMeAssigntoMe()">
-            {{meAssigntoMe.name}}({{meAssigntoMe.count}})</button>
-            <button ng-class="meAssignToOtherIcon()" ng-Click="chooseMeAssignToOther()">
-            {{meAssignToOther.name}}({{meAssignToOther.count}})</button>
+            <button ng-class="otherAssignToMeIcon()" ng-Click="chooseOtherAssignToMe()">
+            {{otherAssignToMe.name}}({{otherAssignToMe.count}})</button>
             <button ng-class="sourceIcon(s)" ng-repeat="s in sources" ng-Click="chooseSource(s)">
             {{s.name}}({{s.count}})</button>
             <br />
