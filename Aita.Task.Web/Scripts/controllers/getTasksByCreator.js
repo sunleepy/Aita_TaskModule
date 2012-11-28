@@ -3,13 +3,7 @@ function GetTasksByCreatorCtrl($scope, $rootScope, $http, $location, $routeParam
 
     ////////////////////////////////////////////////////////////////////////////////////////
     //切换完成状态
-    //并调用任务API - ChangeCompleted
-    $scope.setIsCompleted = function (t, isCompleted) {
-        if (t.isEditable) {
-            t.isCompleted = isCompleted;
-        }
-    }
-    //切换完成图标
+    //完成图标
     $scope.completedIcon = function (t) {
         return t.isCompleted ? 'icon-ok' : '';
     }
@@ -55,9 +49,6 @@ function GetTasksByCreatorCtrl($scope, $rootScope, $http, $location, $routeParam
             return '待定';
         return moment(date).format('MM-DD'); ;
     }
-    $scope.init = function (me) {
-        $('#' + me).datepicker('show');
-    }
     $scope.openUrl = function (task) {
         if (task.isEditable) {
             location.href = '/TaskInfo.htm?userId=' + userId + '&taskId=' + task.id;
@@ -68,15 +59,8 @@ function GetTasksByCreatorCtrl($scope, $rootScope, $http, $location, $routeParam
     }
     ////////////////////////////////////////////////////////////////////////////////////////
     //初始化页面
-    function initPage(params) {
-        var url = urls.getTasksByCreator_url;
-        url += '?userId=' + userId;
-        url += params;
-        url = escape(url);
-        //$('#loading-cooper').show();
-        //$('#main-cooper').hide();
-
-        $http.get(urls.map_url + '?url=' + url + '&_=' + new Date().getTime())
+    function initPage(data) {
+        $http.post(urls.map_url + '?url=' + urls.getTasksByCreator_url + '&_=' + new Date().getTime(), data)
         .success(function (data, status, headers, config) {
             if (data.state == 0) {
                 $scope.meAssigntoMe = data.data.meAssigntoMe;
@@ -88,7 +72,7 @@ function GetTasksByCreatorCtrl($scope, $rootScope, $http, $location, $routeParam
                 $scope.tasks = data.data.tasks;
 
                 $('#main-cooper').show();
-                //$('#loading-cooper').hide();
+                $('#loading-cooper').hide();
             }
             else {
                 alert(data.data);
@@ -102,8 +86,14 @@ function GetTasksByCreatorCtrl($scope, $rootScope, $http, $location, $routeParam
     function reloadPage() {
         var sourcesJson = angular.toJson(toJsonSourceDictTrue());
         var key = $('#keyWord').val();
-        var params = '&key=' + key + '&isAssignee=' + $scope.isMeAssigntoMe + '&isAssignedToOther=' + $scope.isMeAssignToOther + '&externalTaskSourceJson=' + sourcesJson;
-        initPage(params);
+        var data = {
+            userId: userId,
+            key: key,
+            isAssignee: $scope.isMeAssigntoMe,
+            isAssignedToOther: $scope.isMeAssignToOther,
+            externalTaskSourceJson: sourcesJson
+        };
+        initPage(data);
     }
     ////////////////////////////////////////////////////////////////////////////////////////
     //事件绑定
@@ -161,5 +151,12 @@ function GetTasksByCreatorCtrl($scope, $rootScope, $http, $location, $routeParam
     $scope.sourceDict = [];
     $scope.isMeAssigntoMe = false;
     $scope.isMeAssignToOther = false;
-    initPage('&key=&isAssignee=false&isAssignedToOther=false&externalTaskSourceJson=');
+    var data = {
+        userId: userId,
+        key: '',
+        isAssignee: 'false',
+        isAssignedToOther: 'false',
+        externalTaskSourceJson: ''
+    };
+    initPage(data);
 }

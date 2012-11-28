@@ -3,13 +3,12 @@
 <head>
     <title>待办任务</title>
     <link type="text/css" rel="Stylesheet" href="/content/bootstrap/css/bootstrap.min.css" />
-    <line type="text/css" rel="Stylesheet" href="/content/bootstrap/css/datepicker.css" />
     <link type="text/css" rel="Stylesheet" href="/content/css/base.css" />
     <script src="/Content/jquery/jquery-1.7.2.min.js"></script>
     <script src="/Content/angular/angular-1.0.1.min.js"></script>
-    <script src="/Content/bootstrap/js/bootstrap-datepicker.js"></script>
-    <script src="/Content/bootstrap/js/locales/bootstrap-datepicker.zh-CN.js" charset="UTF-8"></script>
     <script src="/Content/js/moment.min.js"></script>
+    <script src="/Content/My97DatePicker/WdatePicker.js"></script>
+    <script src="/Scripts/enterprise.js"></script>
     <script src="/Scripts/modules/aitatask.js"></script>
     <script src="/Scripts/controllers/getTasksByAssignee.js"></script>
 </head>
@@ -36,10 +35,25 @@
             {{s.name}}({{s.count}})</button>
         </div>
         <div>
-            <span class="btn-group">
-                  <button class="btn">默认</button>
-                  <button class="btn">优先级</button>
-            </span>
+            <table>
+                <tr>
+                    <td style="width:40px;">
+                        排序：
+                    </td>
+                    <td style="width:120px;">
+                        <div id="displayMode" class="btn-group">
+                              <button class="btn active" displayMode="1">默认</button>
+                              <button class="btn" displayMode="2">优先级</button>
+                        </div>
+                    </td>
+                    <td style="padding-top:10px;width:180px;">
+                        <input id="keyWord" type="text" placeholder="请输入关键字" class="input-medium" />
+                    </td>
+                    <td>
+                         <label for="hideCompletedOption"><input id="hideCompletedOption" type="checkbox" /> 隐藏已完成任务</label>
+                    </td>
+                </tr>
+            </table>
         </div>
         <div class="list">
             <table class="todolist table">
@@ -63,7 +77,9 @@
                             <div class="summary">{{t.subject}}<span style="color:Gray;">&nbsp; &nbsp; -&nbsp; &nbsp; {{t.body}}</span></div>
                         </td>
                         <td>
-                            {{getFormatDate(t.dueTime)}} {{t.priority}}
+                            <span id="picker_{{t.id}}" onclick="openWdatePicker('picker_{{t.id}}');">
+                                {{getFormatDate(t.dueTime)}}</span> 
+                             <img src="/content/images/priority_{{getFormatPriority(t.priority)}}.png" /> 
                         </td>
                     </tr>
                 </tbody>
@@ -85,18 +101,81 @@
                                         <div class="summary">{{t.subject}}<span style="color:Gray;">&nbsp; &nbsp; -&nbsp; &nbsp; {{t.body}}</span></div>
                                     </td>
                                     <td>
-                                        {{getFormatDate(t.dueTime)}} {{t.priority}}
+                                        <span id="picker_{{t.id}}" onclick="openWdatePicker('{{t.id}}');">
+                                            {{getFormatDate(t.dueTime)}}</span> 
+                                        <img id="priority_{{t.id}}" src="/content/images/priority_{{getFormatPriority(t.priority)}}.png" ng-click="showPriorityPanel(t)"/>
+                                        <div id="showPriority_{{t.id}}" style="border:1px solid #000; width:50px; height:80px; display:none;">
+                                            <img tag="0" src="/content/images/priority_0.png" /><br />
+                                            <img tag="1" src="/content/images/priority_1.png" /><br />
+                                            <img tag="2" src="/content/images/priority_2.png" /><br />
+                                        </div>
                                     </td>
                                 </tr>
                             </table>
-                        
                         </td>
                     </tr>
-
                 </tbody>
         </table>
         </div>
     </div>
     </div>
+    <script>
+        var url_changeDueTime = 'url_changeDueTime';
+        function openWdatePicker(taskId) {
+            var elementId = 'picker_' + taskId;
+            WdatePicker(
+                {
+                    el: elementId,
+                    dateFmt: 'yyyy-MM-dd',
+                    errDealMode: 2,
+                    oncleared: function () {
+                        $('#' + elementId).html('待定');
+
+                        var data = {
+                            id: taskId,
+                            dueTime: null
+                        };
+                        $.get('/Handlers/UrlMapHandler.ashx?url=' + url_changeDueTime, data, function (result) {
+                            var obj = angular.fromJson(result);
+                            if (obj.state == 0) {
+                                
+                            }
+                            else {
+                                alert(result.data);
+                            }
+                        });
+                    },
+                    onpicked: function () {
+                        var longdate = $('#' + elementId).html();
+                        var shortdate = moment($('#' + elementId).html()).format('MM-DD');
+                        $('#' + elementId).html(shortdate);
+                        var data = {
+                            id: taskId,
+                            dueTime: longdate
+                        };
+                        $.get('/Handlers/UrlMapHandler.ashx?url=' + url_changeDueTime, data, function (result) {
+                            var obj = angular.fromJson(result);
+                            if (obj.state == 0) {
+                                
+                            }
+                            else {
+                                alert(result.data);
+                            }
+                        });
+                    }
+                });
+            }
+
+            function showPriorityPanel(task) {
+                alert('1');
+ 
+
+                $('#priority_' + task.id).tooltip({
+                    placement: 'top',
+                    trigger: 'hover',
+                    title: 'test'
+                })
+            }
+    </script>
 </body>
 </html>

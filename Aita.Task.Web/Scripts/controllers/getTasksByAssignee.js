@@ -1,12 +1,27 @@
 ﻿
 function GetTasksByAssigneeCtrl($scope, $rootScope, $http, $location, $routeParams, $element, urls, userId, displayMode) {
-
     ////////////////////////////////////////////////////////////////////////////////////////
     //切换完成状态
     //并调用任务API - ChangeCompleted
     $scope.setIsCompleted = function (t, isCompleted) {
         if (t.isEditable) {
             t.isCompleted = isCompleted;
+            var data = {
+                id: t.id,
+                isCompleted: isCompleted ? 1 : 0
+            };
+            $http.post(urls.map_url + '?url=' + urls.changeCompleted_url + '&_=' + new Date().getTime(), data)
+                .success(function (data, status, headers, config) {
+                    if (data.state == 0) {
+                        alert('更新成功!');
+                    }
+                    else {
+                        alert(data.data);
+                    }
+                })
+                .error(function (data, status, headers, config) {
+                    alert('error:' + data);
+                });
         }
     }
     //切换完成图标
@@ -55,8 +70,13 @@ function GetTasksByAssigneeCtrl($scope, $rootScope, $http, $location, $routePara
             return '待定';
         return moment(date).format('MM-DD'); ;
     }
-    $scope.init = function (me) {
-        $('#' + me).datepicker('show');
+    $scope.getFormatPriority = function (priority) {
+        if (priority == null)
+            return '-1';
+        return priority;
+    }
+    $scope.openDueTime = function (elementId) {
+        openWdatePicker(elementId);
     }
     $scope.openUrl = function (task) {
         if (task.isEditable) {
@@ -69,19 +89,38 @@ function GetTasksByAssigneeCtrl($scope, $rootScope, $http, $location, $routePara
     $scope.equalDisplayMode = function (d) {
         return displayMode == d;
     }
+    $scope.showPriorityPanel = function (task) {
+        $('#showPriority_' + task.id).show();
+
+        $('#showPriority_' + task.id + ' img').unbind().bind('click', function () {
+            var choosePriority = $(this).attr('tag');
+            var data = {
+                id: task.id,
+                priority: choosePriority
+            };
+            $http.post(urls.map_url + '?url=' + urls.changePriority_url + '&_=' + new Date().getTime(), data)
+                .success(function (data, status, headers, config) {
+                    if (data.state == 0) {
+                        alert('更新成功!');
+                    }
+                    else {
+                        alert(data.data);
+                    }
+                    $('#showPriority_' + task.id).hide();
+                })
+                .error(function (data, status, headers, config) {
+                    alert('error:' + data);
+                    $('#showPriority_' + task.id).hide();
+                });
+        });
+    }
     ////////////////////////////////////////////////////////////////////////////////////////
     //初始化页面
-    function initPage(params) {
-        var url = urls.getTasksByAssignee_url;
-        url += '?userId=' + userId;
-        url += params;
-        url = escape(url);
-//        $('#loading-cooper').show();
-//        $('#main-cooper').hide();
+    function initPage(data) {
 
         if (displayMode == 1) {
 
-            $http.get(urls.map_url + '?url=' + url + '&_=' + new Date().getTime())
+            $http.post(urls.map_url + '?url=' + urls.getTasksByAssignee_url + '&_=' + new Date().getTime(), data)
                 .success(function (data, status, headers, config) {
                     if (data.state == 0) {
                         $scope.meAssigntoMe = data.data.meAssigntoMe;
@@ -105,7 +144,7 @@ function GetTasksByAssigneeCtrl($scope, $rootScope, $http, $location, $routePara
         }
         else if (displayMode == 2) {
 
-            $http.get(urls.map_url + '?url=' + url + '&_=' + new Date().getTime())
+            $http.post(urls.map_url + '?url=' + urls.getTasksByAssignee_url + '&_=' + new Date().getTime(), data)
                 .success(function (data, status, headers, config) {
                     if (data.state == 0) {
                         $scope.meAssigntoMe = data.data.meAssigntoMe;
@@ -131,9 +170,41 @@ function GetTasksByAssigneeCtrl($scope, $rootScope, $http, $location, $routePara
     //重新刷新页面
     function reloadPage() {
         var sourcesJson = angular.toJson(toJsonSourceDictTrue());
-        var params = '&key=&isAssignee=' + $scope.isMeAssigntoMe + '&isAssignedToOther=' + $scope.isMeAssignToOther + '&externalTaskSourceJson=' + sourcesJson;
-        initPage(params);
+        var key = $('#keyWord').val();
+        var data = {
+            userId: userId,
+            isCreator: $scope.isMeAssigntoMe,
+            isOtherAssignedToMe: $scope.isOtherAssignToMe,
+            isCompleted: $scope.isCompletedOption,
+            key: key,
+            externalTaskSourceJson: sourcesJson,
+            syncExternalTask: '',
+            displayMode: displayMode
+        };
+        initPage(data);
     }
+    ////////////////////////////////////////////////////////////////////////////////////////
+    //事件绑定
+    $('#keyWord').keyup(function () {
+        reloadPage();
+    });
+    $('#displayMode button').unbind().bind('click', function () {
+        var selDisplayMode = $(this).attr('displayMode');
+        $('#displayMode button').removeClass();
+        $('#displayMode button').addClass('btn');
+        $(this).addClass('btn active');
+        displayMode = selDisplayMode;
+        reloadPage();
+    });
+    $('#hideCompletedOption').click( function () {
+        if ($(this).attr('checked')) {
+            $scope.isCompletedOption = 'false';
+        }
+        else {
+            $scope.isCompletedOption = '';
+        }
+        reloadPage();
+    });
     ////////////////////////////////////////////////////////////////////////////////////////
     //外部来源筛选条件处理和判断
     function refreshSourceDictBySources(sources) {
@@ -185,5 +256,16 @@ function GetTasksByAssigneeCtrl($scope, $rootScope, $http, $location, $routePara
     $scope.sourceDict = [];
     $scope.isMeAssigntoMe = false;
     $scope.isOtherAssignToMe = false;
-    initPage('&isCreator=false&isOtherAssignedToMe=false&isCompleted=&key=&externalTaskSourceJson=&syncExternalTask=&displayMode=' + displayMode);
+    $scope.isCompletedOption = '';
+    var data = {
+        userId: userId,
+        isCreator: 'false',
+        isOtherAssignedToMe: 'false',
+        isCompleted: '',
+        key: '',
+        externalTaskSourceJson: '',
+        syncExternalTask: '',
+        displayMode: displayMode
+    };
+    initPage(data);
 }
