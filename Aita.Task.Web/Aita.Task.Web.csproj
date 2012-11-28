@@ -128,9 +128,14 @@
     <Content Include="Content\themes\base\jquery.ui.slider.css" />
     <Content Include="Content\themes\base\jquery.ui.tabs.css" />
     <Content Include="Content\themes\base\jquery.ui.theme.css" />
+    <Content Include="GetTasksByAssignee.htm" />
     <Content Include="GetTasksByCreator.htm" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\controllers\enterprise.js" />
+    <Content Include="Scripts\controllers\getRelatedTasks.js" />
+    <Content Include="Scripts\controllers\getTasksByAssignee.js" />
+    <Content Include="Scripts\controllers\getTasksByCreator.js" />
+    <Content Include="Scripts\controllers\taskInfo.js" />
     <Content Include="Scripts\modules\aitatask.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
