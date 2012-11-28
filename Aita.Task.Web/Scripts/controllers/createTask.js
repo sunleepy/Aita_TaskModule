@@ -17,7 +17,7 @@ function CreateTaskCtrl($scope, $rootScope, $http, $location, $routeParams, $ele
             $("#assigneeSelector").Selector(
             {
                 dropListUrl: $scope.findUserUrl,
-                ifRepeat: true,
+                ifRepeat: false,
                 maxDrop: 11,
                 maxToken: 999,
                 initData: [{ id: userId, name: result.data.displayName }]
@@ -28,7 +28,7 @@ function CreateTaskCtrl($scope, $rootScope, $http, $location, $routeParams, $ele
             $("#assigneeSelector").Selector(
             {
                 dropListUrl: $scope.findUserUrl,
-                ifRepeat: true,
+                ifRepeat: false,
                 maxDrop: 11,
                 maxToken: 999,
                 initData: []
