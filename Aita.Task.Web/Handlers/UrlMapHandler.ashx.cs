@@ -15,9 +15,26 @@ namespace Aita.Task.Web.Handlers
     /// </summary>
     public class UrlMapHandler : IHttpHandler
     {
+        private IDictionary<string, string> _urlDict = new Dictionary<string, string>();
+
+        public UrlMapHandler()
+        {
+            _urlDict.Add("url_userInfo", "http://localhost:9000/sys/userinfo");
+            _urlDict.Add("url_findUser", "http://localhost:9000/sys/autoprompt");
+            _urlDict.Add("url_createTask", "http://localhost:9000/EnterpriseTask/CreateTask");
+            _urlDict.Add("url_updateTask", "http://localhost:9000/EnterpriseTask/UpdateTask");
+            _urlDict.Add("url_changeCompleted", "http://localhost:9000/EnterpriseTask/ChangeCompleted");
+            _urlDict.Add("url_changePriority", "http://localhost:9000/EnterpriseTask/ChangePriority");
+            _urlDict.Add("url_changeDueTime", "http://localhost:9000/EnterpriseTask/ChangeDueTime");
+            _urlDict.Add("url_taskInfo", "http://localhost:9000/EnterpriseTask/TaskInfo");
+            _urlDict.Add("url_getTasksByCreator", "http://localhost:9000/EnterpriseTask/GetTasksByCreator");
+            _urlDict.Add("url_getTasksByAssignee", "http://localhost:9000/EnterpriseTask/GetTasksByAssignee");
+            _urlDict.Add("url_getRelatedTasks", "http://localhost:9000/EnterpriseTask/GetRelatedTasks");
+        }
+
         public void ProcessRequest(HttpContext context)
         {
-            var url = HttpContext.Current.Request.QueryString["url"];
+            var url = context.Request.QueryString["url"];
             var parameters = GetParameters(context.Request);
 
             Debug.WriteLine("----Parameters:");
@@ -26,7 +43,7 @@ namespace Aita.Task.Web.Handlers
                 Debug.WriteLine(parameter.Key, parameter.Value);
             }
 
-            var result = PostData(url, parameters);
+            var result = PostData(_urlDict[url], parameters);
 
             Debug.WriteLine("----Result:");
             Debug.Write(result);
