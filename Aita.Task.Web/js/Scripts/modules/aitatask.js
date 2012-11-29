@@ -6,7 +6,7 @@ function GetQueryString(name) {
     if (r != null) return unescape(r[2]); return null;
 }
 
-//var currentTaskId = GetQueryString('taskId');
+var currentTaskId = GetQueryString('taskId');
 var aitatask = angular.module('aitatask', []);
 
 (function () {
@@ -21,29 +21,33 @@ var aitatask = angular.module('aitatask', []);
             taskInfo_call: 'TaskInfo',
             changeCompleted_call: 'ChangeCompleted',
             changePriority_call: 'ChangePriority',
-            changeDueTime_call: 'ChangeDueTime'
+            changeDueTime_call: 'ChangeDueTime',
+            createTask_call: 'CreateTask',
+            updateTask_call: 'UpdateTask'
         };
     }
     else {
         urls = {
-             map_url: '/Handlers/UrlMapHandler.ashx',
+            map_url: '/Handlers/UrlMapHandler.ashx',
             getTasksByCreator_call: 'url_getTasksByCreator',
             getTasksByAssignee_call: 'url_getTasksByAssignee',
             getRelatedTasks_call: 'url_getRelatedTasks',
             taskInfo_call: 'url_taskInfo',
             changeCompleted_call: 'url_changeCompleted',
             changePriority_call: 'url_changePriority',
-            changeDueTime_call: 'url_changeDueTime'
+            changeDueTime_call: 'url_changeDueTime',
+            createTask_call: 'url_createTask',
+            updateTask_call: 'url_updateTask'
         };
     }
     //URL配置
     aitatask.value('urls', urls);
-    if(currentUserId !== undefined) {
-        //当前用户编号
+    if(currentUserId != null && currentUserId != undefined && currentUserId != "") {
+        //当前用户ID
         aitatask.value('userId', currentUserId);
     }
-    if(currentTaskId !== undefined) {
-        //当前任务编号
+    if(currentTaskId != null && currentTaskId != undefined && currentTaskId != "") {
+        //当前任务ID
         aitatask.value('taskId', currentTaskId);
     }
 })();

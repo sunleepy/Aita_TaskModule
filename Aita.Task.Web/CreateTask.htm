@@ -2,132 +2,217 @@
 <html>
 <head>
     <title>创建新任务</title>
-    <link type="text/css" rel="Stylesheet" href="/content/bootstrap/css/bootstrap.min.css" />
-    <link type="text/css" rel="Stylesheet" href="/content/bootstrap/css/datepicker.css" />
-    <link type="text/css" rel="Stylesheet" href="/content/css/base.css" />
-    <script type="text/javascript" src="/Content/jquery/jquery-1.7.2.min.js"></script>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" type="text/css" href="http://w.taobao.ali.com/css/comment.css" />
+    <link rel="stylesheet" type="text/css" href="http://w.taobao.ali.com/css/selector.css" />
 
-    <script type="text/javascript" src="http://ifree.alibaba-inc.com/TaskManage/Resources/Scripts/jquery.json.js"></script>
-    <script type="text/javascript" src="http://wfstatic.alibaba-inc.com/resources/public/js/jquery-ui-min.js"></script>
+    <script type="text/javascript" src="/js/scripts/common.js"></script>
+    <script type="text/javascript">
+        var currentUserId;
+        if (isPhp) {
+            currentUserId = '<{$currentUserId}>'; //TODO:Php替换<{$currentUserId}>
+        }
+        else {
+            currentUserId = GetQueryString('userId');
+        }
+    </script>
+    <script type="text/javascript" src="/js/content/jquery/jquery-1.7.2.min.js"></script>
     <script type="text/javascript" src="http://wfstatic.alibaba-inc.com/resources/public/js/jscore-min.js"></script>
-    <link type="text/css" rel="stylesheet" href="http://wfstatic.alibaba-inc.com/resources/mvcres/style/default/base.css" />
-    <link type="text/css" rel="stylesheet" href="http://wfstatic.alibaba-inc.com/resources/mvcres/style/ui/base/jquery.ui.all.css" />
-    <link type="text/css" rel="stylesheet" href="http://wfstatic.alibaba-inc.com/resources/public/css/jscore/jscore.css" />
-    <link type="text/css" rel="stylesheet" href="http://wfstatic.alibaba-inc.com/resources/public/css/jscore/ui.css" />
-
-    <script type="text/javascript" src="/Content/angular/angular-1.0.1.min.js"></script>
-    <script type="text/javascript" src="/Content/My97DatePicker/WdatePicker.js"></script>
-    <script type="text/javascript" src="/Content/js/moment.min.js"></script>
-    <script type="text/javascript" src="/Scripts/modules/aitatask.js"></script>
-    <script type="text/javascript" src="/Scripts/controllers/createTask.js"></script>
+    <script type="text/javascript" src="/js/Content/My97DatePicker/WdatePicker.js"></script>
+    <script type="text/javascript" src="/js/Content/angular/angular-1.0.1.min.js"></script>
+    <script type="text/javascript" src="/js/Scripts/modules/aitatask.js"></script>
+    <script type="text/javascript" src="/js/Scripts/controllers/createTask.js"></script>
 </head>
 <body>
-    <div id="main" class="container-fluid" style="margin-top: 10px;" ng-app="aitatask">
-        <div ng-controller="CreateTaskCtrl">
-            <h4>
-                创建新任务</h4>
-            <table class="detail">
-                <tbody>
-                    <tr>
-                        <td colspan="2">
-                            <input id="subject" type="text" class="detail-title" ng-model="subject" maxlength="500" style="width:500px" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            <textarea id="body" class="detail-note" rows="5" ng-model="body" style="width:508px"></textarea>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="detail-item ng-binding">
-                            分配给
-                        </td>
-                        <td class="detail-content">
-                            <div class="selector selector-toggle" id="assigneeSelector" style="width: 438px">
-                                <ol class="tokenList">
-                                    <li>
-                                        <input type="hidden" id="assigneeUserId" name="assigneeUserId" value="" friendname="" data-val=""><!-- 接收选中的Id值，name或id请自定义 -->
-                                        <input autocomplete="off" accesskey="s" type="text" style="width: 25px;">
-                                    </li>
-                                </ol>
-                                <div class="dropWrap">
-                                    <div class="popLayer" style="display: none;">
-                                        <div class="decor">
-                                        </div>
-                                        <div class="content">
-                                            <ul class="dropList">
-                                                <li class="default"><span>请输入花名(支持拼音首字母)</span></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr style="">
-                        <td class="detail-item ng-binding">
-                            相关人员
-                        </td>
-                        <td class="detail-content">
-                            <div class="selector selector-toggle" id="relatedSelector" style="width: 438px">
-                                <ol class="tokenList">
-                                    <li>
-                                        <input type="hidden" id="relatedUserIds" name="relatedUserIds" value="" friendname="" data-val=""><!-- 接收选中的Id值，name或id请自定义 -->
-                                        <input autocomplete="off" accesskey="s" type="text" style="width: 25px;">
-                                    </li>
-                                </ol>
-                                <div class="dropWrap">
-                                    <div class="popLayer" style="display: none;">
-                                        <div class="decor">
-                                        </div>
-                                        <div class="content">
-                                            <ul class="dropList">
-                                                <li class="default"><span>请输入花名(支持拼音首字母)</span></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="detail-item ng-binding">
-                            紧急度
-                        </td>
-                        <td class="detail-content">
-                            <div id="priority" class="btn-group" data-toggle="buttons-radio" title="指定任务希望在何时处理">
-                                <button class="btn active" title="" value="0">
-                                    <i class="icon-time"></i>
-                                </button>
-                                <button class="btn" title="" value="1">
-                                    <i class="icon-tag"></i>
-                                </button>
-                                <button class="btn" title="" value="2">
-                                    <i class="icon-pause"></i>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="detail-item ng-binding">
-                            期望完成日期
-                        </td>
-                        <td class="detail-content">
-                            <input id="dueTime" type="text" class="input-small" value="" onfocus="WdatePicker({el: 'dueTime'});" />
-                            <i class="icon-bell"></i>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            <button id="submit" class="btn active" ng-click="saveTask()">
-                                分配任务</button>
-                            <button id="cancel" class="btn active" ng-click="cancel()">
-                                取消</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+    <div class="wrap">
+        <!-- header:S -->
+        <div class="header">
+            <div class="header-main">
+                <div class="header-right">
+                    <div class="head-msg">
+                        <span class="number-float">234</span> <i class="group-icon">&nbsp;</i> <i class="email-icon">
+                            &nbsp;</i> <i class="newms-icon">&nbsp;</i>
+                    </div>
+                    <ul class="menu">
+                        <li class="current"><a href="">首页</a></li>
+                        <li><a href="">任务</a></li>
+                        <li><a href="">群</a></li>
+                        <li><a href="">话题</a></li>
+                        <li><a href="">应用</a></li>
+                        <li><a href="">导航</a></li>
+                    </ul>
+                    <div class="search-box">
+                        <form action="" method="get">
+                        <input class="search-text" id="search-text" type="text" value="" />
+                        <input type="button" class="search-but" />
+                        </form>
+                    </div>
+                </div>
+                <h1 class="logo">
+                    <a href="/">
+                        <img src="/js/Content/images/logo.jpg" /></a></h1>
+            </div>
         </div>
+        <!-- header:E -->
+        <!-- taskmain:S-->
+        <div class="main-box">
+            <div class="task-left">
+                <div class="add-task-ico">
+                    <a href="" title="添加任务">+</a>
+                </div>
+                <div class="task-left-tag">
+                    <a class="a1"><span></span>待办任务 </a><a class="a2"><span></span>相关任务 </a><a class="a3">
+                        <span></span>我创建的任务 </a>
+                </div>
+            </div>
+            <div class="task-right" ng-app="aitatask" ng-controller="CreateTaskCtrl">
+                <p class="task-detail-return">
+                    <a href="">返回</a>
+                </p>
+                <div class="task-detail-content">
+                    <p class="tit">
+                        创建新任务
+                    </p>
+                    <div class="task-edit">
+                        <ul>
+                            <li class="task-edit-left">任务标题： </li>
+                            <li class="task-edit-right">
+                                <input id="subject" type="text" class="task-edit-title" ng-model="subject" maxlength="500" />
+                            </li>
+                        </ul>
+                        <ul>
+                            <li class="task-edit-left">任务描述： </li>
+                            <li class="task-edit-right">
+                                <textarea id="body" class="task-edit-note" ng-model="body"></textarea>
+                            </li>
+                        </ul>
+                        <ul>
+                            <li class="task-edit-left">分配给： </li>
+                            <li class="task-edit-right">
+                                <div class="selector selector-toggle" id="assigneeSelector" style="width: 438px">
+                                    <ol class="tokenList" style="width: 150px;">
+                                        <li>
+                                            <input type="hidden" id="assigneeUserId" name="assigneeUserId" value="" friendname=""
+                                                data-val=""><!-- 接收选中的Id值，name或id请自定义 -->
+                                            <input autocomplete="off" accesskey="s" type="text" style="width: 25px;">
+                                        </li>
+                                    </ol>
+                                    <div class="dropWrap">
+                                        <div class="popLayer" style="display: none;">
+                                            <div class="decor">
+                                            </div>
+                                            <div class="content">
+                                                <ul class="dropList">
+                                                    <li class="default"><span>请输入花名(支持拼音首字母)</span></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                        <ul>
+                            <li class="task-edit-left">相关人员： </li>
+                            <li class="task-edit-right">
+                                <div class="selector selector-toggle" id="relatedSelector" style="width: 438px">
+                                    <ol class="tokenList" style="width: 670px">
+                                        <li>
+                                            <input type="hidden" id="relatedUserIds" name="relatedUserIds" value="" friendname=""
+                                                data-val=""><!-- 接收选中的Id值，name或id请自定义 -->
+                                            <input autocomplete="off" accesskey="s" type="text" style="width: 25px;">
+                                        </li>
+                                    </ol>
+                                    <div class="dropWrap">
+                                        <div class="popLayer" style="display: none;">
+                                            <div class="decor">
+                                            </div>
+                                            <div class="content">
+                                                <ul class="dropList">
+                                                    <li class="default"><span>请输入花名(支持拼音首字母)</span></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                        <ul>
+                            <li class="task-edit-left">完成日期： </li>
+                            <li class="task-edit-right">
+                                <input id="duetime" type="text" class="input-small" value="" ng-model="duetime" onFocus="WdatePicker({el: 'duetime'});" readonly />
+                            </li>
+                        </ul>
+                        <ul>
+                            <li class="task-edit-left">紧急度： </li>
+                            <li class="task-edit-right task-edit-yx"><i class="ring-gray" value="0" id="task-yx-color">
+                            </i>
+                                <div class="task-edit-float" id="task-edit-float">
+                                    <s><i></i></s>
+                                    <div>
+                                        <i class="ring-red">0</i><span>尽快完成</span></div>
+                                    <div>
+                                        <i class="ring-yellow">1</i><span>稍后完成</span></div>
+                                    <div>
+                                        <i class="ring-blue">2</i><span>迟些再说</span></div>
+                                </div>
+                            </li>
+                        </ul>
+                        <ul>
+                            <li class="task-edit-left">&nbsp;</li>
+                            <li class="task-edit-right">
+                                <input type="button" value="确认" class="task-edit-bt1" ng-click="save()">&nbsp;&nbsp;
+                                <input type="button" value="取消" class="task-edit-bt2" ng-click="cancel()">
+                            </li>
+                        </ul>
+                        <div class="clearbox">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="clearbox">
+            </div>
+        </div>
+        <!-- taskmain:E-->
     </div>
+    <script type="text/javascript">
+
+        $(function () {
+            $("#task-detail-but2").click(function () {
+                var this0 = this;
+                $("#task-alert-action").show();
+                $(document).unbind("click").click(function (e) {
+                    this0 == e.target || $("#task-alert-action").get(0) == e.target || jQuery.contains($("#task-alert-action").get(0), e.target) || $("#task-alert-action").hide();
+                });
+
+            });
+
+            $("#task-yx-color").click(function () {
+                var this0 = this;
+                $("#task-edit-float").show();
+                $(document).unbind("click").click(function (e) {
+                    this0 == e.target || $("#task-edit-float").get(0) == e.target || jQuery.contains($("#task-edit-float").get(0), e.target) || $("#task-edit-float").hide();
+                });
+
+            });
+
+            $("#task-edit-float div").click(function () {
+                $("#task-yx-color").attr("class", $(this).find("i").attr("class"));
+                $("#task-yx-color").attr("value", $(this).find("i").text());
+                $("#task-edit-float").hide();
+            });
+
+            $("#task-complete").click(function () {
+                if ($(this).text() == "完成") {
+                    $(this).text("已完成");
+                    $(this).attr("class", "task-detail-but-yes");
+                } else {
+                    $(this).text("完成");
+                    $(this).attr("class", "task-detail-but-no");
+                }
+            });
+        });
+            
+
+    </script>
 </body>
 </html>

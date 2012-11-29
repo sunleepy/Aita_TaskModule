@@ -16,20 +16,21 @@ namespace Aita.Task.Web.Handlers
     public class UrlMapHandler : IHttpHandler
     {
         private IDictionary<string, string> _urlDict = new Dictionary<string, string>();
-        private string api = "https://taobao-tech-d2:9008";
+        private string cooper_root = "http://localhost:9000";
+
         public UrlMapHandler()
         {
-            _urlDict.Add("url_userInfo", string.Format("{0}/sys/userinfo", api));
-            _urlDict.Add("url_findUser", string.Format("{0}/sys/autoprompt", api));
-            _urlDict.Add("url_createTask", string.Format("{0}/EnterpriseTask/CreateTask", api));
-            _urlDict.Add("url_updateTask", string.Format("{0}/EnterpriseTask/UpdateTask", api));
-            _urlDict.Add("url_changeCompleted", string.Format("{0}/EnterpriseTask/ChangeCompleted", api));
-            _urlDict.Add("url_changePriority", string.Format("{0}/EnterpriseTask/ChangePriority", api));
-            _urlDict.Add("url_changeDueTime", string.Format("{0}/EnterpriseTask/ChangeDueTime", api));
-            _urlDict.Add("url_taskInfo", string.Format("{0}/EnterpriseTask/TaskInfo", api));
-            _urlDict.Add("url_getTasksByCreator", string.Format("{0}/EnterpriseTask/GetTasksByCreator", api));
-            _urlDict.Add("url_getTasksByAssignee", string.Format("{0}/EnterpriseTask/GetTasksByAssignee", api));
-            _urlDict.Add("url_getRelatedTasks", string.Format("{0}/EnterpriseTask/GetRelatedTasks", api));
+            _urlDict.Add("url_userInfo", "http://api.w.taobao.ali.com/sys/userinfo");
+            _urlDict.Add("url_findUser", "http://w.taobao.ali.com/task/autoprompt");
+            _urlDict.Add("url_createTask", cooper_root + "/EnterpriseTask/CreateTask");
+            _urlDict.Add("url_updateTask", cooper_root + "/EnterpriseTask/UpdateTask");
+            _urlDict.Add("url_changeCompleted", cooper_root + "/EnterpriseTask/ChangeCompleted");
+            _urlDict.Add("url_changePriority", cooper_root + "/EnterpriseTask/ChangePriority");
+            _urlDict.Add("url_changeDueTime", cooper_root + "/EnterpriseTask/ChangeDueTime");
+            _urlDict.Add("url_taskInfo", cooper_root + "/EnterpriseTask/TaskInfo");
+            _urlDict.Add("url_getTasksByCreator", cooper_root + "/EnterpriseTask/GetTasksByCreator");
+            _urlDict.Add("url_getTasksByAssignee", cooper_root + "/EnterpriseTask/GetTasksByAssignee");
+            _urlDict.Add("url_getRelatedTasks", cooper_root + "/EnterpriseTask/GetRelatedTasks");
         }
 
         public void ProcessRequest(HttpContext context)

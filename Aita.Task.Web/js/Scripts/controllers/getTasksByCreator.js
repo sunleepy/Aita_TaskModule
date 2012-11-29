@@ -56,10 +56,10 @@ function GetTasksByCreatorCtrl($scope, $rootScope, $http, $location, $routeParam
     }
     $scope.openUrl = function (task) {
         if (task.isEditable) {
-            location.href = '/TaskInfo.htm?userId=' + userId + '&taskId=' + task.id;
+            return '/TaskInfo.htm?userId=' + userId + '&taskId=' + task.id;
         }
         else {
-            location.href = task.relatedUrl;
+            return task.relatedUrl;
         }
     }
     ////////////////////////////////////////////////////////////////////////////////////////
@@ -185,6 +185,7 @@ function GetTasksByCreatorCtrl($scope, $rootScope, $http, $location, $routeParam
     $scope.sourceDict = [];
     $scope.isMeAssigntoMe = false;
     $scope.isMeAssignToOther = false;
+    $scope.userId = userId;
     var data = {
         userId: userId,
         key: '',

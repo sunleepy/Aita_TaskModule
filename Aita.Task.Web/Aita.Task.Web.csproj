@@ -49,6 +49,7 @@
     <Reference Include="System.Web.ApplicationServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="js\Content\images\logo.jpg" />
     <Content Include="js\Content\angular\angular-1.0.1.min.js" />
     <Content Include="js\Content\angular\angular-bootstrap-1.0.1.js" />
     <Content Include="js\Content\ark\login-signin.png" />
