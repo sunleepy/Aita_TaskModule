@@ -23,7 +23,7 @@ function GetTasksByAssigneeCtrl($scope, $rootScope, $http, $location, $routePara
     }
     //切换完成图标
     $scope.completedIcon = function (t) {
-        return t.isCompleted ? 'icon-ok' : '';
+        return t.isCompleted ? 'i1' : 'i0';
     }
     //选择自我安排
     $scope.chooseMeAssigntoMe = function () {
@@ -33,7 +33,7 @@ function GetTasksByAssigneeCtrl($scope, $rootScope, $http, $location, $routePara
     }
     //自我安排的图标
     $scope.meAssigntoMeIcon = function () {
-        return $scope.isMeAssigntoMe ? 'btn btn-primary' : 'btn';
+        return $scope.isMeAssigntoMe ? 'button-tasknavOn' : 'button-tasknav';
     }
     //选择分配他人
     $scope.chooseOtherAssignToMe = function () {
@@ -43,7 +43,7 @@ function GetTasksByAssigneeCtrl($scope, $rootScope, $http, $location, $routePara
     }
     //分配他人的图标
     $scope.otherAssignToMeIcon = function () {
-        return $scope.isOtherAssignToMe ? 'btn btn-primary' : 'btn';
+        return $scope.isOtherAssignToMe ? 'button-tasknavOn' : 'button-tasknav';
     }
     //选择任务来源
     $scope.chooseSource = function (source) {
@@ -56,10 +56,25 @@ function GetTasksByAssigneeCtrl($scope, $rootScope, $http, $location, $routePara
         for (var i = 0; i < $scope.sourceDict.length; i++) {
             var currentPair = $scope.sourceDict[i];
             if (k == currentPair.key) {
-                return currentPair.value ? 'btn btn-primary source' : 'btn source';
+                return currentPair.value ? 'button-tasknavOn' : 'button-tasknav';
             }
         }
         return 'btn source';
+    }
+    $scope.priorityIcon = function (task) {
+        if (task.priority == null) {
+            return 'ring-gray';
+        }
+        else if (task.priority == 0) {
+            return 'ring-red';
+        }
+        else if (task.priority == 1) {
+            return 'ring-yellow';
+        }
+        else if (task.priority == 2) {
+            return 'ring-blue';
+        }
+        return 'ring-gray';
     }
     $scope.getFormatDate = function (date) {
         //        return moment(date).format('YYYY-MM-DD HH:mm:ss');
@@ -86,51 +101,59 @@ function GetTasksByAssigneeCtrl($scope, $rootScope, $http, $location, $routePara
     $scope.equalDisplayMode = function (d) {
         return displayMode == d;
     }
-    $scope.showPriorityPanel = function (task) {
-        $('#showPriority_' + task.id).show();
-
-        $('#showPriority_' + task.id + ' img').unbind().bind('click', function () {
-            var choosePriority = $(this).attr('tag');
+    $scope.showPriorityPanel = function (task, tag) {
+        var this0 = $('#priority' + tag + '_' + task.id);
+        $("#task-content .l4").find(".ring-color").remove();
+        var colorHTML = '<div class="ring-color" id="ring-color"><s><i></i></s><div><i class="ring ring-red" tag="0"></i><span>尽快完成</span></div><div><i class="ring ring-yellow" tag="1"></i><span>稍后完成</span></div><div><i class="ring ring-blue" tag="2"></i><span>迟些再说</span></div><div><i class="ring ring-gray" tag="-1"></i><span>不标注　</span></div></div>';
+        this0.parent().append(colorHTML);
+        this0.parent().find(".ring-color").find("." + this0.attr("class")).parent().remove();
+        //防止冒泡
+        event.stopPropagation();
+        $(document).unbind("click").click(function (e) {
+            this0 == e.target || $("#ring-color").get(0) == e.target || jQuery.contains($("#ring-color").get(0), e.target) || $("#ring-color").hide();
+        });
+        $('#ring-color .ring').bind('click', function () {
+            var tag = $(this).attr('tag');
             var data = {
                 id: task.id,
-                priority: choosePriority
+                priority: tag
             };
+            var this0 = $(this);
             $http.post(urls.map_url + '?url=' + urls.changePriority_url + '&_=' + new Date().getTime(), data)
                 .success(function (data, status, headers, config) {
-                    if (data.state != 0) {
+                    if (data.state == 0) {
+                        if (tag == '0' || tag == '1' || tag == '2') {
+                            task.priority = parseInt(tag);
+                        }
+                        else {
+                            task.priority = null;
+                        }
+                    }
+                    else {
                         alert(data.data);
                     }
-                    $('#showPriority_' + task.id).hide();
-                    $('#priority_' + task.id).attr('src', '/content/images/priority_' + choosePriority + '.png');
+                    $("#ring-color").hide();
                 })
                 .error(function (data, status, headers, config) {
                     alert('error:' + data);
-                    $('#showPriority_' + task.id).hide();
                 });
         });
-    }
-    $scope.showPriorityPanel2 = function (task) {
-        $('#showPriority2_' + task.id).show();
-
-        $('#showPriority2_' + task.id + ' img').unbind().bind('click', function () {
-            var choosePriority = $(this).attr('tag');
-            var data = {
-                id: task.id,
-                priority: choosePriority
-            };
-            $http.post(urls.map_url + '?url=' + urls.changePriority_url + '&_=' + new Date().getTime(), data)
-            .success(function (data, status, headers, config) {
-                if (data.state != 0) {
-                    alert(data.data);
-                }
-                $('#showPriority2_' + task.id).hide();
-                $('#priority2_' + task.id).attr('src', '/content/images/priority_' + choosePriority + '.png');
-            })
-            .error(function (data, status, headers, config) {
-                alert('error:' + data);
-                $('#showPriority2_' + task.id).hide();
-            });
-        });
+        }
+    $scope.getPriorityName = function (priority) {
+        if(priority == '99')
+        {
+            return '未标记';
+        }
+        else if (priority == '0') {
+            return '尽快完成';
+        }
+        else if (priority == '1') {
+            return '稍后完成';
+        }
+        else if (priority == '2') {
+            return '迟些再说';
+        }
+        return '未标记';
     }
     ////////////////////////////////////////////////////////////////////////////////////////
     //初始化页面
@@ -149,6 +172,7 @@ function GetTasksByAssigneeCtrl($scope, $rootScope, $http, $location, $routePara
 
                         $scope.tasks = data.data.tasks;
 
+                        $('#optionPanel').show();
                         $('#main-cooper').show();
                         //$('#loading-cooper').hide();
                     }
@@ -171,9 +195,7 @@ function GetTasksByAssigneeCtrl($scope, $rootScope, $http, $location, $routePara
                         $scope.sources = data.data.sources;
 
                         refreshSourceDictBySources($scope.sources);
-
-                        $scope.taskDict = data.data.taskDict;
-
+                        $scope.taskDict = reverseDict(data.data.taskDict);
                         $('#main-cooper').show();
                         //$('#loading-cooper').hide();
                     }
@@ -189,7 +211,7 @@ function GetTasksByAssigneeCtrl($scope, $rootScope, $http, $location, $routePara
     //重新刷新页面
     function reloadPage() {
         var sourcesJson = angular.toJson(toJsonSourceDictTrue());
-        var key = $('#keyWord').val();
+        var key = $('#task-keyword').val();
         var data = {
             userId: userId,
             isCreator: $scope.isMeAssigntoMe,
@@ -202,16 +224,34 @@ function GetTasksByAssigneeCtrl($scope, $rootScope, $http, $location, $routePara
         };
         initPage(data);
     }
+    function reverseDict(dict) {
+        var newArr = [];
+        var newDict = {};
+        for (var key in dict) {
+            if (key == '未标记') {
+                newDict["99"] = dict[key];
+            }
+            else if (key == '尽快完成') {
+                newDict["0"] = dict[key];
+            }
+            else if (key == '稍后完成') {
+                newDict["1"] = dict[key];
+            }
+            else if (key == '迟些再说') {
+                newDict["2"] = dict[key];
+            }
+        }
+        return newDict;
+    }
     ////////////////////////////////////////////////////////////////////////////////////////
     //事件绑定
-    $('#keyWord').keyup(function () {
+    $('#task-keyword').keyup(function () {
         reloadPage();
     });
-    $('#displayMode button').unbind().bind('click', function () {
+    $('#displayMode a').unbind().bind('click', function () {
         var selDisplayMode = $(this).attr('displayMode');
-        $('#displayMode button').removeClass();
-        $('#displayMode button').addClass('btn');
-        $(this).addClass('btn active');
+        $('#displayMode a').removeClass();
+        $(this).addClass('paixu-on');
         displayMode = selDisplayMode;
         reloadPage();
     });

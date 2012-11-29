@@ -89,7 +89,6 @@
     <Content Include="Content\bootstrap\js\locales\bootstrap-datepicker.zh-CN.js" />
     <Content Include="Content\bootstrap\js\locales\bootstrap-datepicker.zh-TW.js" />
     <Content Include="Content\css\base.css" />
-    <Content Include="Content\css\task.css" />
     <Content Include="Content\images\appstore.jpg" />
     <Content Include="Content\images\chrome.gif" />
     <Content Include="Content\images\cooper.png" />
