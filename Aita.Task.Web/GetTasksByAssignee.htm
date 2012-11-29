@@ -2,17 +2,24 @@
 <html>
 <head>
     <title>待办任务</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="content-Type" content="text/html; charset=UTF-8">
     <link rel="stylesheet" type="text/css" href="http://w.taobao.ali.com/css/comment.css" />    <!-- task scripts begin -->
-
-    <link type="text/css" rel="Stylesheet" href="/content/css/base.css" />
-    <script src="/Content/jquery/jquery-1.7.2.min.js"></script>
-    <script src="/Content/angular/angular-1.0.1.min.js"></script>
-    <script src="/Content/js/moment.min.js"></script>
-    <script src="/Content/My97DatePicker/WdatePicker.js"></script>
-    <script src="/Scripts/enterprise.js"></script>
-    <script src="/Scripts/modules/aitatask.js"></script>
-    <script src="/Scripts/controllers/getTasksByAssignee.js"></script>
+    <script type="text/javascript" src="/js/scripts/common.js"></script>
+    <script type="text/javascript">
+        var currentUserId;
+        if (isPhp) {
+            currentUserId = '<{$currentUserId}>'; //TODO:Php替换<{$currentUserId}>
+        }
+        else {
+            currentUserId = GetQueryString('userId');
+        }
+	</script>
+    <script type="text/javascript" src="/js/content/jquery/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="/js/content/angular/angular-1.0.1.min.js"></script>
+    <script type="text/javascript" src="/js/content/js/moment.min.js"></script>
+    <script type="text/javascript" src="/js/content/My97DatePicker/WdatePicker.js"></script>
+    <script type="text/javascript" src="/js/scripts/modules/aitatask.js"></script>
+    <script type="text/javascript" src="/js/scripts/controllers/getTasksByAssignee.js"></script>
     <!-- end -->
 </head>
 <body>
@@ -74,12 +81,16 @@
                         <div ng-show="equalDisplayMode(1)" class="task-content-div" 
                                 ng-repeat="t in tasks">
 							<ul>
-								<li class="l1" ng-click="setIsCompleted(t,!t.isCompleted);"><i class="i1" ng-class="completedIcon(t)"></i></li>
-								<li class="l2">{{t.source}}</li>
-								<li class="l3"><a href="">{{t.subject}}</a>&nbsp;-&nbsp;<!--{{t.body}}--></li>
-								<li class="l4"><i id="priority1_{{t.id}}" ng-click="showPriorityPanel(t,1)" ng-class="priorityIcon(t)"></i></li>
+								<li class="l1" ng-click="setIsCompleted(t,!t.isCompleted);"><i ng-class="completedIcon(t)"></i></li>
+								<li class="l2"><del ng-show="t.isCompleted==true">{{t.source}}</del><span ng-show="t.isCompleted==false">{{t.source}}</span></li>
+								<li class="l3 summary">
+                                    <del ng-show="t.isCompleted==true"><a ng-href="{{openUrl(t)}}" target="_blank">{{t.subject}}</a>&nbsp;-&nbsp;{{t.body}}</del>
+                                    <span ng-show="t.isCompleted==false"><a ng-href="{{openUrl(t)}}" target="_blank">{{t.subject}}</a>&nbsp;-&nbsp;{{t.body}}</span>
+                                </li>
+								<li class="l4"><i id="priority1_{{t.id}}" ng-click="showPriorityPanel(t,1)" ng-class="priorityIcon(t)">{{getFormatPriority(t.priority)}}</i></li>
 								<li class="l5">
-									<input class="txtDate" type="text" onfocus="openDatePicker({{t}},this)" value="{{getFormatDate(t.dueTime)}}" size="16" readonly>
+									<input class="txtDate" type="text" onchange="changeDueTime({{t}},this)" onfocus="openDatePicker({{t}},this)" value="{{getFormatDate(t.dueTime)}}" size="16" readonly>
+                                    <input id="hidDueTime_{{t.id}}" type="hidden" />
 								</li>
 							</ul>
 						</div>
@@ -89,12 +100,15 @@
 						    </div>
                             <div class="task-content-div" ng-repeat="t in value">
 							    <ul>
-								    <li class="l1" ng-click="setIsCompleted(t,!t.isCompleted);"><i class="i1" ng-class="completedIcon(t)"></i></li>
-								    <li class="l2">{{t.source}}</li>
-								    <li class="l3"><a href="">{{t.subject}}</a>&nbsp;-&nbsp;<!--{{t.body}}--></li>
-								    <li class="l4"><i id="priority2_{{t.id}}" ng-click="showPriorityPanel(t,2)" ng-class="priorityIcon(t)"></i></li>
+								    <li class="l1" ng-click="setIsCompleted(t,!t.isCompleted);"><i ng-class="completedIcon(t)"></i></li>
+								    <li class="l2"><del ng-show="t.isCompleted==true">{{t.source}}</del><span ng-show="t.isCompleted==false">{{t.source}}</span></li>
+								    <li class="l3 summary">
+                                        <del ng-show="t.isCompleted==true"><a ng-href="{{openUrl(t)}}" target="_blank">{{t.subject}}</a>&nbsp;-&nbsp;{{t.body}}</del>
+                                        <span ng-show="t.isCompleted==false"><a ng-href="{{openUrl(t)}}" target="_blank">{{t.subject}}</a>&nbsp;-&nbsp;{{t.body}}</span>
+                                    </li>
+								    <li class="l4"><i id="priority2_{{t.id}}" ng-click="showPriorityPanel(t,2)" ng-class="priorityIcon(t)">{{getFormatPriority(t.priority)}}</i></li>
 								    <li class="l5">
-									    <input class="txtDate" type="text" onfocus="openDatePicker({{t}},this)" value="{{getFormatDate(t.dueTime)}}" size="16" readonly>
+									    <input class="txtDate" type="text" onchange="changeDueTime({{t}},this)" onfocus="openDatePicker({{t}},this)" value="{{getFormatDate(t.dueTime)}}" size="16" readonly>
 								    </li>
 							    </ul>
 						    </div>
@@ -104,21 +118,11 @@
                 <div class="clearbox"></div>
             </div>
             <!-- taskmain:E-->
-        </div>
-        <script type="text/javascript" src="http://itsrv.taobao.ali.com/ui/basejs/js/jq.js"></script>
-        <script type="text/javascript" src="http://itsrv.taobao.ali.com/ui/basejs/js/jquery.uploadify.js"></script>
-        <script type="text/javascript" src="http://itsrv.taobao.ali.com/ui/basejs/js/comment.js"></script>
-        <script type="text/javascript" src="http://itsrv.taobao.ali.com/ui/basejs/js/textareaSelect.js"></script>
-        <script type="text/javascript" src="http://itsrv.taobao.ali.com/ui/basejs/js/imgRotate.js"></script>
-        <script type="text/javascript" src="http://itsrv.taobao.ali.com/ui/basejs/js/userCard.js"></script>
-        <script type="text/javascript" src="http://itsrv.taobao.ali.com/ui/basejs/js/emConf.js"></script>
-        <script type="text/javascript" src="http://itsrv.taobao.ali.com/ui/basejs/js/emotion.js"></script>
-        <script type="text/javascript" src="http://itsrv.taobao.ali.com/ui/basejs/js/dailog.js"></script>
-		<script type="text/javascript" src="http://itsrv.taobao.ali.com/ui/basejs/js/datePicker/WdatePicker.js"></script>
-        
-    
+        </div>
+
     <script type="text/javascript">
-        var url_changeDueTime = 'url_changeDueTime';
+        var map_url = isPhp ? '/task/request' : '/Handlers/UrlMapHandler.ashx'; //TODO:Php
+        var changeDueTime_call = isPhp ? 'ChangeDueTime' : 'url_changeDueTime'; //TODO:Php
         function openDatePicker(task, element) {
             var taskId = task.id;
             var elementId = element.id;
@@ -126,100 +130,39 @@
                 {
                     el: elementId,
                     dateFmt: 'yyyy-MM-dd',
-                    errDealMode: 2,
-                    oncleared: function () {
-                        $(element).val('待定');
-
-                        var data = {
-                            id: taskId,
-                            dueTime: null
-                        };
-                        $.get('/Handlers/UrlMapHandler.ashx?url=' + url_changeDueTime, data, function (result) {
-                            var obj = angular.fromJson(result);
-                            if (obj.state == 0) {
-
-                            }
-                            else {
-                                alert(result.data);
-                            }
-                        });
-                    },
-                    onpicked: function () {
-                        var longdate = $(element).val();
-                        var shortdate = moment($(element).val()).format('MM-DD');
-                        $(element).val(shortdate);
-                        var data = {
-                            id: taskId,
-                            dueTime: longdate
-                        };
-                        $.get('/Handlers/UrlMapHandler.ashx?url=' + url_changeDueTime, data, function (result) {
-                            var obj = angular.fromJson(result);
-                            if (obj.state == 0) {
-
-                            }
-                            else {
-                                alert(result.data);
-                            }
-                        });
-                    }
+                    errDealMode: 2
                 });
         }
-      
-//        function openWdatePicker(taskId) {
-//            var elementId = 'picker_' + taskId;
-//            WdatePicker(
-//                {
-//                    el: elementId,
-//                    dateFmt: 'yyyy-MM-dd',
-//                    errDealMode: 2,
-//                    oncleared: function () {
-//                        $('#' + elementId).html('待定');
+        function changeDueTime(task, element) {
+            var taskId = task.id;
+            var dueTime;
+            if($(element).val() == '') {
+                $(element).val('待定');
+                dueTime = null;
+            }
+            else {
+                var longdate = $(element).val();
+                var shortdate = moment(longdate).format('MM-DD');
+                $(element).val(shortdate);
+                dueTime = longdate;
+            }
+            var data = {
+                id: taskId,
+                dueTime: dueTime,
+                call: changeDueTime_call
+            };
+            var url = isPhp ? map_url + '?_=' + new Date().getTime()
+                : map_url + '?url=' + changeDueTime_call + '&_=' + new Date().getTime();
+            $.get(url, data, function (result) {
+                var obj = angular.fromJson(result);
+                if (obj.state == 0) {
 
-//                        var data = {
-//                            id: taskId,
-//                            dueTime: null
-//                        };
-//                        $.get('/Handlers/UrlMapHandler.ashx?url=' + url_changeDueTime, data, function (result) {
-//                            var obj = angular.fromJson(result);
-//                            if (obj.state == 0) {
-//                                
-//                            }
-//                            else {
-//                                alert(result.data);
-//                            }
-//                        });
-//                    },
-//                    onpicked: function () {
-//                        var longdate = $('#' + elementId).html();
-//                        var shortdate = moment($('#' + elementId).html()).format('MM-DD');
-//                        $('#' + elementId).html(shortdate);
-//                        var data = {
-//                            id: taskId,
-//                            dueTime: longdate
-//                        };
-//                        $.get('/Handlers/UrlMapHandler.ashx?url=' + url_changeDueTime, data, function (result) {
-//                            var obj = angular.fromJson(result);
-//                            if (obj.state == 0) {
-//                                
-//                            }
-//                            else {
-//                                alert(result.data);
-//                            }
-//                        });
-//                    }
-//                });
-//            }
-
-//            function showPriorityPanel(task) {
-//                alert('1');
-// 
-
-//                $('#priority_' + task.id).tooltip({
-//                    placement: 'top',
-//                    trigger: 'hover',
-//                    title: 'test'
-//                })
-//            }
+                }
+                else {
+                    alert(result.data);
+                }
+            });
+        }
     </script>
 </body>
 </html>

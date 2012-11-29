@@ -56,9 +56,9 @@ ul.nav-tabs {
 {
     cursor:pointer;
 }
-.todolist .row_body .cell_summary .summary
+.summary
 {
-    width: 600px;
+    width: 200px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;

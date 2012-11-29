@@ -16,20 +16,20 @@ namespace Aita.Task.Web.Handlers
     public class UrlMapHandler : IHttpHandler
     {
         private IDictionary<string, string> _urlDict = new Dictionary<string, string>();
-
+        private string api = "https://taobao-tech-d2:9008";
         public UrlMapHandler()
         {
-            _urlDict.Add("url_userInfo", "http://localhost:9000/sys/userinfo");
-            _urlDict.Add("url_findUser", "http://localhost:9000/sys/autoprompt");
-            _urlDict.Add("url_createTask", "http://localhost:9000/EnterpriseTask/CreateTask");
-            _urlDict.Add("url_updateTask", "http://localhost:9000/EnterpriseTask/UpdateTask");
-            _urlDict.Add("url_changeCompleted", "http://localhost:9000/EnterpriseTask/ChangeCompleted");
-            _urlDict.Add("url_changePriority", "http://localhost:9000/EnterpriseTask/ChangePriority");
-            _urlDict.Add("url_changeDueTime", "http://localhost:9000/EnterpriseTask/ChangeDueTime");
-            _urlDict.Add("url_taskInfo", "http://localhost:9000/EnterpriseTask/TaskInfo");
-            _urlDict.Add("url_getTasksByCreator", "http://localhost:9000/EnterpriseTask/GetTasksByCreator");
-            _urlDict.Add("url_getTasksByAssignee", "http://localhost:9000/EnterpriseTask/GetTasksByAssignee");
-            _urlDict.Add("url_getRelatedTasks", "http://localhost:9000/EnterpriseTask/GetRelatedTasks");
+            _urlDict.Add("url_userInfo", string.Format("{0}/sys/userinfo", api));
+            _urlDict.Add("url_findUser", string.Format("{0}/sys/autoprompt", api));
+            _urlDict.Add("url_createTask", string.Format("{0}/EnterpriseTask/CreateTask", api));
+            _urlDict.Add("url_updateTask", string.Format("{0}/EnterpriseTask/UpdateTask", api));
+            _urlDict.Add("url_changeCompleted", string.Format("{0}/EnterpriseTask/ChangeCompleted", api));
+            _urlDict.Add("url_changePriority", string.Format("{0}/EnterpriseTask/ChangePriority", api));
+            _urlDict.Add("url_changeDueTime", string.Format("{0}/EnterpriseTask/ChangeDueTime", api));
+            _urlDict.Add("url_taskInfo", string.Format("{0}/EnterpriseTask/TaskInfo", api));
+            _urlDict.Add("url_getTasksByCreator", string.Format("{0}/EnterpriseTask/GetTasksByCreator", api));
+            _urlDict.Add("url_getTasksByAssignee", string.Format("{0}/EnterpriseTask/GetTasksByAssignee", api));
+            _urlDict.Add("url_getRelatedTasks", string.Format("{0}/EnterpriseTask/GetRelatedTasks", api));
         }
 
         public void ProcessRequest(HttpContext context)
@@ -121,22 +121,12 @@ namespace Aita.Task.Web.Handlers
         }
         private IDictionary<string, object> GetParameters(HttpRequest request)
         {
-            if (request.HttpMethod == "POST")
+            IDictionary<string, object> parameters = new Dictionary<string, object>();
+            foreach (var key in request.Params.Keys)
             {
-                var json = GetClientPostData(request.InputStream);
-                var serializer = new JavaScriptSerializer();
-                var parameters = serializer.Deserialize<Dictionary<string, object>>(json);
-                return parameters;
+                parameters.Add(key.ToString(), request.Params[key.ToString()]);
             }
-            else
-            {
-                IDictionary<string, object> parameters = new Dictionary<string, object>();
-                foreach (var key in request.Params.Keys)
-                {
-                    parameters.Add(key.ToString(), request.Params[key.ToString()]);
-                }
-                return parameters;
-            }
+            return parameters;
         }
         private string GetClientPostData(Stream stream)
         {
