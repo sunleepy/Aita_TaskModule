@@ -11,6 +11,7 @@ function CreateTaskCtrl($scope, $rootScope, $http, $location, $routeParams, $ele
         $scope.createTaskUrl = urls.map_url + '?url=url_createTask&_=' + new Date().getTime();
     }
 
+    $scope.userId = userId;
     $scope.subject = null;
     $scope.body = null;
     $scope.dueTime = null;
