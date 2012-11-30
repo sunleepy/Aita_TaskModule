@@ -12,6 +12,8 @@
         $scope.changeCompletedUrl = urls.map_url + '?url=url_changeCompleted&_=' + new Date().getTime();
     }
 
+    $scope.userId = userId;
+    $scope.taskId = taskId;
     $scope.editMode = false;
     $scope.isTransferingToOther = false;
 

@@ -52,22 +52,32 @@
                 </div>
                 <h1 class="logo">
                     <a href="/">
-                        <img src="./images/logo.jpg" /></a></h1>
+                        <img src="/js/Content/images/logo.jpg" /></a></h1>
             </div>
         </div>
         <!-- header:E -->
         <!-- taskmain:S-->
-        <div class="main-box">
+        <div class="main-box" ng-app="aitatask" ng-controller="TaskInfoCtrl">
             <div class="task-left">
                 <div class="add-task-ico">
-                    <a href="" title="添加任务">+</a>
+                    <a href="/CreateTask.htm?userId={{userId}}" title="添加任务">+</a>
                 </div>
                 <div class="task-left-tag">
-                    <a class="a1"><span></span>待办任务 </a><a class="a2"><span></span>相关任务 </a><a class="a3">
-                        <span></span>我创建的任务 </a>
+                        <a class="a1" href="/GetTasksByAssignee.htm?userId={{userId}}">
+                            <span></span>
+                            待办任务
+                        </a>
+                        <a class="a2" href="/GetRelatedTasks.htm?userId={{userId}}">
+                            <span></span>
+                            相关任务
+                        </a>
+                        <a class="a3" href="/GetTasksByCreator.htm?userId={{userId}}">
+                            <span></span>
+                            我创建的任务
+                        </a>
                 </div>
             </div>
-            <div class="task-right" ng-app="aitatask" ng-controller="TaskInfoCtrl">
+            <div class="task-right">
                 <p class="task-detail-return">
                     <a ng-click="back()">返回</a>
                 </p>

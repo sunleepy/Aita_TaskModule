@@ -11,8 +11,7 @@ function CreateTaskCtrl($scope, $rootScope, $http, $location, $routeParams, $ele
         $scope.createTaskUrl = urls.map_url + '?url=url_createTask&_=' + new Date().getTime();
     }
 
-    $scope.redirectUrl = "/GetTasksByCreator.htm?userId=" + userId;
-
+    $scope.userId = userId;
     $scope.subject = null;
     $scope.body = null;
     $scope.dueTime = null;
@@ -74,7 +73,7 @@ function CreateTaskCtrl($scope, $rootScope, $http, $location, $routeParams, $ele
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
         }).success(function (result, status, headers, config) {
             if (result.state == 0) {
-                window.location = $scope.redirectUrl;
+                parent.history.back();
             }
             else {
                 alert(result.data);
@@ -83,6 +82,6 @@ function CreateTaskCtrl($scope, $rootScope, $http, $location, $routeParams, $ele
     };
 
     $scope.cancel = function () {
-        window.location = $scope.redirectUrl;
+        parent.history.back();
     };
 }
