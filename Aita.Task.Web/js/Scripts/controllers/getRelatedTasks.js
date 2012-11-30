@@ -89,8 +89,7 @@ function GetRelatedTasksCtrl($scope, $rootScope, $http, $location, $routeParams,
         var data = {
             userId: userId,
             key: key,
-            isAssignee: $scope.isMeAssigntoMe,
-            isAssignedToOther: $scope.isMeAssignToOther,
+            isCreator: $scope.isOtherAssignToMe ? false : null,
             externalTaskSourceJson: sourcesJson,
             call: urls.getRelatedTasks_call
         };
@@ -155,7 +154,7 @@ function GetRelatedTasksCtrl($scope, $rootScope, $http, $location, $routeParams,
     $scope.userId = userId;
     var data = {
         userId: userId,
-        isCreator: '',
+        isCreator: null,
         key: '',
         externalTaskSourceJson: '',
         call: urls.getRelatedTasks_call

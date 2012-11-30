@@ -103,7 +103,7 @@
 						<ul>
 							<li class="l1"><i ng-class="completedIcon(t)"></i></li>
 							<li class="l2"><del ng-show="t.isCompleted==true">{{t.source}}</del><span ng-show="t.isCompleted==false">{{t.source}}</span></li>
-							<li class="l2">{{t.assignee}}</li>
+							<li class="l2">{{t.assignee}}&nbsp;</li>
                             <li class="l3 txtCut " style="width:430px">
                                 <del ng-show="t.isCompleted==true"><a ng-href="{{openUrl(t)}}">{{t.subject}}</a>&nbsp;-&nbsp;{{t.body}}</del>
                                 <span ng-show="t.isCompleted==false"><a ng-href="{{openUrl(t)}}">{{t.subject}}</a>&nbsp;-&nbsp;{{t.body}}</span>
