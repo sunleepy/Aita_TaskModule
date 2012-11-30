@@ -193,6 +193,8 @@
                 $scope.related = result.data.related;
                 $scope.priority = data.priority;
 
+                $("#task-alert-action").hide();
+
                 $scope.updateRelatedUserSelector(result.data.relatedUsers);
                 $scope.refreshPriority(data.priority);
 

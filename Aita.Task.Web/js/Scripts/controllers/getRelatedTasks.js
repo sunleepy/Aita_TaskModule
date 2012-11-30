@@ -48,7 +48,7 @@ function GetRelatedTasksCtrl($scope, $rootScope, $http, $location, $routeParams,
             return '/TaskInfo.htm?userId=' + userId + '&taskId=' + task.id;
         }
         else {
-            return task.relatedUrl;
+            return '/ExternalTaskInfo.htm?url=' + escape(task.relatedUrl);
         }
     }
     ////////////////////////////////////////////////////////////////////////////////////////

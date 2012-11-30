@@ -59,7 +59,7 @@ function GetTasksByCreatorCtrl($scope, $rootScope, $http, $location, $routeParam
             return '/TaskInfo.htm?userId=' + userId + '&taskId=' + task.id;
         }
         else {
-            return task.relatedUrl;
+            return '/ExternalTaskInfo.htm?url=' + escape(task.relatedUrl);
         }
     }
     ////////////////////////////////////////////////////////////////////////////////////////
