@@ -70,12 +70,16 @@ function CreateTaskCtrl($scope, $rootScope, $http, $location, $routeParams, $ele
     }
 
     $scope.save = function () {
+        var priorityValue = $("#task-yx-color").attr("value");
+        if (priorityValue != null) {
+            priorityValue = parseInt(priorityValue) - 1;
+        }
         var data = {
             userId: userId,
             subject: $scope.subject,
             body: $scope.body,
             dueTime: $("#duetime").val(),
-            priority: $("#task-yx-color").attr("value"),
+            priority: priorityValue,
             assigneeUserId: $("#assigneeUserId").val(),
             relatedUserJson: $("#relatedUserIds").val(),
             call: urls.createTask_call

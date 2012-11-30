@@ -40,7 +40,7 @@
                 <div class="task-detail-content" ng-show="!editMode">
                     <p class="tit">
                         {{ subject }}
-                        <i id="priorityIcon" class="">{{ priority }}</i>
+                        <i id="priorityIcon" class="">{{ displayPriority }}</i>
                     </p>
                     <div class="task-detail-but">
                         <a class="task-detail-but-no" id="task-complete">完成</a>&nbsp;&nbsp;
@@ -162,16 +162,16 @@
                         </ul>
                         <ul>
                             <li class="task-edit-left">紧急度： </li>
-                            <li class="task-edit-right task-edit-yx"><i class="ring-gray" value="0" id="task-yx-color">
+                            <li class="task-edit-right task-edit-yx"><i class="ring-gray" value="" id="task-yx-color">
                             </i>
                                 <div class="task-edit-float" id="task-edit-float">
                                     <s><i></i></s>
                                     <div>
-                                        <i class="ring-red">0</i><span>尽快完成</span></div>
+                                        <i class="ring-red">1</i><span>尽快完成</span></div>
                                     <div>
-                                        <i class="ring-yellow">1</i><span>稍后完成</span></div>
+                                        <i class="ring-yellow">2</i><span>稍后完成</span></div>
                                     <div>
-                                        <i class="ring-blue">2</i><span>迟些再说</span></div>
+                                        <i class="ring-blue">3</i><span>迟些再说</span></div>
                                 </div>
                             </li>
                         </ul>

@@ -26,6 +26,7 @@
     $scope.isCompleted = 0;
     $scope.priority = 0;
     $scope.priorityClass = null;
+    $scope.displayPriority = null;
 
     $scope.currentAssigneeJson = null;
 
@@ -53,6 +54,13 @@
                 $scope.duetime = result.data.duetime;
                 $scope.priority = result.data.priority;
                 $scope.isCompleted = result.data.isCompleted;
+
+                if ($scope.priority == null) {
+                    $scope.displayPriority = "";
+                }
+                else {
+                    $scope.displayPriority = parseInt($scope.priority) + 1;
+                }
 
                 $scope.refreshPriority(result.data.priority);
                 $scope.refreshCompleted(result.data.isCompleted);
@@ -167,13 +175,18 @@
             assigneeUserId = $("#assigneeUserId").val();
         }
 
+        var priorityValue = $("#task-yx-color").attr("value");
+        if (priorityValue != null) {
+            priorityValue = parseInt(priorityValue) - 1;
+        }
+
         var data = {
             id: taskId,
             userId: userId,
             subject: $scope.subject,
             body: $scope.body,
             dueTime: $("#duetime").val(),
-            priority: $("#task-yx-color").attr("value"),
+            priority: priorityValue,
             assigneeUserId: assigneeUserId,
             relatedUserJson: $("#relatedUserIds").val(),
             isCompleted: 0,
@@ -197,6 +210,13 @@
 
                 $scope.updateRelatedUserSelector(result.data.relatedUsers);
                 $scope.refreshPriority(data.priority);
+
+                if (data.priority == null) {
+                    $scope.displayPriority = "";
+                }
+                else {
+                    $scope.displayPriority = parseInt(data.priority) + 1;
+                }
 
                 //下面的代码用于同步选人控件的值
                 if ($scope.isTransferingToOther) {
@@ -257,24 +277,39 @@
 
     $scope.refreshPriority = function (currentPriority) {
         $("#task-yx-color").attr("value", currentPriority);
-        $("#task-yx-color").text(currentPriority);
-        if (currentPriority != null && currentPriority != "") {
+        if (currentPriority != null) {
             if (currentPriority == "0") {
                 $("#task-yx-color").attr("class", "ring-red");
                 $("#priorityIcon").attr("class", "ring-red");
+                var priorityValue = "";
+                if (currentPriority != null) {
+                    priorityValue = parseInt(currentPriority) + 1;
+                }
+                $("#task-yx-color").text(priorityValue);
             }
             else if (currentPriority == "1") {
                 $("#task-yx-color").attr("class", "ring-yellow");
                 $("#priorityIcon").attr("class", "ring-yellow");
+                var priorityValue = "";
+                if (currentPriority != null) {
+                    priorityValue = parseInt(currentPriority) + 1;
+                }
+                $("#task-yx-color").text(priorityValue);
             }
             else if (currentPriority == "2") {
                 $("#task-yx-color").attr("class", "ring-blue");
                 $("#priorityIcon").attr("class", "ring-blue");
+                var priorityValue = "";
+                if (currentPriority != null) {
+                    priorityValue = parseInt(currentPriority) + 1;
+                }
+                $("#task-yx-color").text(priorityValue);
             }
         }
         else {
             $("#task-yx-color").attr("class", "");
             $("#priorityIcon").attr("class", "");
+            $("#task-yx-color").text("");
         }
     }
     $scope.updateRelatedUserSelector = function (relatedUsersFromServer) {
