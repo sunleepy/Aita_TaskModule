@@ -43,14 +43,26 @@ function GetRelatedTasksCtrl($scope, $rootScope, $http, $location, $routeParams,
             return '待定';
         return moment(date).format('MM-DD'); ;
     }
+
     $scope.openUrl = function (task) {
-        if (task.isEditable) {
-            return '/TaskInfo.htm?userId=' + userId + '&taskId=' + task.id;
+        if (isPhp) {
+            if (task.isEditable) {
+                return '/task/detail/' + task.id;
+            }
+            else {
+                return '/task/externalDetail?url=' + escape(task.relatedUrl);
+            }
         }
         else {
-            return '/ExternalTaskInfo.htm?url=' + escape(task.relatedUrl);
+            if (task.isEditable) {
+                return '/TaskInfo.htm?userId=' + userId + '&taskId=' + task.id;
+            }
+            else {
+                return '/ExternalTaskInfo.htm?url=' + escape(task.relatedUrl);
+            }
         }
     }
+
     ////////////////////////////////////////////////////////////////////////////////////////
     //初始化页面
     function initPage(data) {

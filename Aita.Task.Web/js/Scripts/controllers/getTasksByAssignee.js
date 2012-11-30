@@ -105,11 +105,21 @@ function GetTasksByAssigneeCtrl($scope, $rootScope, $http, $location, $routePara
         openWdatePicker(elementId);
     }
     $scope.openUrl = function (task) {
-        if (task.isEditable) {
-            return '/TaskInfo.htm?userId=' + userId + '&taskId=' + task.id;
+        if (isPhp) {
+            if (task.isEditable) {
+                return '/task/detail/' + task.id;
+            }
+            else {
+                return '/task/externalDetail?url=' + escape(task.relatedUrl);
+            }
         }
         else {
-            return '/ExternalTaskInfo.htm?url=' + escape(task.relatedUrl);
+            if (task.isEditable) {
+                return '/TaskInfo.htm?userId=' + userId + '&taskId=' + task.id;
+            }
+            else {
+                return '/ExternalTaskInfo.htm?url=' + escape(task.relatedUrl);
+            }
         }
     }
     $scope.equalDisplayMode = function (d) {
@@ -248,7 +258,8 @@ function GetTasksByAssigneeCtrl($scope, $rootScope, $http, $location, $routePara
             key: key,
             externalTaskSourceJson: sourcesJson,
             syncExternalTask: '',
-            displayMode: $scope.displayMode
+            displayMode: $scope.displayMode,
+            call: urls.getTasksByAssignee_call
         };
         initPage(data);
     }
@@ -354,7 +365,8 @@ function GetTasksByAssigneeCtrl($scope, $rootScope, $http, $location, $routePara
         key: '',
         externalTaskSourceJson: '',
         syncExternalTask: '',
-        displayMode: $scope.displayMode
+        displayMode: $scope.displayMode,
+        call: urls.getTasksByAssignee_call
     };
     initPage(data);
 }

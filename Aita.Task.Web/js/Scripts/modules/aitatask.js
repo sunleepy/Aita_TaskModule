@@ -45,6 +45,10 @@ var aitatask = angular.module('aitatask', []);
         //当前用户ID
         aitatask.value('userId', currentUserId);
     }
+    if(currentUserName != null && currentUserName != undefined && currentUserName != "") {
+        //当前用户花名
+        aitatask.value('userName', currentUserName);
+    }
     if(currentTaskId != null && currentTaskId != undefined && currentTaskId != "") {
         //当前任务ID
         aitatask.value('taskId', currentTaskId);

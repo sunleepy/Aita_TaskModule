@@ -3,7 +3,9 @@
 //是否php版本
 var isPhp = false;
 var currentUserId = null;
+var currentUserName = null;
 var currentTaskId = null;
+var externalUrl = null;
 
 /////////////////////////////////////////////////////////////////////////////////////////
 function GetQueryString(name) {

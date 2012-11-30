@@ -1,5 +1,5 @@
 ﻿
-function CreateTaskCtrl($scope, $rootScope, $http, $location, $routeParams, $element, urls, userId) {
+function CreateTaskCtrl($scope, $rootScope, $http, $location, $routeParams, $element, urls, userId, userName) {
     if (isPhp) {
         $scope.createTaskUrl = urls.map_url;
         $scope.userInfoUrl = "http://api.w.taobao.ali.com/sys/userinfo";
@@ -17,14 +17,27 @@ function CreateTaskCtrl($scope, $rootScope, $http, $location, $routeParams, $ele
     $scope.dueTime = null;
     $scope.priority = 0;
 
-    $("#assigneeSelector").Selector(
-    {
-        dropListUrl: $scope.findUserUrl,
-        ifRepeat: false,
-        maxDrop: 8,
-        maxToken: 1,
-        initData: []
-    });
+    if (isPhp) {
+        $("#assigneeSelector").Selector(
+        {
+            dropListUrl: $scope.findUserUrl,
+            ifRepeat: false,
+            maxDrop: 8,
+            maxToken: 1,
+            initData: [{ id: userId, name: userName}]
+        });
+    }
+    else {
+        $("#assigneeSelector").Selector(
+        {
+            dropListUrl: $scope.findUserUrl,
+            ifRepeat: false,
+            maxDrop: 8,
+            maxToken: 1,
+            initData: []
+        });
+    }
+
     $("#relatedSelector").Selector(
     {
         dropListUrl: $scope.findUserUrl,
@@ -33,25 +46,27 @@ function CreateTaskCtrl($scope, $rootScope, $http, $location, $routeParams, $ele
         maxToken: 999
     });
 
-    if (userId != null && userId != "") {
-        var data = { user_id: userId };
-        $http({
-            method: 'POST',
-            url: $scope.userInfoUrl,
-            data: $.param(data),
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-        }).success(function (result, status, headers, config) {
-            if (result.state == 0 && result.data != null && result.data != "") {
-                $("#assigneeSelector").Selector(
+    if (!isPhp) {
+        if (userId != null && userId != "") {
+            var data = { user_id: userId };
+            $http({
+                method: 'POST',
+                url: $scope.userInfoUrl,
+                data: $.param(data),
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+            }).success(function (result, status, headers, config) {
+                if (result.state == 0 && result.data != null && result.data != "") {
+                    $("#assigneeSelector").Selector(
                 {
                     dropListUrl: $scope.findUserUrl,
                     ifRepeat: false,
                     maxDrop: 8,
                     maxToken: 1,
-                    initData: [{ id: userId, name: result.data.displayName }]
+                    initData: [{ id: userId, name: result.data.displayName}]
                 });
-            }
-        });
+                }
+            });
+        }
     }
 
     $scope.save = function () {
