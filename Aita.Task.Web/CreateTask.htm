@@ -198,6 +198,7 @@
             $("#task-edit-float div").click(function () {
                 $("#task-yx-color").attr("class", $(this).find("i").attr("class"));
                 $("#task-yx-color").attr("value", $(this).find("i").text());
+                $("#task-yx-color").text($(this).find("i").text());
                 $("#task-edit-float").hide();
             });
 

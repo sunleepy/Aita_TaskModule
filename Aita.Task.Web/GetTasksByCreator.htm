@@ -77,8 +77,8 @@
 								<li class="l2"><del ng-show="t.isCompleted==true">{{t.source}}</del><span ng-show="t.isCompleted==false">{{t.source}}</span></li>
 								<li class="l2">{{t.assignee}}</li>
                                 <li class="l3 summary">
-                                    <del ng-show="t.isCompleted==true"><a ng-href="{{openUrl(t)}}" target="_blank">{{t.subject}}</a>&nbsp;-&nbsp;{{t.body}}</del>
-                                    <span ng-show="t.isCompleted==false"><a ng-href="{{openUrl(t)}}" target="_blank">{{t.subject}}</a>&nbsp;-&nbsp;{{t.body}}</span>
+                                    <del ng-show="t.isCompleted==true"><a ng-href="{{openUrl(t)}}">{{t.subject}}</a>&nbsp;-&nbsp;{{t.body}}</del>
+                                    <span ng-show="t.isCompleted==false"><a ng-href="{{openUrl(t)}}">{{t.subject}}</a>&nbsp;-&nbsp;{{t.body}}</span>
                                 </li>
 								<li class="l5">
 									<input class="txtDate" type="text" value="{{getFormatDate(t.dueTime)}}" size="16" readonly>

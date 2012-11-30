@@ -325,4 +325,10 @@
     $scope.leaveTransferMode = function () {
         $scope.isTransferingToOther = false;
     };
+
+    $scope.back = function () {
+        parent.history.back();
+        return false;
+    };
+
 }

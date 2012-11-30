@@ -84,8 +84,8 @@
 								<li class="l1" ng-click="setIsCompleted(t,!t.isCompleted);"><i ng-class="completedIcon(t)"></i></li>
 								<li class="l2"><del ng-show="t.isCompleted==true">{{t.source}}</del><span ng-show="t.isCompleted==false">{{t.source}}</span></li>
 								<li class="l3 summary">
-                                    <del ng-show="t.isCompleted==true"><a ng-href="{{openUrl(t)}}" target="_blank">{{t.subject}}</a>&nbsp;-&nbsp;{{t.body}}</del>
-                                    <span ng-show="t.isCompleted==false"><a ng-href="{{openUrl(t)}}" target="_blank">{{t.subject}}</a>&nbsp;-&nbsp;{{t.body}}</span>
+                                    <del ng-show="t.isCompleted==true"><a ng-href="{{openUrl(t)}}">{{t.subject}}</a>&nbsp;-&nbsp;{{t.body}}</del>
+                                    <span ng-show="t.isCompleted==false"><a ng-href="{{openUrl(t)}}">{{t.subject}}</a>&nbsp;-&nbsp;{{t.body}}</span>
                                 </li>
 								<li class="l4"><i id="priority1_{{t.id}}" ng-click="showPriorityPanel(t,1)" ng-class="priorityIcon(t)">{{getFormatPriority(t.priority)}}</i></li>
 								<li class="l5">
@@ -103,8 +103,8 @@
 								    <li class="l1" ng-click="setIsCompleted(t,!t.isCompleted);"><i ng-class="completedIcon(t)"></i></li>
 								    <li class="l2"><del ng-show="t.isCompleted==true">{{t.source}}</del><span ng-show="t.isCompleted==false">{{t.source}}</span></li>
 								    <li class="l3 summary">
-                                        <del ng-show="t.isCompleted==true"><a ng-href="{{openUrl(t)}}" target="_blank">{{t.subject}}</a>&nbsp;-&nbsp;{{t.body}}</del>
-                                        <span ng-show="t.isCompleted==false"><a ng-href="{{openUrl(t)}}" target="_blank">{{t.subject}}</a>&nbsp;-&nbsp;{{t.body}}</span>
+                                        <del ng-show="t.isCompleted==true"><a ng-href="{{openUrl(t)}}">{{t.subject}}</a>&nbsp;-&nbsp;{{t.body}}</del>
+                                        <span ng-show="t.isCompleted==false"><a ng-href="{{openUrl(t)}}">{{t.subject}}</a>&nbsp;-&nbsp;{{t.body}}</span>
                                     </li>
 								    <li class="l4"><i id="priority2_{{t.id}}" ng-click="showPriorityPanel(t,2)" ng-class="priorityIcon(t)">{{getFormatPriority(t.priority)}}</i></li>
 								    <li class="l5">
