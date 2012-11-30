@@ -6,7 +6,6 @@ function GetQueryString(name) {
     if (r != null) return unescape(r[2]); return null;
 }
 
-var currentTaskId = GetQueryString('taskId');
 var aitatask = angular.module('aitatask', []);
 
 (function () {
