@@ -56,7 +56,10 @@
         <!-- header:E -->
         <!-- taskmain:S-->
         <div  ng-controller="ExternalTaskInfoCtrl">
-            <iframe width="100%" style="min-height:800px;" frameborder="0" scrolling="no" src="{{templateUrl}}"></iframe>
+            <iframe width="100%" style="min-height:700px;" frameborder="0" scrolling="auto" src="{{templateUrl}}"></iframe>
+            <p class="task-detail-return" style="text-align:right">
+                <a ng-click="back()" style="position: fixed; bottom: 0px; right: 0px; font-size: 14px; color: red; font-weight: bold;">返回</a>
+            </p>
         </div>
         <!-- taskmain:E-->
     </div>
