@@ -4,7 +4,12 @@ function GetRelatedTasksCtrl($scope, $rootScope, $http, $location, $routeParams,
     //切换完成状态
     //完成图标
     $scope.completedIcon = function (t) {
-        return t.isCompleted ? 'icon-ok' : '';
+        if (t.isEditable) {
+            return t.isCompleted ? 'i1' : 'i0';
+        }
+        else {
+            return 'i2';
+        }
     }
     //选择自我安排
     $scope.chooseOtherAssignToMe = function () {
@@ -14,7 +19,7 @@ function GetRelatedTasksCtrl($scope, $rootScope, $http, $location, $routeParams,
     }
     //自我安排的图标
     $scope.otherAssignToMeIcon = function () {
-        return $scope.isOtherAssignToMe ? 'btn btn-primary' : 'btn';
+        return $scope.isOtherAssignToMe ? 'button-tasknavOn' : 'button-tasknav';
     }
     //选择任务来源
     $scope.chooseSource = function (source) {
@@ -27,10 +32,10 @@ function GetRelatedTasksCtrl($scope, $rootScope, $http, $location, $routeParams,
         for (var i = 0; i < $scope.sourceDict.length; i++) {
             var currentPair = $scope.sourceDict[i];
             if (k == currentPair.key) {
-                return currentPair.value ? 'btn btn-primary source' : 'btn source';
+                return currentPair.value ? 'button-tasknavOn' : 'button-tasknav';
             }
         }
-        return 'btn source';
+        return 'button-tasknav';
     }
     $scope.getFormatDate = function (date) {
         //        return moment(date).format('YYYY-MM-DD HH:mm:ss');
@@ -40,17 +45,24 @@ function GetRelatedTasksCtrl($scope, $rootScope, $http, $location, $routeParams,
     }
     $scope.openUrl = function (task) {
         if (task.isEditable) {
-            location.href = '/TaskInfo.htm?userId=' + userId + '&taskId=' + task.id;
+            return '/TaskInfo.htm?userId=' + userId + '&taskId=' + task.id;
         }
         else {
-            location.href = task.relatedUrl;
+            return task.relatedUrl;
         }
     }
     ////////////////////////////////////////////////////////////////////////////////////////
     //初始化页面
     function initPage(data) {
-        $http.post(urls.map_url + '?url=' + urls.getRelatedTasks_url + '&_=' + new Date().getTime(), data)
-        .success(function (data, status, headers, config) {
+        var url = isPhp ? urls.map_url + '?_=' + new Date().getTime()
+                : urls.map_url + '?url=' + urls.getRelatedTasks_call + '&_=' + new Date().getTime();
+
+        $http({
+            method: 'POST',
+            url: url,
+            data: $.param(data),
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+        }).success(function (data, status, headers, config) {
             if (data.state == 0) {
                 $scope.otherAssignToMe = data.data.otherAssignToMe;
                 $scope.sources = data.data.sources;
@@ -59,6 +71,7 @@ function GetRelatedTasksCtrl($scope, $rootScope, $http, $location, $routeParams,
 
                 $scope.tasks = data.data.tasks;
 
+                $('#optionPanel').show();
                 $('#main-cooper').show();
             }
             else {
@@ -72,19 +85,20 @@ function GetRelatedTasksCtrl($scope, $rootScope, $http, $location, $routeParams,
     //重新刷新页面
     function reloadPage() {
         var sourcesJson = angular.toJson(toJsonSourceDictTrue());
-        var key = $('#keyWord').val();
+        var key = $('#task-keyword').val();
         var data = {
             userId: userId,
             key: key,
             isAssignee: $scope.isMeAssigntoMe,
             isAssignedToOther: $scope.isMeAssignToOther,
-            externalTaskSourceJson: sourcesJson
+            externalTaskSourceJson: sourcesJson,
+            call: urls.getRelatedTasks_call
         };
         initPage(data);
     }
     ////////////////////////////////////////////////////////////////////////////////////////
     //事件绑定
-    $('#keyWord').keyup(function () {
+    $('#task-keyword').keyup(function () {
         reloadPage();
     });
     ////////////////////////////////////////////////////////////////////////////////////////
@@ -138,11 +152,13 @@ function GetRelatedTasksCtrl($scope, $rootScope, $http, $location, $routeParams,
     //外部来源索引
     $scope.sourceDict = [];
     $scope.isOtherAssignToMe = false;
+    $scope.userId = userId;
     var data = {
         userId: userId,
         isCreator: '',
         key: '',
-        externalTaskSourceJson: ''
+        externalTaskSourceJson: '',
+        call: urls.getRelatedTasks_call
     };
     initPage(data);
 }

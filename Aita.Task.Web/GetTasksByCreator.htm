@@ -24,72 +24,101 @@
 </head>
 <body>
     <div class="wrap" ng-app="aitatask">
-            <!-- taskmain:S-->
-            <div class="main-box" ng-controller="GetTasksByCreatorCtrl">
-				<div class="task-left">
-					<div class="add-task-ico">
-						<a href="/CreateTask.htm?userId={{userId}}" title="添加任务">+</a>
-					</div>
-					<div class="task-left-tag">
-						<a class="a1" href="/GetTasksByAssignee.htm?userId={{userId}}">
-							<span></span>
-							待办任务
-						</a>
-						<a class="a2" href="/GetRelatedTasks.htm?userId={{userId}}">
-							<span></span>
-							相关任务
-						</a>
-						<a class="a3 on" href="/GetTasksByCreator.htm?userId={{userId}}">
-							<span></span>
-							我创建的任务
-						</a>
-					</div>
-				</div>
-				<div class="task-right">
-					<div class="nav">
-						<span class="s1"><b>我创建的任务：</b></span>
-						<span class="s2 hide-cooper" id="optionPanel" style="display:none;">
-                            <a ng-class="meAssigntoMeIcon()" ng-Click="chooseMeAssigntoMe()">{{meAssigntoMe.name}}（{{meAssigntoMe.count}}）</a>
-                            <a ng-class="meAssignToOtherIcon()" ng-Click="chooseMeAssignToOther()">{{meAssignToOther.name}}（{{meAssignToOther.count}}）</a>
-                            <a ng-class="sourceIcon(s)" ng-Click="chooseSource(s)" ng-repeat="s in sources">{{s.name}}（{{s.count}}）</a>
-						</span>
-						<div class="clearbox"></div>
-					</div>
-					<div class="paixu">
-						<div class="paixu-2">
-							<input type="text" id="task-keyword" placeholder="请输入关键字" />
-						</div>
-					</div>
-					<div class="task-content" id="task-content">
-						<div class="task-content-div task-content-div-t">
-							<ul>
-								<li class="l1"></li>
-								<li class="l2">任务来源</li>
-                                <li class="l2">当前处理人</li>
-								<li class="l3">摘要</li>
-								<li class="l5">完成时间</li>
-							</ul>
-						</div>
-                        <div class="task-content-div" 
-                                ng-repeat="t in tasks">
-							<ul>
-								<li class="l1"><i ng-class="completedIcon(t)"></i></li>
-								<li class="l2"><del ng-show="t.isCompleted==true">{{t.source}}</del><span ng-show="t.isCompleted==false">{{t.source}}</span></li>
-								<li class="l2">{{t.assignee}}</li>
-                                <li class="l3 summary">
-                                    <del ng-show="t.isCompleted==true"><a ng-href="{{openUrl(t)}}">{{t.subject}}</a>&nbsp;-&nbsp;{{t.body}}</del>
-                                    <span ng-show="t.isCompleted==false"><a ng-href="{{openUrl(t)}}">{{t.subject}}</a>&nbsp;-&nbsp;{{t.body}}</span>
-                                </li>
-								<li class="l5">
-									<input class="txtDate" type="text" value="{{getFormatDate(t.dueTime)}}" size="16" readonly>
-								</li>
-							</ul>
-						</div>
-					</div>
-				</div>
-                <div class="clearbox"></div>
+        <!-- header:S -->
+        <div class="header">
+            <div class="header-main">
+                <div class="header-right">
+                    <div class="head-msg">
+                        <span class="number-float">234</span> <i class="group-icon">&nbsp;</i> <i class="email-icon">
+                            &nbsp;</i> <i class="newms-icon">&nbsp;</i>
+                    </div>
+                    <ul class="menu">
+                        <li class="current"><a href="">首页</a></li>
+                        <li><a href="">任务</a></li>
+                        <li><a href="">群</a></li>
+                        <li><a href="">话题</a></li>
+                        <li><a href="">应用</a></li>
+                        <li><a href="">导航</a></li>
+                    </ul>
+                    <div class="search-box">
+                        <form action="" method="get">
+                        <input class="search-text" id="search-text" type="text" value="" />
+                        <input type="button" class="search-but" />
+                        </form>
+                    </div>
+                </div>
+                <h1 class="logo">
+                    <a href="/">
+                        <img src="/js/Content/images/logo.jpg" /></a></h1>
             </div>
-            <!-- taskmain:E-->
         </div>
+        <!-- header:E -->
+        <!-- taskmain:S-->
+        <div class="main-box" ng-controller="GetTasksByCreatorCtrl">
+			<div class="task-left">
+				<div class="add-task-ico">
+					<a href="/CreateTask.htm?userId={{userId}}" title="添加任务">+</a>
+				</div>
+				<div class="task-left-tag">
+					<a class="a1" href="/GetTasksByAssignee.htm?userId={{userId}}">
+						<span></span>
+						待办任务
+					</a>
+					<a class="a2" href="/GetRelatedTasks.htm?userId={{userId}}">
+						<span></span>
+						相关任务
+					</a>
+					<a class="a3 on" href="/GetTasksByCreator.htm?userId={{userId}}">
+						<span></span>
+						我创建的任务
+					</a>
+				</div>
+			</div>
+			<div class="task-right">
+				<div class="nav">
+					<span class="s1"><b>我创建的任务：</b></span>
+					<span class="s2 hide-cooper" id="optionPanel" style="display:none;">
+                        <a ng-class="meAssigntoMeIcon()" ng-Click="chooseMeAssigntoMe()">{{meAssigntoMe.name}}（{{meAssigntoMe.count}}）</a>
+                        <a ng-class="meAssignToOtherIcon()" ng-Click="chooseMeAssignToOther()">{{meAssignToOther.name}}（{{meAssignToOther.count}}）</a>
+                        <a ng-class="sourceIcon(s)" ng-Click="chooseSource(s)" ng-repeat="s in sources">{{s.name}}（{{s.count}}）</a>
+					</span>
+					<div class="clearbox"></div>
+				</div>
+				<div class="paixu">
+					<div class="paixu-2">
+						<input type="text" id="task-keyword" placeholder="请输入关键字" />
+					</div>
+				</div>
+				<div class="task-content" id="task-content">
+					<div class="task-content-div task-content-div-t">
+						<ul>
+							<li class="l1"></li>
+							<li class="l2">任务来源</li>
+                            <li class="l2">当前处理人</li>
+							<li class="l3">摘要</li>
+							<li class="l5">完成时间</li>
+						</ul>
+					</div>
+                    <div class="task-content-div" 
+                            ng-repeat="t in tasks">
+						<ul>
+							<li class="l1"><i ng-class="completedIcon(t)"></i></li>
+							<li class="l2"><del ng-show="t.isCompleted==true">{{t.source}}</del><span ng-show="t.isCompleted==false">{{t.source}}</span></li>
+							<li class="l2">{{t.assignee}}</li>
+                            <li class="l3 summary">
+                                <del ng-show="t.isCompleted==true"><a ng-href="{{openUrl(t)}}">{{t.subject}}</a>&nbsp;-&nbsp;{{t.body}}</del>
+                                <span ng-show="t.isCompleted==false"><a ng-href="{{openUrl(t)}}">{{t.subject}}</a>&nbsp;-&nbsp;{{t.body}}</span>
+                            </li>
+							<li class="l5">
+								<input class="txtDate" type="text" value="{{getFormatDate(t.dueTime)}}" size="16" readonly>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+            <div class="clearbox"></div>
+        </div>
+        <!-- taskmain:E-->
+    </div>
 </body>
 </html>

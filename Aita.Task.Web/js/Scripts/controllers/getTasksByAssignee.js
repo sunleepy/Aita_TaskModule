@@ -109,16 +109,13 @@ function GetTasksByAssigneeCtrl($scope, $rootScope, $http, $location, $routePara
             return '/TaskInfo.htm?userId=' + userId + '&taskId=' + task.id;
         }
         else {
-            return task.relatedUrl;
+            return '/ExternalTaskInfo.htm?url=' + escape(task.relatedUrl);
         }
     }
     $scope.equalDisplayMode = function (d) {
         return $scope.displayMode == d;
     }
     $scope.showPriorityPanel = function (task, tag) {
-        if (!task.isEditable) {
-            return;
-        }
         var this0 = $('#priority' + tag + '_' + task.id);
         $("#task-content .l4").find(".ring-color").remove();
         var colorHTML = '<div class="ring-color" id="ring-color"><s><i></i></s><div><i class="ring ring-red" tag="0">1</i><span>尽快完成</span></div><div><i class="ring ring-yellow" tag="1">2</i><span>稍后完成</span></div><div><i class="ring ring-blue" tag="2">3</i><span>迟些再说</span></div></div>';

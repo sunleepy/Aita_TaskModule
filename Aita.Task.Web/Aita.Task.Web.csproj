@@ -49,6 +49,7 @@
     <Reference Include="System.Web.ApplicationServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="EnternalTaskInfo.htm" />
     <Content Include="js\Content\images\logo.jpg" />
     <Content Include="js\Content\angular\angular-1.0.1.min.js" />
     <Content Include="js\Content\angular\angular-bootstrap-1.0.1.js" />
@@ -193,6 +194,7 @@
     <Content Include="Global.asax" />
     <Content Include="js\Scripts\common.js" />
     <Content Include="js\Scripts\controllers\createTask.js" />
+    <Content Include="js\Scripts\controllers\externalTaskInfo.js" />
     <Content Include="js\Scripts\controllers\getRelatedTasks.js" />
     <Content Include="js\Scripts\controllers\getTasksByAssignee.js" />
     <Content Include="js\Scripts\controllers\getTasksByCreator.js" />
