@@ -1,0 +1,64 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>外部任务详情</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" type="text/css" href="http://w.taobao.ali.com/css/comment.css" />
+    <link rel="stylesheet" type="text/css" href="http://w.taobao.ali.com/css/selector.css" />
+
+    <script type="text/javascript" src="/js/scripts/common.js"></script>
+    <script type="text/javascript">
+        if (isPhp) {
+            currentUserId = '<{$currentUserId}>'; //TODO:Php替换<{$currentUserId}>
+            currentTaskId = '<{$currentTaskId}>'; //TODO:Php替换<{$currentTaskId}>
+        }
+        else {
+            currentUserId = GetQueryString('userId');
+            currentTaskId = GetQueryString('taskId');
+        }
+    </script>
+
+    <script type="text/javascript" src="/js/content/jquery/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="/js/Content/angular/angular-1.0.1.min.js"></script>
+    <script type="text/javascript" src="/js/Scripts/modules/aitatask.js"></script>
+    <script type="text/javascript" src="/js/Scripts/controllers/taskInfo.js"></script>
+</head>
+<body>
+    <div class="wrap">
+        <!-- header:S -->
+        <div class="header">
+            <div class="header-main">
+                <div class="header-right">
+                    <div class="head-msg">
+                        <span class="number-float">234</span> <i class="group-icon">&nbsp;</i> <i class="email-icon">
+                            &nbsp;</i> <i class="newms-icon">&nbsp;</i>
+                    </div>
+                    <ul class="menu">
+                        <li class="current"><a href="">首页</a></li>
+                        <li><a href="">任务</a></li>
+                        <li><a href="">群</a></li>
+                        <li><a href="">话题</a></li>
+                        <li><a href="">应用</a></li>
+                        <li><a href="">导航</a></li>
+                    </ul>
+                    <div class="search-box">
+                        <form action="" method="get">
+                        <input class="search-text" id="search-text" type="text" value="" />
+                        <input type="button" class="search-but" />
+                        </form>
+                    </div>
+                </div>
+                <h1 class="logo">
+                    <a href="/">
+                        <img src="/js/Content/images/logo.jpg" /></a></h1>
+            </div>
+        </div>
+        <!-- header:E -->
+        <!-- taskmain:S-->
+        <div class="main-box">
+        1111
+        </div>
+        <!-- taskmain:E-->
+    </div>
+</body>
+</html>
