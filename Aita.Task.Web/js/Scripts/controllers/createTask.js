@@ -89,10 +89,6 @@ function CreateTaskCtrl($scope, $rootScope, $http, $location, $routeParams, $ele
             comment.msgBox("请输入任务标题！", "error");
             return;
         }
-        if ($("#assigneeUserId").val() == null || $("#assigneeUserId").val() == "") {
-            comment.msgBox("请输入任务处理人！", "error");
-            return;
-        }
         var priorityValue = $("#task-yx-color").attr("value");
         if (priorityValue != null) {
             priorityValue = parseInt(priorityValue) - 1;

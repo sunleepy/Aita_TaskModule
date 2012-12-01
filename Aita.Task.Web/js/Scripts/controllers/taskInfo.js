@@ -207,14 +207,6 @@
             comment.msgBox("请输入任务标题！", "error");
             return;
         }
-        if ($("#assigneeUserId").val() == null || $("#assigneeUserId").val() == "") {
-            comment.msgBox("请输入任务处理人！", "error");
-            return;
-        }
-        if ($("#assigneeUserId_forTransfor").val() == null || $("#assigneeUserId_forTransfor").val() == "") {
-            comment.msgBox("请输入任务处理人！", "error");
-            return;
-        }
 
         var assigneeUserId = null;
         if ($scope.isTransferingToOther) {

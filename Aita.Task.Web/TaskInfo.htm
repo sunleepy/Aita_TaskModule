@@ -26,6 +26,7 @@
     <script type="text/javascript" src="/js/Content/angular/angular-1.0.1.min.js"></script>
     <script type="text/javascript" src="/js/Scripts/modules/aitatask.js"></script>
     <script type="text/javascript" src="/js/Scripts/controllers/taskInfo.js"></script>
+    <script type="text/javascript" src="http://w.taobao.ali.com/js/textareaSelect.js"></script>
 </head>
 <body>
     <div class="wrap ng-app:aitatask" id="ng-app" ng-app="aitatask">
@@ -102,7 +103,7 @@
                         <ul>
                             <li class="task-edit-left">任务描述： </li>
                             <li class="task-edit-right">
-                                <textarea id="body" class="task-edit-note" ng-model="body"></textarea>
+                                <textarea id="body" class="task-edit-note" ng-model="body" onFocus="$(this).autoTextarea({minHeight:70});"></textarea>
                             </li>
                         </ul>
                         <ul>
