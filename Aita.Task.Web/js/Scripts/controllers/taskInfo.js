@@ -28,6 +28,8 @@
     $scope.priorityClass = null;
     $scope.displayPriority = null;
 
+    $scope.originalAssigneeId = "";
+
     $scope.currentAssigneeJson = null;
 
     if (taskId != null && taskId != "") {
@@ -39,13 +41,15 @@
             data: $.param(data),
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
         }).success(function (result, status, headers, config) {
-            if (result.state == 0) {
+            if (result.state == 0 && result.data != null) {
                 $scope.subject = result.data.subject;
                 $scope.body = result.data.body;
                 $scope.creator = result.data.creator.displayname;
                 if (result.data.assignee != null && result.data.assignee != "") {
                     $scope.assignee = result.data.assignee.displayname;
+                    $scope.originalAssigneeId = result.data.assignee.id;
                 }
+
                 var userStr = "";
                 for (var index in result.data.related) {
                     userStr += result.data.related[index].displayname + " ";
@@ -117,9 +121,18 @@
                     maxToken: 999,
                     initData: relatedUsers
                 });
+
+                if (result.data.assignee != null && result.data.assignee.id == userId) {
+                    $("#task-detail-but").show();
+                }
             }
             else {
-                alert(result.data);
+                if (result.data == null) {
+                    comment.msgBox("任务不存在！", "error");
+                }
+                else {
+                    comment.msgBox(result.data, "error");
+                }
             }
         });
     }
@@ -144,6 +157,10 @@
     }
 
     $scope.changeCompleted = function (isCompleted) {
+        if ($scope.originalAssigneeId != userId) {
+            comment.msgBox("当前用户无权修改任务！", "error");
+            return;
+        }
         var data = {
             id: taskId,
             isCompleted: isCompleted,
@@ -166,6 +183,10 @@
     };
 
     $scope.save = function () {
+        if ($scope.originalAssigneeId != userId) {
+            comment.msgBox("当前用户无权修改任务！", "error");
+            return;
+        }
         if ($scope.subject == null || $scope.subject == "") {
             comment.msgBox("请输入任务标题！", "error");
             return;
@@ -174,6 +195,11 @@
             comment.msgBox("请输入任务处理人！", "error");
             return;
         }
+        if ($("#assigneeUserId_forTransfor").val() == null || $("#assigneeUserId_forTransfor").val() == "") {
+            comment.msgBox("请输入任务处理人！", "error");
+            return;
+        }
+
         var assigneeUserId = null;
         if ($scope.isTransferingToOther) {
             assigneeUserId = $("#assigneeUserId_forTransfor").val();
@@ -343,12 +369,20 @@
     }
 
     $scope.enterEditMode = function () {
+        if ($scope.originalAssigneeId != userId) {
+            comment.msgBox("当前用户无权修改任务！", "error");
+            return;
+        }
         $scope.editMode = true;
     };
     $scope.enterViewMode = function () {
         $scope.editMode = false;
     };
     $scope.enterTransferMode = function () {
+        if ($scope.originalAssigneeId != userId) {
+            comment.msgBox("当前用户无权修改任务！", "error");
+            return;
+        }
         $scope.isTransferingToOther = true;
         $("#task-alert-action").hide();
         $("#assigneeSelector").Selector(
