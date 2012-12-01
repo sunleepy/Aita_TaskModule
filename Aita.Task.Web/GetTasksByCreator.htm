@@ -16,6 +16,7 @@
     </script>
     <script type="text/javascript" src="/js/Content/jquery/jquery-1.7.2.min.js"></script>
     <script type="text/javascript" src="/js/Content/js/json3.min.js"></script>
+    <script type="text/javascript" src="http://w.taobao.ali.com/js/comment.js"></script>
     <script type="text/javascript" src="/js/Content/angular/angular-1.0.1.min.js"></script>
     <script type="text/javascript" src="/js/Content/js/moment.min.js"></script>
     <script type="text/javascript" src="/js/Content/My97DatePicker/WdatePicker.js"></script>
@@ -37,13 +38,13 @@
 					<span class="s2 hide-cooper" id="optionPanel" style="display:none;">
                         <a ng-class="meAssigntoMeIcon()" ng-Click="chooseMeAssigntoMe()">{{meAssigntoMe.name}}（{{meAssigntoMe.count}}）</a>
                         <a ng-class="meAssignToOtherIcon()" ng-Click="chooseMeAssignToOther()">{{meAssignToOther.name}}（{{meAssignToOther.count}}）</a>
-                        <a ng-class="sourceIcon(s)" ng-Click="chooseSource(s)" ng-repeat="s in sources">{{s.name}}（{{s.count}}）</a>
+                        <!--<a ng-class="sourceIcon(s)" ng-Click="chooseSource(s)" ng-repeat="s in sources">{{s.name}}（{{s.count}}）</a>-->
 					</span>
 					<div class="clearbox"></div>
 				</div>
 				<div class="paixu">
 					<div class="paixu-2">
-						<input type="text" id="task-keyword" placeholder="请输入关键字" />
+						<input type="text" id="task-keyword" placeholder="搜索任务来源或摘要" />
 					</div>
 				</div>
 				<div class="task-content" id="task-content">

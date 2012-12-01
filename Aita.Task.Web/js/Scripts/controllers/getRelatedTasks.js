@@ -72,7 +72,6 @@ function GetRelatedTasksCtrl($scope, $rootScope, $http, $location, $routeParams,
         $('#task-loading').show();
         var url = isPhp ? urls.map_url + '?_=' + new Date().getTime()
                 : urls.map_url + '?url=' + urls.getRelatedTasks_call + '&_=' + new Date().getTime();
-
         $http({
             method: 'POST',
             url: url,
@@ -80,23 +79,33 @@ function GetRelatedTasksCtrl($scope, $rootScope, $http, $location, $routeParams,
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
         }).success(function (data, status, headers, config) {
             if (data.state == 0) {
-                $scope.otherAssignToMe = data.data.otherAssignToMe;
-                $scope.sources = data.data.sources;
+                if (data.data != null) {
+                    $scope.otherAssignToMe = data.data.otherAssignToMe;
+                    $scope.sources = data.data.sources;
 
-                refreshSourceDictBySources($scope.sources);
+                    refreshSourceDictBySources($scope.sources);
 
-                $scope.tasks = data.data.tasks;
+                    $scope.tasks = data.data.tasks;
 
-                $('#optionPanel').show();
-                $('#main-cooper').show();
+                    $('#optionPanel').show();
+                    $('#main-cooper').show();
+                }
+                else {
+                    comment.msgBox("获取相关任务列表data数据不存在！", "error");
+                }
             }
             else {
-                alert(data.data);
+                if (data.data != null) {
+                    comment.msgBox(result.data, "error");
+                }
+                else {
+                    comment.msgBox("获取相关任务列表失败！", "error");
+                }
             }
             $('#task-loading').hide();
         })
         .error(function (data, status, headers, config) {
-            alert('error:' + data);
+            comment.msgBox("获取相关任务列表失败！！", "error");
             $('#task-loading').hide();
         });
     }
@@ -116,7 +125,8 @@ function GetRelatedTasksCtrl($scope, $rootScope, $http, $location, $routeParams,
     ////////////////////////////////////////////////////////////////////////////////////////
     //事件绑定
     $('#task-keyword').keyup(function () {
-        reloadPage();
+        clearTimeout($scope.time);
+        $scope.time = setTimeout(reloadPage, 1000);
     });
     ////////////////////////////////////////////////////////////////////////////////////////
     //外部来源筛选条件处理和判断
@@ -165,8 +175,7 @@ function GetRelatedTasksCtrl($scope, $rootScope, $http, $location, $routeParams,
         return arr;
     }
     ////////////////////////////////////////////////////////////////////////////////////////
-    
-    //外部来源索引
+    $scope.time = null;
     $scope.sourceDict = [];
     $scope.isOtherAssignToMe = false;
     $scope.userId = userId;

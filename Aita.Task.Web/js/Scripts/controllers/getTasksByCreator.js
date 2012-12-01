@@ -88,23 +88,33 @@ function GetTasksByCreatorCtrl($scope, $rootScope, $http, $location, $routeParam
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
         }).success(function (data, status, headers, config) {
             if (data.state == 0) {
-                $scope.meAssigntoMe = data.data.meAssigntoMe;
-                $scope.meAssignToOther = data.data.meAssignToOther;
-                $scope.sources = data.data.sources;
+                if (data.data != null) {
+                    $scope.meAssigntoMe = data.data.meAssigntoMe;
+                    $scope.meAssignToOther = data.data.meAssignToOther;
+                    $scope.sources = data.data.sources;
 
-                refreshSourceDictBySources($scope.sources);
+                    refreshSourceDictBySources($scope.sources);
 
-                $scope.tasks = data.data.tasks;
+                    $scope.tasks = data.data.tasks;
 
-                $('#optionPanel').show();
-                $('#main-cooper').show();
+                    $('#optionPanel').show();
+                    $('#main-cooper').show();
+                }
+                else {
+                    comment.msgBox("获取创建任务列表data数据不存在！", "error");
+                }
             }
             else {
-                alert(data.data);
+                if (data.data != null) {
+                    comment.msgBox(result.data, "error");
+                }
+                else {
+                    comment.msgBox("获取创建任务列表失败！", "error");
+                }
             }
             $('#task-loading').hide();
         }).error(function (data, status, headers, config) {
-            alert('error:' + data);
+            comment.msgBox("获取创建任务列表失败！！", "error");
             $('#task-loading').hide();
         });
     }
@@ -125,7 +135,8 @@ function GetTasksByCreatorCtrl($scope, $rootScope, $http, $location, $routeParam
     ////////////////////////////////////////////////////////////////////////////////////////
     //事件绑定
     $('#task-keyword').keyup(function () {
-        reloadPage();
+        clearTimeout($scope.time);
+        $scope.time = setTimeout(reloadPage, 1000);
     });
     ////////////////////////////////////////////////////////////////////////////////////////
     //外部来源筛选条件处理和判断
@@ -174,7 +185,7 @@ function GetTasksByCreatorCtrl($scope, $rootScope, $http, $location, $routeParam
         return arr;
     }
     ////////////////////////////////////////////////////////////////////////////////////////
-    //外部来源索引
+    $scope.time = null;
     $scope.sourceDict = [];
     $scope.isMeAssigntoMe = false;
     $scope.isMeAssignToOther = false;
