@@ -86,7 +86,7 @@
                     </p>
                     <p class="task-detail-info" style="clear:both;padding-top:0px;">
                         <span>相关人员：</span>{{ related }}<br />
-                        <span>期望完成日期：</span>{{ duetime }}
+                        <span>期望完成时间：</span>{{ duetime }}
                     </p>
                 </div>
                 <div class="task-detail-content" ng-show="editMode">
@@ -157,7 +157,7 @@
                             </li>
                         </ul>
                         <ul>
-                            <li class="task-edit-left">完成日期： </li>
+                            <li class="task-edit-left">期望完成时间： </li>
                             <li class="task-edit-right">
                                 <input id="duetime" type="text" class="input-small" value="" ng-model="duetime" onFocus="WdatePicker({el: 'duetime'});"
                                     readonly />
