@@ -18,6 +18,7 @@
         }
     </script>
     <script type="text/javascript" src="/js/Content/jquery/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="/js/Content/js/json3.min.js"></script>
     <script type="text/javascript" src="http://w.taobao.ali.com/js/comment.js"></script>
     <script type="text/javascript" src="http://wfstatic.alibaba-inc.com/resources/public/js/jscore-min.js"></script>
     <script type="text/javascript" src="/js/Content/My97DatePicker/WdatePicker.js"></script>
@@ -26,12 +27,12 @@
     <script type="text/javascript" src="/js/Scripts/controllers/createTask.js"></script>
 </head>
 <body>
-    <div class="wrap">
+    <div class="wrap ng-app:aitatask" id="ng-app" ng-app="aitatask">
         <!-- header:S -->
         <{include file="share/header.phtml"}>
         <!-- header:E -->
         <!-- taskmain:S-->
-        <div class="main-box" ng-app="aitatask" ng-controller="CreateTaskCtrl">
+        <div class="main-box" ng-controller="CreateTaskCtrl">
             <{include file="task/left.phtml"}>
             <div class="task-right">
                 <p class="task-detail-return">

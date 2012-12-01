@@ -75,6 +75,7 @@ function GetTasksByCreatorCtrl($scope, $rootScope, $http, $location, $routeParam
     ////////////////////////////////////////////////////////////////////////////////////////
     //初始化页面
     function initPage(data) {
+        $('#task-loading').show();
         var url = isPhp ? urls.map_url + '?_=' + new Date().getTime()
                 : urls.map_url + '?url=' + urls.getTasksByCreator_call + '&_=' + new Date().getTime();
         $http({
@@ -94,36 +95,15 @@ function GetTasksByCreatorCtrl($scope, $rootScope, $http, $location, $routeParam
 
                 $('#optionPanel').show();
                 $('#main-cooper').show();
-                $('#loading-cooper').hide();
             }
             else {
                 alert(data.data);
             }
+            $('#task-loading').hide();
         }).error(function (data, status, headers, config) {
             alert('error:' + data);
+            $('#task-loading').hide();
         });
-
-//        $http.post(urls.map_url + '?url=' + urls.getTasksByCreator_url + '&_=' + new Date().getTime(), data)
-//        .success(function (data, status, headers, config) {
-//            if (data.state == 0) {
-//                $scope.meAssigntoMe = data.data.meAssigntoMe;
-//                $scope.meAssignToOther = data.data.meAssignToOther;
-//                $scope.sources = data.data.sources;
-
-//                refreshSourceDictBySources($scope.sources);
-
-//                $scope.tasks = data.data.tasks;
-
-//                $('#main-cooper').show();
-//                $('#loading-cooper').hide();
-//            }
-//            else {
-//                alert(data.data);
-//            }
-//        })
-//        .error(function (data, status, headers, config) {
-//            alert('error:' + data);
-//        });
     }
     //重新刷新页面
     function reloadPage() {

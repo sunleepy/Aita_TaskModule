@@ -188,7 +188,7 @@ function GetTasksByAssigneeCtrl($scope, $rootScope, $http, $location, $routePara
     ////////////////////////////////////////////////////////////////////////////////////////
     //初始化页面
     function initPage(data) {
-        var s = $scope;
+        $('#task-loading').show();
         if ($scope.displayMode == 1) {
             var url = isPhp ? urls.map_url + '?_=' + new Date().getTime()
                 : urls.map_url + '?url=' + urls.getTasksByAssignee_call + '&_=' + new Date().getTime();
@@ -209,13 +209,14 @@ function GetTasksByAssigneeCtrl($scope, $rootScope, $http, $location, $routePara
 
                     $('#optionPanel').show();
                     $('#main-cooper').show();
-                    //$('#loading-cooper').hide();
                 }
                 else {
                     alert(data.data);
                 }
+                $('#task-loading').hide();
             }).error(function (data, status, headers, config) {
-                    alert('error:' + data);
+                alert('error:' + data);
+                $('#task-loading').hide();
                 });
         }
         else if ($scope.displayMode == 2) {
@@ -236,13 +237,14 @@ function GetTasksByAssigneeCtrl($scope, $rootScope, $http, $location, $routePara
                     refreshSourceDictBySources($scope.sources);
                     $scope.taskDict = reverseDict(data.data.taskDict);
                     $('#main-cooper').show();
-                    //$('#loading-cooper').hide();
                 }
                 else {
                     alert(data.data);
                 }
+                $('#task-loading').hide();
             }).error(function (data, status, headers, config) {
                 alert('error:' + data);
+                $('#task-loading').hide();
             });
         }
     }
@@ -350,7 +352,6 @@ function GetTasksByAssigneeCtrl($scope, $rootScope, $http, $location, $routePara
         return arr;
     }
     ////////////////////////////////////////////////////////////////////////////////////////
-    //外部来源索引
     $scope.sourceDict = [];
     $scope.isMeAssigntoMe = false;
     $scope.isOtherAssignToMe = false;

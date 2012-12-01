@@ -66,6 +66,7 @@ function GetRelatedTasksCtrl($scope, $rootScope, $http, $location, $routeParams,
     ////////////////////////////////////////////////////////////////////////////////////////
     //初始化页面
     function initPage(data) {
+        $('#task-loading').show();
         var url = isPhp ? urls.map_url + '?_=' + new Date().getTime()
                 : urls.map_url + '?url=' + urls.getRelatedTasks_call + '&_=' + new Date().getTime();
 
@@ -89,9 +90,11 @@ function GetRelatedTasksCtrl($scope, $rootScope, $http, $location, $routeParams,
             else {
                 alert(data.data);
             }
+            $('#task-loading').hide();
         })
         .error(function (data, status, headers, config) {
             alert('error:' + data);
+            $('#task-loading').hide();
         });
     }
     //重新刷新页面
