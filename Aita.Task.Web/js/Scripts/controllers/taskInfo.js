@@ -166,7 +166,10 @@
     };
 
     $scope.save = function () {
-
+        if ($scope.subject == null || $scope.subject == "") {
+            comment.msgBox("请输入任务标题！", "error");
+            return;
+        }
         var assigneeUserId = null;
         if ($scope.isTransferingToOther) {
             assigneeUserId = $("#assigneeUserId_forTransfor").val();

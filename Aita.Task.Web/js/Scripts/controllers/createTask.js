@@ -69,7 +69,11 @@ function CreateTaskCtrl($scope, $rootScope, $http, $location, $routeParams, $ele
         }
     }
 
-    $scope.save = function () {
+$scope.save = function () {
+        if ($scope.subject == null || $scope.subject==""){
+            comment.msgBox("请输入任务标题！","error");
+            return;
+        }
         var priorityValue = $("#task-yx-color").attr("value");
         if (priorityValue != null) {
             priorityValue = parseInt(priorityValue) - 1;
