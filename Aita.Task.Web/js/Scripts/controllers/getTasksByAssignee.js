@@ -19,12 +19,19 @@ function GetTasksByAssigneeCtrl($scope, $rootScope, $http, $location, $routePara
                 data: $.param(data),
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
             }).success(function (data, status, headers, config) {
-                if (data.state != 0) {
-                    alert(data.data);
+                if (data.state == 0) {
+                }
+                else {
+                    if (data.data != null) {
+                        comment.msgBox(result.data, "error");
+                    }
+                    else {
+                        comment.msgBox("修改完成状态失败！", "error");
+                    }
                 }
             }).error(function (data, status, headers, config) {
-                    alert('error:' + data);
-                });
+                comment.msgBox("修改完成状态失败!!");
+            });
         }
     }
     //切换完成图标
@@ -90,6 +97,9 @@ function GetTasksByAssigneeCtrl($scope, $rootScope, $http, $location, $routePara
     $scope.completeStyleAboutSummary = function (isCompleted) {
         return isCompleted ? "text-decoration:line-through;" : "";
     }
+    $scope.getDisplayLine = function (body) {
+        return body == "" ? "" : "-";
+    }
     $scope.getFormatDate = function (date) {
         //        return moment(date).format('YYYY-MM-DD HH:mm:ss');
         if (date == null)
@@ -130,11 +140,8 @@ function GetTasksByAssigneeCtrl($scope, $rootScope, $http, $location, $routePara
         $("#task-content .l4").find(".ring-color").remove();
         var colorHTML = '<div class="ring-color" id="ring-color"><s><i></i></s><div><i class="ring ring-red" tag="0">1</i><span>尽快完成</span></div><div><i class="ring ring-yellow" tag="1">2</i><span>稍后完成</span></div><div><i class="ring ring-blue" tag="2">3</i><span>迟些再说</span></div></div>';
         this0.parent().append(colorHTML);
-        this0.parent().find(".ring-color").find("." + this0.attr("class")).parent().remove();
-        //防止冒泡
-        event.stopPropagation();
         $(document).unbind("click").click(function (e) {
-            this0 == e.target || $("#ring-color").get(0) == e.target || jQuery.contains($("#ring-color").get(0), e.target) || $("#ring-color").hide();
+            this0.get(0) == e.target || $("#ring-color").get(0) == e.target || jQuery.contains($("#ring-color").get(0), e.target) || $("#ring-color").hide();
         });
         $('#ring-color .ring').bind('click', function () {
             var tag = $(this).attr('tag');
@@ -161,11 +168,17 @@ function GetTasksByAssigneeCtrl($scope, $rootScope, $http, $location, $routePara
                     }
                 }
                 else {
-                    alert(data.data);
+                    if (data.data != null) {
+                        comment.msgBox(result.data, "error");
+                    }
+                    else {
+                        comment.msgBox("修改优先级状态失败！", "error");
+                    }
                 }
                 $("#ring-color").hide();
             }).error(function (data, status, headers, config) {
-                alert('error:' + data);
+                comment.msgBox("修改优先级状态失败！！", "error");
+                $("#ring-color").hide();
             });
         });
     }
@@ -199,28 +212,37 @@ function GetTasksByAssigneeCtrl($scope, $rootScope, $http, $location, $routePara
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
             }).success(function (data, status, headers, config) {
                 if (data.state == 0) {
-                    $scope.meAssigntoMe = data.data.meAssigntoMe;
-                    $scope.otherAssignToMe = data.data.otherAssignToMe;
-                    $scope.sources = data.data.sources;
+                    if (data.data != null) {
+                        $scope.meAssigntoMe = data.data.meAssigntoMe;
+                        $scope.otherAssignToMe = data.data.otherAssignToMe;
+                        $scope.sources = data.data.sources;
 
-                    refreshSourceDictBySources($scope.sources);
+                        refreshSourceDictBySources($scope.sources);
 
-                    $scope.tasks = data.data.tasks;
+                        $scope.tasks = data.data.tasks;
 
-                    $('#optionPanel').show();
-                    $('#main-cooper').show();
+                        $('#optionPanel').show();
+                        $('#main-cooper').show();
+                    }
+                    else {
+                        comment.msgBox("获取待办任务列表data数据不存在！", "error");
+                    }
                 }
                 else {
-                    alert(data.data);
+                    if (data.data != null) {
+                        comment.msgBox(result.data, "error");
+                    }
+                    else {
+                        comment.msgBox("获取待办任务列表失败！", "error");
+                    }
                 }
                 $('#task-loading').hide();
             }).error(function (data, status, headers, config) {
-                alert('error:' + data);
+                comment.msgBox("获取待办任务列表失败！！", "error");
                 $('#task-loading').hide();
-                });
+            });
         }
         else if ($scope.displayMode == 2) {
-
             var url = isPhp ? urls.map_url + '?_=' + new Date().getTime()
                 : urls.map_url + '?url=' + urls.getTasksByAssignee_call + '&_=' + new Date().getTime();
             $http({
@@ -230,20 +252,32 @@ function GetTasksByAssigneeCtrl($scope, $rootScope, $http, $location, $routePara
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
             }).success(function (data, status, headers, config) {
                 if (data.state == 0) {
-                    $scope.meAssigntoMe = data.data.meAssigntoMe;
-                    $scope.otherAssignToMe = data.data.otherAssignToMe;
-                    $scope.sources = data.data.sources;
+                    if (data.data != null) {
+                        $scope.meAssigntoMe = data.data.meAssigntoMe;
+                        $scope.otherAssignToMe = data.data.otherAssignToMe;
+                        $scope.sources = data.data.sources;
 
-                    refreshSourceDictBySources($scope.sources);
-                    $scope.taskDict = reverseDict(data.data.taskDict);
-                    $('#main-cooper').show();
+                        refreshSourceDictBySources($scope.sources);
+                        $scope.taskDict = reverseDict(data.data.taskDict);
+
+                        $('#optionPanel').show();
+                        $('#main-cooper').show();
+                    }
+                    else {
+                        comment.msgBox("获取待办任务列表data数据不存在！", "error");
+                    }
                 }
                 else {
-                    alert(data.data);
+                    if (data.data != null) {
+                        comment.msgBox(result.data, "error");
+                    }
+                    else {
+                        comment.msgBox("获取待办任务列表失败！", "error");
+                    }
                 }
                 $('#task-loading').hide();
             }).error(function (data, status, headers, config) {
-                alert('error:' + data);
+                comment.msgBox("获取待办任务列表失败！！", "error");
                 $('#task-loading').hide();
             });
         }
@@ -287,7 +321,8 @@ function GetTasksByAssigneeCtrl($scope, $rootScope, $http, $location, $routePara
     ////////////////////////////////////////////////////////////////////////////////////////
     //事件绑定
     $('#task-keyword').keyup(function () {
-        reloadPage();
+        clearTimeout($scope.time);
+        $scope.time = setTimeout(reloadPage, 1000);
     });
     $('#displayMode a').unbind().bind('click', function () {
         var selDisplayMode = $(this).attr('displayMode');
@@ -352,6 +387,7 @@ function GetTasksByAssigneeCtrl($scope, $rootScope, $http, $location, $routePara
         return arr;
     }
     ////////////////////////////////////////////////////////////////////////////////////////
+    $scope.time = null;
     $scope.sourceDict = [];
     $scope.isMeAssigntoMe = false;
     $scope.isOtherAssignToMe = false;
@@ -362,7 +398,7 @@ function GetTasksByAssigneeCtrl($scope, $rootScope, $http, $location, $routePara
         userId: userId,
         isCreator: 'false',
         isOtherAssignedToMe: 'false',
-        isCompleted: '',
+        isCompleted: 'false',
         key: '',
         externalTaskSourceJson: '',
         syncExternalTask: '',
