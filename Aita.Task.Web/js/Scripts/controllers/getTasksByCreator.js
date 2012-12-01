@@ -48,6 +48,9 @@ function GetTasksByCreatorCtrl($scope, $rootScope, $http, $location, $routeParam
         }
         return 'button-tasknav';
     }
+    $scope.getDisplayLine = function (body) {
+        return body == "" ? "" : "-";
+    }
     $scope.getFormatDate = function (date) {
         //        return moment(date).format('YYYY-MM-DD HH:mm:ss');
         if (date == null)

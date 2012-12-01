@@ -90,6 +90,9 @@ function GetTasksByAssigneeCtrl($scope, $rootScope, $http, $location, $routePara
     $scope.completeStyleAboutSummary = function (isCompleted) {
         return isCompleted ? "text-decoration:line-through;" : "";
     }
+    $scope.getDisplayLine = function (body) {
+        return body == "" ? "" : "-";
+    }
     $scope.getFormatDate = function (date) {
         //        return moment(date).format('YYYY-MM-DD HH:mm:ss');
         if (date == null)
@@ -130,11 +133,10 @@ function GetTasksByAssigneeCtrl($scope, $rootScope, $http, $location, $routePara
         $("#task-content .l4").find(".ring-color").remove();
         var colorHTML = '<div class="ring-color" id="ring-color"><s><i></i></s><div><i class="ring ring-red" tag="0">1</i><span>尽快完成</span></div><div><i class="ring ring-yellow" tag="1">2</i><span>稍后完成</span></div><div><i class="ring ring-blue" tag="2">3</i><span>迟些再说</span></div></div>';
         this0.parent().append(colorHTML);
-        this0.parent().find(".ring-color").find("." + this0.attr("class")).parent().remove();
         //防止冒泡
-        event.stopPropagation();
+        //event.stopPropagation();
         $(document).unbind("click").click(function (e) {
-            this0 == e.target || $("#ring-color").get(0) == e.target || jQuery.contains($("#ring-color").get(0), e.target) || $("#ring-color").hide();
+            this0.get(0) == e.target || $("#ring-color").get(0) == e.target || jQuery.contains($("#ring-color").get(0), e.target) || $("#ring-color").hide();
         });
         $('#ring-color .ring').bind('click', function () {
             var tag = $(this).attr('tag');
@@ -362,7 +364,7 @@ function GetTasksByAssigneeCtrl($scope, $rootScope, $http, $location, $routePara
         userId: userId,
         isCreator: 'false',
         isOtherAssignedToMe: 'false',
-        isCompleted: '',
+        isCompleted: 'false',
         key: '',
         externalTaskSourceJson: '',
         syncExternalTask: '',
