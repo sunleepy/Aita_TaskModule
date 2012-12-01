@@ -14,8 +14,8 @@ function CreateTaskCtrl($scope, $rootScope, $http, $location, $routeParams, $ele
     }
 
     $scope.userId = userId;
-    $scope.subject = null;
-    $scope.body = null;
+    $scope.subject = "";
+    $scope.body = "";
     $scope.dueTime = null;
     $scope.priority = 0;
 

@@ -19,8 +19,8 @@
     $scope.editMode = false;
     $scope.isTransferingToOther = false;
 
-    $scope.subject = null;
-    $scope.body = null;
+    $scope.subject = "";
+    $scope.body = "";
     $scope.creator = null;
     $scope.assignee = null;
     $scope.related = null;
@@ -34,41 +34,11 @@
     $scope.currentAssigneeJson = null;
     $scope.currentRelatedJson = null;
 
-    $scope.displayTaskData = function (result) {
-
-        //显示标题
-        $scope.subject = result.data.subject;
-        //显示说明
-        $scope.body = result.data.body;
-        //显示创建人
-        $scope.creator = result.data.creator.displayname;
-        //显示处理人
-        if (result.data.assignee != null) {
-            $scope.assignee = result.data.assignee.displayname;
-            $scope.originalAssigneeId = result.data.assignee.id;
-        }
-
-        //显示相关人员
-        var userStr = "";
-        for (var index in result.data.related) {
-            userStr += result.data.related[index].displayname + " ";
-        }
-        $scope.related = userStr;
-
-        //显示期望完成时间
-        $scope.duetime = result.data.duetime;
-
-        //显示是否完成
-        $scope.isCompleted = result.data.isCompleted;
-        $scope.refreshCompleted(result.data.isCompleted);
-
-        //显示优先级
-        $scope.displayPriority = $scope.getDisplayPriority(result.data.priority);
-        $scope.refreshPriority($scope.displayPriority);
-
+    //根据服务器端过来的处理人json刷新处理人选人控件
+    $scope.refreshAssignee = function (assigneeJson) {
         //根据当前处理人信息初始化当前处理人选人控件
-        if (result.data.assignee != null) {
-            var assigneeUser = [{ id: result.data.assignee.id, name: result.data.assignee.displayname}];
+        if (assigneeJson != null) {
+            var assigneeUser = [{ id: assigneeJson.id, name: assigneeJson.displayname}];
             $("#assigneeSelector").Selector(
             {
                 dropListUrl: $scope.findUserUrl,
@@ -106,6 +76,42 @@
             });
             $scope.currentAssigneeJson = [];
         }
+    }
+
+    $scope.displayTaskData = function (result) {
+
+        //显示标题
+        $scope.subject = result.data.subject;
+        //显示说明
+        $scope.body = result.data.body;
+        //显示创建人
+        $scope.creator = result.data.creator.displayname;
+        //显示处理人
+        if (result.data.assignee != null) {
+            $scope.assignee = result.data.assignee.displayname;
+            $scope.originalAssigneeId = result.data.assignee.id;
+        }
+
+        //显示相关人员
+        var userStr = "";
+        for (var index in result.data.related) {
+            userStr += result.data.related[index].displayname + " ";
+        }
+        $scope.related = userStr;
+
+        //显示期望完成时间
+        $scope.duetime = result.data.duetime;
+
+        //显示是否完成
+        $scope.isCompleted = result.data.isCompleted;
+        $scope.refreshCompleted(result.data.isCompleted);
+
+        //显示优先级
+        $scope.displayPriority = $scope.getDisplayPriority(result.data.priority);
+        $scope.refreshPriority($scope.displayPriority);
+
+        //显示处理人
+        $scope.refreshAssignee(result.data.assignee);
 
         //根据相关人员信息初始化相关人员选人控件
         var relatedUsers = [];
@@ -180,6 +186,11 @@
 
     //修改是否任务完成的状态
     $scope.changeCompleted = function (isCompleted) {
+        if ($scope.taskId == null || $scope.taskId == "") {
+            comment.msgBox("当前任务不存在！", "error");
+            return;
+        }
+
         if ($scope.originalAssigneeId != userId) {
             comment.msgBox("当前用户无权修改任务！", "error");
             return;
@@ -213,6 +224,10 @@
 
     //保存任务
     $scope.save = function () {
+        if ($scope.taskId == null || $scope.taskId == "") {
+            comment.msgBox("当前任务不存在！", "error");
+            return;
+        }
         if ($scope.originalAssigneeId != userId) {
             comment.msgBox("当前用户无权修改任务！", "error");
             return;
@@ -253,66 +268,17 @@
             if (result.state == 0) {
                 if (result.data != null) {
                     $scope.editMode = false;
+
                     $scope.duetime = data.dueTime;
                     $scope.assignee = result.data.assignee;
                     $scope.related = result.data.related;
-
-                    $("#task-alert-action").hide();
-
-                    $scope.updateRelatedUserSelector(result.data.relatedUsers);
                     $scope.displayPriority = $scope.getDisplayPriority(data.priority);
+
+                    $scope.refreshAssignee(result.data.assigneeJson);
+                    $scope.updateRelatedUserSelector(result.data.relatedUsers);
                     $scope.refreshPriority($scope.displayPriority);
 
-                    //下面的代码用于同步选人控件的值
-                    if ($scope.isTransferingToOther) {
-                        $scope.isTransferingToOther = false;
-                        if (result.data.assignee != null && result.data.assignee != '') {
-                            $("#assigneeSelector").Selector(
-                            {
-                                dropListUrl: $scope.findUserUrl,
-                                ifRepeat: false,
-                                maxDrop: 8,
-                                maxToken: 1,
-                                initData: [{ id: assigneeUserId, name: result.data.assignee}]
-                            });
-                            $scope.currentAssigneeJson = [{ id: assigneeUserId, name: result.data.assignee}];
-                        }
-                        else {
-                            $("#assigneeSelector").Selector(
-                            {
-                                dropListUrl: $scope.findUserUrl,
-                                ifRepeat: false,
-                                maxDrop: 8,
-                                maxToken: 1,
-                                initData: []
-                            });
-                            $scope.currentAssigneeJson = [];
-                        }
-                    }
-                    else {
-                        if (result.data.assignee != null && result.data.assignee != '') {
-                            $("#assigneeSelector_forTransfor").Selector(
-                            {
-                                dropListUrl: $scope.findUserUrl,
-                                ifRepeat: false,
-                                maxDrop: 8,
-                                maxToken: 1,
-                                initData: [{ id: assigneeUserId, name: result.data.assignee}]
-                            });
-                            $scope.currentAssigneeJson = [{ id: assigneeUserId, name: result.data.assignee}];
-                        }
-                        else {
-                            $("#assigneeSelector_forTransfor").Selector(
-                            {
-                                dropListUrl: $scope.findUserUrl,
-                                ifRepeat: false,
-                                maxDrop: 8,
-                                maxToken: 1,
-                                initData: []
-                            });
-                            $scope.currentAssigneeJson = [];
-                        }
-                    }
+                    $("#task-alert-action").hide();
                 }
                 else {
                     comment.msgBox("保存任务失败！", "error");
@@ -419,6 +385,7 @@
         $scope.originalDisplayPriority = $scope.displayPriority;
 
         $scope.editMode = true;
+        $scope.isTransferingToOther = false;
     };
 
     //点击取消按钮时进入查看模式，需要将编辑模式下各个控件的值还原到编辑前的状态
