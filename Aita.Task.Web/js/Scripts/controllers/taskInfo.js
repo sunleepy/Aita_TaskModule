@@ -268,6 +268,7 @@
             if (result.state == 0) {
                 if (result.data != null) {
                     $scope.editMode = false;
+                    $scope.isTransferingToOther = false;
 
                     $scope.duetime = data.dueTime;
                     $scope.assignee = result.data.assignee;
