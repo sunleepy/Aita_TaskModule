@@ -64,11 +64,12 @@
                             ng-repeat="t in tasks">
 						<ul>
 							<li class="l1"><i ng-class="completedIcon(t)"></i></li>
-							<li class="l2 txtCut">{{t.source}}</li>
+							<li class="l2 txtCut" title="{{t.source}}"><del ng-show="t.isCompleted==true">{{t.source}}</del>
+                                <span ng-show="t.isCompleted==false">{{t.source}}</span></li>
 							<li class="l6 txtCut">{{t.assignee}}&nbsp;</li>
-                            <li class="l3 txtCut " style="width:430px">
-                                <del ng-show="t.isCompleted==true"><a title="{{t.body}}" ng-href="{{openUrl(t)}}">{{t.subject}}</a>&nbsp;{{getDisplayLine(t.body)}}&nbsp;<a ng-href="{{openUrl(t)}}"><font color=#9D9D9D>{{t.body}}</font></a></del>
-                                <span ng-show="t.isCompleted==false"><a title="{{t.body}}" ng-href="{{openUrl(t)}}">{{t.subject}}</a>&nbsp;{{getDisplayLine(t.body)}}&nbsp;<a ng-href="{{openUrl(t)}}"><font color=#9D9D9D>{{t.body}}</font></a></span>
+                            <li class="l3 txtCut " style="width:430px" title="{{t.body}}">
+                                <del ng-show="t.isCompleted==true"><a ng-href="{{openUrl(t)}}">{{t.subject}}</a>&nbsp;{{getDisplayLine(t.body)}}&nbsp;<a ng-href="{{openUrl(t)}}"><font color=#9D9D9D>{{t.body}}</font></a></del>
+                                <span ng-show="t.isCompleted==false"><a ng-href="{{openUrl(t)}}">{{t.subject}}</a>&nbsp;{{getDisplayLine(t.body)}}&nbsp;<a ng-href="{{openUrl(t)}}"><font color=#9D9D9D>{{t.body}}</font></a></span>
                             </li>
 							<li class="l5">
                                 <div class="txtDate">{{getFormatDate(t.dueTime)}}</div>
