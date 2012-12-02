@@ -181,6 +181,9 @@
                     if ($scope.hasViewPermission) {
                         $scope.displayTaskData(result);
                     }
+                    else {
+                        $("#noViewPermissionArea").show();
+                    }
                 }
                 else {
                     $scope.hasViewPermission = true;
