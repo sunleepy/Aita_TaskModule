@@ -28,12 +28,24 @@
     $scope.duetime = null;
     $scope.isCompleted = 0;
     $scope.displayPriority = null;
+    $scope.bodyItems = [];
 
     //保存任务的最初原始处理人
     $scope.originalAssigneeId = "";
 
     $scope.currentAssigneeJson = null;
     $scope.currentRelatedJson = null;
+
+    //刷新任务描述信息
+    $scope.refreshBodyItems = function (body) {
+        $scope.bodyItems = [];
+        if (body != null) {
+            var items = body.split("\n");
+            for (var index in items) {
+                $scope.bodyItems.push(items[index]);
+            }
+        }
+    }
 
     //根据服务器端过来的处理人json刷新处理人选人控件
     $scope.refreshAssignee = function (assigneeJson) {
@@ -115,6 +127,8 @@
         $scope.subject = result.data.subject;
         //显示说明
         $scope.body = result.data.body;
+        $scope.refreshBodyItems($scope.body);
+
         //显示创建人
         $scope.creator = result.data.creator.displayname;
         //显示处理人
@@ -314,6 +328,7 @@
                     $scope.related = result.data.related;
                     $scope.displayPriority = $scope.getDisplayPriority(data.priority);
 
+                    $scope.refreshBodyItems(data.body);
                     $scope.refreshAssignee(result.data.assigneeJson);
                     $scope.updateRelatedUserSelector(result.data.relatedUsers);
                     $scope.refreshPriority($scope.displayPriority);

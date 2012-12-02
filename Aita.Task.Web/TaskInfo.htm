@@ -55,8 +55,8 @@
                                 编辑</a>
                         </div>
                     </div>
-                    <p class="task-detail-con">
-                        {{ body }}
+                    <p class="task-detail-con" ng-repeat="item in bodyItems">
+                        <span>{{ item }}</span>
                     </p>
                     <p class="task-detail-info">
                         <span>创建人：</span>{{ creator }}<br />
