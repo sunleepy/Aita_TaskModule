@@ -120,9 +120,6 @@ function GetTasksByCreatorCtrl($scope, $rootScope, $http, $location, $routeParam
                 }
             }
             $('#task-loading').hide();
-        }).error(function (data, status, headers, config) {
-            //comment.msgBox("获取创建任务列表失败！！", "error");
-            $('#task-loading').hide();
         });
     }
     //重新刷新页面

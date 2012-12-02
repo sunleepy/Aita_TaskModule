@@ -110,10 +110,6 @@ function GetRelatedTasksCtrl($scope, $rootScope, $http, $location, $routeParams,
                 }
             }
             $('#task-loading').hide();
-        })
-        .error(function (data, status, headers, config) {
-            //comment.msgBox("获取相关任务列表失败！！", "error");
-            $('#task-loading').hide();
         });
     }
     //重新刷新页面

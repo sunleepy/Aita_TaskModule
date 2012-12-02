@@ -29,8 +29,6 @@ function GetTasksByAssigneeCtrl($scope, $rootScope, $http, $location, $routePara
                         comment.msgBox("修改完成状态失败！", "error");
                     }
                 }
-            }).error(function (data, status, headers, config) {
-                comment.msgBox("修改完成状态失败!!");
             });
         }
     }
@@ -188,9 +186,6 @@ function GetTasksByAssigneeCtrl($scope, $rootScope, $http, $location, $routePara
                     }
                 }
                 $("#ring-color").hide();
-            }).error(function (data, status, headers, config) {
-                comment.msgBox("修改优先级状态失败！！", "error");
-                $("#ring-color").hide();
             });
         });
     }
@@ -249,9 +244,6 @@ function GetTasksByAssigneeCtrl($scope, $rootScope, $http, $location, $routePara
                     }
                 }
                 $('#task-loading').hide();
-            }).error(function (data, status, headers, config) {
-                //comment.msgBox("获取待办任务列表失败！！", "error");
-                $('#task-loading').hide();
             });
         }
         else if ($scope.displayMode == 2) {
@@ -287,9 +279,6 @@ function GetTasksByAssigneeCtrl($scope, $rootScope, $http, $location, $routePara
                         comment.msgBox("获取待办任务列表失败！", "error");
                     }
                 }
-                $('#task-loading').hide();
-            }).error(function (data, status, headers, config) {
-                //comment.msgBox("获取待办任务列表失败！！", "error");
                 $('#task-loading').hide();
             });
         }

@@ -74,8 +74,8 @@
 							<li class="l1" ng-click="setIsCompleted(t,!t.isCompleted);"><i ng-class="completedIcon(t)"></i></li>
 							<li class="l2 txtCut "><del ng-show="t.isCompleted==true">{{t.source}}</del><span ng-show="t.isCompleted==false">{{t.source}}</span></li>
 							<li class="l3 txtCut " style="width:500px">
-                                <del ng-show="t.isCompleted==true"><a ng-href="{{openUrl(t)}}">{{t.subject}}</a>&nbsp;{{getDisplayLine(t.body)}}&nbsp;<a ng-href="{{openUrl(t)}}"><font color=#9D9D9D>{{t.body}}</font></a></del>
-                                <span ng-show="t.isCompleted==false"><a ng-href="{{openUrl(t)}}">{{t.subject}}</a>&nbsp;{{getDisplayLine(t.body)}}&nbsp;<a ng-href="{{openUrl(t)}}"><font color=#9D9D9D>{{t.body}}</font></a></span>
+                                <del ng-show="t.isCompleted==true"><a title="{{t.body}}" ng-href="{{openUrl(t)}}">{{t.subject}}</a>&nbsp;{{getDisplayLine(t.body)}}&nbsp;<a ng-href="{{openUrl(t)}}"><font color=#9D9D9D>{{t.body}}</font></a></del>
+                                <span ng-show="t.isCompleted==false"><a title="{{t.body}}" ng-href="{{openUrl(t)}}">{{t.subject}}</a>&nbsp;{{getDisplayLine(t.body)}}&nbsp;<a ng-href="{{openUrl(t)}}"><font color=#9D9D9D>{{t.body}}</font></a></span>
                             </li>
 							<li class="l4"><i id="priority1_{{t.id}}" ng-click="showPriorityPanel(t,1)" ng-class="priorityIcon(t)">{{getFormatPriority(t.priority)}}</i></li>
 							<li class="l5">
@@ -93,8 +93,8 @@
 								<li class="l1" ng-click="setIsCompleted(t,!t.isCompleted);"><i ng-class="completedIcon(t)"></i></li>
 								<li class="l2"><del ng-show="t.isCompleted==true">{{t.source}}</del><span ng-show="t.isCompleted==false">{{t.source}}</span></li>
 								<li class="l3 txtCut " style="width:500px">
-                                    <del ng-show="t.isCompleted==true"><a ng-href="{{openUrl(t)}}">{{t.subject}}</a>&nbsp;{{getDisplayLine(t.body)}}&nbsp;<a ng-href="{{openUrl(t)}}"><font color=#9D9D9D>{{t.body}}</font></a></del>
-                                <span ng-show="t.isCompleted==false"><a ng-href="{{openUrl(t)}}">{{t.subject}}</a>&nbsp;{{getDisplayLine(t.body)}}&nbsp;<a ng-href="{{openUrl(t)}}"><font color=#9D9D9D>{{t.body}}</font></a></span>
+                                    <del ng-show="t.isCompleted==true"><a title="{{t.body}}" ng-href="{{openUrl(t)}}">{{t.subject}}</a>&nbsp;{{getDisplayLine(t.body)}}&nbsp;<a ng-href="{{openUrl(t)}}"><font color=#9D9D9D>{{t.body}}</font></a></del>
+                                <span ng-show="t.isCompleted==false"><a title="{{t.body}}" ng-href="{{openUrl(t)}}">{{t.subject}}</a>&nbsp;{{getDisplayLine(t.body)}}&nbsp;<a ng-href="{{openUrl(t)}}"><font color=#9D9D9D>{{t.body}}</font></a></span>
                                 </li>
 								<li class="l4"><i id="priority2_{{t.id}}" ng-click="showPriorityPanel(t,2)" ng-class="priorityIcon(t)">{{getFormatPriority(t.priority)}}</i></li>
 								<li class="l5">
