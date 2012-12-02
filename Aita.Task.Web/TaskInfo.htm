@@ -40,8 +40,8 @@
                 <p class="task-detail-return">
                     <a ng-click="back()">返回</a>
                 </p>
-                <div class="task-detail-content" ng-show="!hasViewPermission">您没有权限查看此页面！</div>
-                <div class="task-detail-content" ng-show="!editMode && hasViewPermission">
+                <div id="noViewPermissionArea" style="display:none" class="task-detail-content">您没有权限查看此页面！</div>
+                <div style="display:none" class="task-detail-content" ng-show="!editMode && hasViewPermission">
                     <p class="tit">
                         {{ subject }}
                         <i id="priorityIcon" class="">{{ displayPriority }}</i>
@@ -90,7 +90,7 @@
                         <span>期望完成时间：</span>{{ duetime }}
                     </p>
                 </div>
-                <div class="task-detail-content" ng-show="editMode && hasViewPermission">
+                <div style="display:none" class="task-detail-content" ng-show="editMode && hasViewPermission">
                     <p class="tit">
                         任务编辑：
                     </p>
