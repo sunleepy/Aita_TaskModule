@@ -428,5 +428,5 @@ function GetTasksByAssigneeCtrl($scope, $rootScope, $http, $location, $routePara
         displayMode: $scope.displayMode,
         call: urls.getTasksByAssignee_call
     };
-    });
+    initPage(data);
 }
