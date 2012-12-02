@@ -112,7 +112,7 @@ function GetRelatedTasksCtrl($scope, $rootScope, $http, $location, $routeParams,
             $('#task-loading').hide();
         })
         .error(function (data, status, headers, config) {
-            comment.msgBox("获取相关任务列表失败！！", "error");
+            //comment.msgBox("获取相关任务列表失败！！", "error");
             $('#task-loading').hide();
         });
     }
@@ -122,7 +122,7 @@ function GetRelatedTasksCtrl($scope, $rootScope, $http, $location, $routeParams,
         var key = $('#task-keyword').val();
         var data = {
             userId: userId,
-            key: key,
+            key: key == '搜索任务来源或摘要' ? '' : key,
             isCreator: $scope.isOtherAssignToMe ? false : null,
             externalTaskSourceJson: sourcesJson,
             call: urls.getRelatedTasks_call
