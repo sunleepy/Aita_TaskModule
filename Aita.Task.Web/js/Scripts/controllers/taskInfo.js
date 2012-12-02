@@ -17,6 +17,7 @@
     $scope.userId = userId;
     $scope.taskId = taskId;
     $scope.editMode = false;
+    $scope.hasViewPermission = false;
     $scope.isTransferingToOther = false;
 
     $scope.subject = "";
@@ -78,6 +79,36 @@
         }
     }
 
+    //判断给定用户是否有权查看给定的任务
+    $scope.isHasViewPermission = function (userId, taskData) {
+        if (taskData == null) {
+            return false;
+        }
+
+        var creator = taskData.creator;
+        var assignee = taskData.assignee;
+        var related = taskData.related;
+
+        //如果用户是任务的创建人、处理人、相关人员，才有权查看此任务
+
+        if (userId == creator.id) {
+            return true;
+        }
+
+        if (assignee != null && userId == assignee.id) {
+            return true;
+        }
+
+        for (var index in related) {
+            if (userId == related[index].id) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    //显示任务数据到界面上
     $scope.displayTaskData = function (result) {
 
         //显示标题
@@ -146,13 +177,18 @@
         }).success(function (result, status, headers, config) {
             if (result.state == 0) {
                 if (result.data != null) {
-                    $scope.displayTaskData(result);
+                    $scope.hasViewPermission = $scope.isHasViewPermission(userId, result.data);
+                    if ($scope.hasViewPermission) {
+                        $scope.displayTaskData(result);
+                    }
                 }
                 else {
+                    $scope.hasViewPermission = true;
                     comment.msgBox("任务不存在！", "error");
                 }
             }
             else {
+                $scope.hasViewPermission = true;
                 if (result.data == null) {
                     comment.msgBox("获取任务信息失败！", "error");
                 }
@@ -268,6 +304,7 @@
             if (result.state == 0) {
                 if (result.data != null) {
                     $scope.editMode = false;
+                    $scope.isTransferingToOther = false;
 
                     $scope.duetime = data.dueTime;
                     $scope.assignee = result.data.assignee;
@@ -348,7 +385,7 @@
         }
         else if (displayPriority == "") {
             $("#task-yx-color").attr("class", "ring-gray");
-            $("#priorityIcon").attr("class", "ring-gray");
+            $("#priorityIcon").attr("class", "");
         }
     }
 
