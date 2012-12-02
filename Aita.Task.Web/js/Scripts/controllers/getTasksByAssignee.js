@@ -101,10 +101,22 @@ function GetTasksByAssigneeCtrl($scope, $rootScope, $http, $location, $routePara
         return body == "" ? "" : "-";
     }
     $scope.getFormatDate = function (date) {
-        //        return moment(date).format('YYYY-MM-DD HH:mm:ss');
         if (date == null)
             return '待定';
-        return moment(date).format('MM-DD'); ;
+        var curYear = moment(date).format('YYYY');
+        var nowDate = new Date();
+        var nowYear = nowDate.getFullYear();
+        if (curYear == nowYear) {
+            return moment(date).format('MM-DD');
+        }
+        else {
+            return moment(date).format('YYYY-MM-DD');
+        }
+    }
+    $scope.getTxtFormatDate = function (date) {
+        if (date == null)
+            return '';
+        return moment(date).format('YYYY-MM-DD');
     }
     $scope.getFormatPriority = function (priority) {
         if (priority == null)
@@ -320,9 +332,20 @@ function GetTasksByAssigneeCtrl($scope, $rootScope, $http, $location, $routePara
     }
     ////////////////////////////////////////////////////////////////////////////////////////
     //事件绑定
-    $('#task-keyword').keyup(function () {
-        clearTimeout($scope.time);
-        $scope.time = setTimeout(reloadPage, 1000);
+    $('#task-keyword').bind({ focus: function () {
+        if ($(this).val() == '搜索任务来源或摘要') {
+            $(this).val('');
+        }
+    }, blur: function () {
+        if ($(this).val() == '' || $(this).val() == null) {
+            $(this).val('搜索任务来源或摘要');
+        }
+    }, keyup: function () {
+        if ($(this).val() != '搜索任务来源或摘要') {
+            clearTimeout($scope.time);
+            $scope.time = setTimeout(reloadPage, 1000);
+        }
+    }
     });
     $('#displayMode a').unbind().bind('click', function () {
         var selDisplayMode = $(this).attr('displayMode');
@@ -394,6 +417,7 @@ function GetTasksByAssigneeCtrl($scope, $rootScope, $http, $location, $routePara
     $scope.isCompletedOption = '';
     $scope.userId = userId;
     $scope.displayMode = 1;
+    $scope.isCompletedOption = 'false';
     var data = {
         userId: userId,
         isCreator: 'false',
