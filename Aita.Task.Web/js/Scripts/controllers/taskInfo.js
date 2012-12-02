@@ -349,7 +349,7 @@
         }
         else if (displayPriority == "") {
             $("#task-yx-color").attr("class", "ring-gray");
-            $("#priorityIcon").attr("class", "ring-gray");
+            $("#priorityIcon").attr("class", "");
         }
     }
 
