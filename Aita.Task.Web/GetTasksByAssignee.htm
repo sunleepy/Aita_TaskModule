@@ -50,7 +50,7 @@
 						<a displayMode="2">优先级</a>
 					</div>
 					<div class="paixu-2">
-						<input type="text" id="task-keyword" placeholder="搜索任务来源或摘要" />
+						<input type="text" id="task-keyword" value="搜索任务来源或摘要" />
 					</div>
 					<div class="paixu-3">
 						<input type="checkbox" id="hideCompletedOption" style="vertical-align:middle" checked="checked" /><span style="vertical-align:middle">&nbsp;&nbsp;隐藏已完成任务</span>
@@ -72,15 +72,15 @@
                             ng-repeat="t in tasks">
 						<ul>
 							<li class="l1" ng-click="setIsCompleted(t,!t.isCompleted);"><i ng-class="completedIcon(t)"></i></li>
-							<li class="l2"><del ng-show="t.isCompleted==true">{{t.source}}</del><span ng-show="t.isCompleted==false">{{t.source}}</span></li>
+							<li class="l2 txtCut "><del ng-show="t.isCompleted==true">{{t.source}}</del><span ng-show="t.isCompleted==false">{{t.source}}</span></li>
 							<li class="l3 txtCut " style="width:500px">
                                 <del ng-show="t.isCompleted==true"><a ng-href="{{openUrl(t)}}">{{t.subject}}</a>&nbsp;{{getDisplayLine(t.body)}}&nbsp;<a ng-href="{{openUrl(t)}}"><font color=#9D9D9D>{{t.body}}</font></a></del>
                                 <span ng-show="t.isCompleted==false"><a ng-href="{{openUrl(t)}}">{{t.subject}}</a>&nbsp;{{getDisplayLine(t.body)}}&nbsp;<a ng-href="{{openUrl(t)}}"><font color=#9D9D9D>{{t.body}}</font></a></span>
                             </li>
 							<li class="l4"><i id="priority1_{{t.id}}" ng-click="showPriorityPanel(t,1)" ng-class="priorityIcon(t)">{{getFormatPriority(t.priority)}}</i></li>
 							<li class="l5">
-                                <div id="divDueTime1_{{t.id}}" class="txtDate" onclick="openDatePicker({{t}},1)">{{getFormatDate(t.dueTime)}}</div>
-                                <input id="txtDueTime1_{{t.id}}" type="text" value="" style="display:none;" />
+                                <div id="divDueTime1_{{t.id}}" class="txtDate d1" onclick="openDatePicker({{t}},1)">{{getFormatDate(t.dueTime)}}</div>
+                                <input id="txtDueTime1_{{t.id}}" type="text" value="{{getTxtFormatDate(t.dueTime)}}" style="display:none;" />
 							</li>
 						</ul>
 					</div>
@@ -98,8 +98,8 @@
                                 </li>
 								<li class="l4"><i id="priority2_{{t.id}}" ng-click="showPriorityPanel(t,2)" ng-class="priorityIcon(t)">{{getFormatPriority(t.priority)}}</i></li>
 								<li class="l5">
-									<div id="divDueTime2_{{t.id}}" class="txtDate" onclick="openDatePicker({{t}},2)">{{getFormatDate(t.dueTime)}}</div>
-                                    <input id="txtDueTime2_{{t.id}}" type="text" value="" style="display:none;" />
+									<div id="divDueTime2_{{t.id}}" class="txtDate d1" onclick="openDatePicker({{t}},2)">{{getFormatDate(t.dueTime)}}</div>
+                                    <input id="txtDueTime2_{{t.id}}" type="text" value="{{getTxtFormatDate(t.dueTime)}}" style="display:none;" />
 								</li>
 							</ul>
 						</div>
@@ -125,10 +125,18 @@
                     dateFmt: 'yyyy-MM-dd',
                     onpicked: function () {
                         var loginDate = $('#' + elementId).val();
+                        var selYear = moment(loginDate).format('YYYY');
+                        var date = new Date();
+                        var nowYear = date.getFullYear();
                         $('#' + elementId).val(loginDate);
-                        var shortDate = moment(loginDate).format('MM-DD');
-                        $('#divDueTime' + tag + '_' + taskId).html(shortDate);
-
+                        var realDate = null;
+                        if (selYear == nowYear) {
+                            realDate = moment(loginDate).format('MM-DD');
+                        }
+                        else {
+                            realDate = loginDate;
+                        }
+                        $('#divDueTime' + tag + '_' + taskId).html(realDate);
                         var data = {
                             id: taskId,
                             dueTime: loginDate,

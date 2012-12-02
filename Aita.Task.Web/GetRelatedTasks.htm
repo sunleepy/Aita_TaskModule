@@ -42,7 +42,7 @@
 				</div>
 				<div class="paixu">
 					<div class="paixu-2">
-						<input type="text" id="task-keyword" placeholder="搜索任务来源或摘要" />
+						<input type="text" id="task-keyword" value="搜索任务来源或摘要" />
 					</div>
 				</div>
 				<div class="task-content" id="task-content">
@@ -69,7 +69,7 @@
                                 <span ng-show="t.isCompleted==false"><a ng-href="{{openUrl(t)}}">{{t.subject}}</a>&nbsp;{{getDisplayLine(t.body)}}&nbsp;<a ng-href="{{openUrl(t)}}"><font color=#9D9D9D>{{t.body}}</font></a></span>
                             </li>
 							<li class="l5">
-								<input class="txtDate" type="text" value="{{getFormatDate(t.dueTime)}}" size="16" readonly>
+								<div class="txtDate d1">{{getFormatDate(t.dueTime)}}</div>
 							</li>
 						</ul>
 					</div>

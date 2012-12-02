@@ -52,10 +52,17 @@ function GetTasksByCreatorCtrl($scope, $rootScope, $http, $location, $routeParam
         return body == "" ? "" : "-";
     }
     $scope.getFormatDate = function (date) {
-        //        return moment(date).format('YYYY-MM-DD HH:mm:ss');
         if (date == null)
             return '待定';
-        return moment(date).format('MM-DD'); ;
+        var curYear = moment(date).format('YYYY');
+        var nowDate = new Date();
+        var nowYear = nowDate.getFullYear();
+        if (curYear == nowYear) {
+            return moment(date).format('MM-DD');
+        }
+        else {
+            return moment(date).format('YYYY-MM-DD');
+        }
     }
     $scope.openUrl = function (task) {
         if (isPhp) {
@@ -134,9 +141,20 @@ function GetTasksByCreatorCtrl($scope, $rootScope, $http, $location, $routeParam
     }
     ////////////////////////////////////////////////////////////////////////////////////////
     //事件绑定
-    $('#task-keyword').keyup(function () {
-        clearTimeout($scope.time);
-        $scope.time = setTimeout(reloadPage, 1000);
+    $('#task-keyword').bind({ focus: function () {
+        if ($(this).val() == '搜索任务来源或摘要') {
+            $(this).val('');
+        }
+    }, blur: function () {
+        if ($(this).val() == '' || $(this).val() == null) {
+            $(this).val('搜索任务来源或摘要');
+        }
+    }, keyup: function () {
+        if ($(this).val() != '搜索任务来源或摘要') {
+            clearTimeout($scope.time);
+            $scope.time = setTimeout(reloadPage, 1000);
+        }
+    }
     });
     ////////////////////////////////////////////////////////////////////////////////////////
     //外部来源筛选条件处理和判断
