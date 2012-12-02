@@ -250,7 +250,7 @@ function GetTasksByAssigneeCtrl($scope, $rootScope, $http, $location, $routePara
                 }
                 $('#task-loading').hide();
             }).error(function (data, status, headers, config) {
-                comment.msgBox("获取待办任务列表失败！！", "error");
+                //comment.msgBox("获取待办任务列表失败！！", "error");
                 $('#task-loading').hide();
             });
         }
@@ -289,7 +289,7 @@ function GetTasksByAssigneeCtrl($scope, $rootScope, $http, $location, $routePara
                 }
                 $('#task-loading').hide();
             }).error(function (data, status, headers, config) {
-                comment.msgBox("获取待办任务列表失败！！", "error");
+                //comment.msgBox("获取待办任务列表失败！！", "error");
                 $('#task-loading').hide();
             });
         }
@@ -303,7 +303,7 @@ function GetTasksByAssigneeCtrl($scope, $rootScope, $http, $location, $routePara
             isCreator: $scope.isMeAssigntoMe,
             isOtherAssignedToMe: $scope.isOtherAssignToMe,
             isCompleted: $scope.isCompletedOption,
-            key: key,
+            key: key == '搜索任务来源或摘要' ? '' : key,
             externalTaskSourceJson: sourcesJson,
             syncExternalTask: '',
             displayMode: $scope.displayMode,
@@ -414,7 +414,6 @@ function GetTasksByAssigneeCtrl($scope, $rootScope, $http, $location, $routePara
     $scope.sourceDict = [];
     $scope.isMeAssigntoMe = false;
     $scope.isOtherAssignToMe = false;
-    $scope.isCompletedOption = '';
     $scope.userId = userId;
     $scope.displayMode = 1;
     $scope.isCompletedOption = 'false';
@@ -429,5 +428,5 @@ function GetTasksByAssigneeCtrl($scope, $rootScope, $http, $location, $routePara
         displayMode: $scope.displayMode,
         call: urls.getTasksByAssignee_call
     };
-    initPage(data);
+    });
 }

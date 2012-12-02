@@ -121,7 +121,7 @@ function GetTasksByCreatorCtrl($scope, $rootScope, $http, $location, $routeParam
             }
             $('#task-loading').hide();
         }).error(function (data, status, headers, config) {
-            comment.msgBox("获取创建任务列表失败！！", "error");
+            //comment.msgBox("获取创建任务列表失败！！", "error");
             $('#task-loading').hide();
         });
     }
@@ -131,7 +131,7 @@ function GetTasksByCreatorCtrl($scope, $rootScope, $http, $location, $routeParam
         var key = $('#task-keyword').val();
         var data = {
             userId: userId,
-            key: key,
+            key: key == '搜索任务来源或摘要' ? '' : key,
             isAssignee: $scope.isMeAssigntoMe,
             isAssignedToOther: $scope.isMeAssignToOther,
             externalTaskSourceJson: sourcesJson,
