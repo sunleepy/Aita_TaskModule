@@ -49,7 +49,11 @@
     <Reference Include="System.Web.ApplicationServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="css\comment.css" />
+    <Content Include="css\jcrop.css" />
+    <Content Include="css\selector.css" />
     <Content Include="ExternalTaskInfo.htm" />
+    <Content Include="js\comment.js" />
     <Content Include="js\Content\images\logo.jpg" />
     <Content Include="js\Content\angular\angular-1.0.1.min.js" />
     <Content Include="js\Content\angular\angular-bootstrap-1.0.1.js" />
@@ -200,7 +204,8 @@
     <Content Include="js\Scripts\controllers\getTasksByCreator.js" />
     <Content Include="js\Scripts\controllers\taskInfo.js" />
     <Content Include="js\Scripts\modules\aitatask.js" />
-    <Content Include="TaskInfo.htm" />
+    <Content Include="js\textareaSelect.js" />
+    <Content Include="taskdetail.htm" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
