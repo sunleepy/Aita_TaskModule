@@ -244,6 +244,7 @@ function GetTasksByAssigneeCtrl($scope, $rootScope, $http, $location, $routePara
                     }
                 }
                 $('#task-loading').hide();
+                $scope.taskloaded = true;
             });
         }
         else if ($scope.displayMode == 2) {
@@ -280,6 +281,7 @@ function GetTasksByAssigneeCtrl($scope, $rootScope, $http, $location, $routePara
                     }
                 }
                 $('#task-loading').hide();
+                $scope.taskloaded = true;
             });
         }
     }
@@ -406,6 +408,7 @@ function GetTasksByAssigneeCtrl($scope, $rootScope, $http, $location, $routePara
     $scope.userId = userId;
     $scope.displayMode = 1;
     $scope.isCompletedOption = 'false';
+    $scope.taskloaded = false;
     var data = {
         userId: userId,
         isCreator: 'false',

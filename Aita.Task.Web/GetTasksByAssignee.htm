@@ -62,7 +62,7 @@
                     <div style="display:none;" id="task-loading">
                         <div class="mid-loading" style="text-align:center;padding-right:70px">loading</div>
                     </div>
-                    <div ng-show="equalDisplayMode(1)" class="task-content-div task-content-js" 
+                    <div style="display:none;" ng-show="taskloaded && equalDisplayMode(1)" class="task-content-div task-content-js" 
                             ng-repeat="t in tasks">
 						<ul>
 							<li class="l1" ng-click="setIsCompleted(t,!t.isCompleted);"><i ng-class="completedIcon(t)"></i></li>
@@ -79,7 +79,7 @@
 							</li>
 						</ul>
 					</div>
-                    <div ng-show="equalDisplayMode(2)" ng-repeat="(key,value) in taskDict" class="task-content-js">
+                    <div style="display:none;" ng-show="taskloaded && equalDisplayMode(2)" ng-repeat="(key,value) in taskDict" class="task-content-js">
                         <div class="task-content-date">
 							<b>{{getPriorityName(key)}}</b>
 						</div>

@@ -54,7 +54,7 @@
                     <div style="display:none;" id="task-loading">
                         <div class="mid-loading" style="text-align:center;padding-right:70px">loading</div>
                     </div>
-                    <div class="task-content-div task-content-js" 
+                    <div style="display:none;" ng-show="taskloaded" class="task-content-div task-content-js" 
                             ng-repeat="t in tasks">
 						<ul>
 							<li class="l1"><i ng-class="completedIcon(t)"></i></li>

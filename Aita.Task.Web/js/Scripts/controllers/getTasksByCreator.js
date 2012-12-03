@@ -120,6 +120,7 @@ function GetTasksByCreatorCtrl($scope, $rootScope, $http, $location, $routeParam
                 }
             }
             $('#task-loading').hide();
+            $scope.taskloaded = true;
         });
     }
     //重新刷新页面
@@ -205,6 +206,7 @@ function GetTasksByCreatorCtrl($scope, $rootScope, $http, $location, $routeParam
     $scope.isMeAssigntoMe = false;
     $scope.isMeAssignToOther = false;
     $scope.userId = userId;
+    $scope.taskloaded = false;
     var data = {
         userId: userId,
         key: '',
