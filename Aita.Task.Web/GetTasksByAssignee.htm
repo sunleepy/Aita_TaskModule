@@ -3,7 +3,9 @@
 <head>
     <title>待办任务</title>
     <meta http-equiv="content-Type" content="text/html; charset=UTF-8">
-    <link rel="stylesheet" type="text/css" href="http://w.taobao.ali.com/css/comment.css" />
+    <link rel="stylesheet" type="text/css" href="/css/comment.css?v=2.0" />
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.0" />
+    <link rel="stylesheet" type="text/css" href="/css/selector.css" />
     <!-- task scripts begin -->
     <script type="text/javascript" src="/js/Scripts/common.js"></script>
     <script type="text/javascript">
@@ -14,15 +16,7 @@
             currentUserId = GetQueryString('userId');
         }
     </script>
-    <script type="text/javascript" src="/js/Content/jquery/jquery-1.7.2.min.js"></script>
-    <script type="text/javascript" src="/js/Content/js/json3.min.js"></script>
-    <script type="text/javascript" src="http://w.taobao.ali.com/js/comment.js"></script>
-    <script type="text/javascript" src="/js/Content/angular/angular-1.0.1.min.js"></script>
-    <script type="text/javascript" src="/js/Content/js/moment.min.js"></script>
-    <script type="text/javascript" src="/js/Content/My97DatePicker/WdatePicker.js"></script>
-    <script type="text/javascript" src="/js/Scripts/modules/aitatask.js"></script>
-    <script type="text/javascript" src="/js/Scripts/controllers/getTasksByAssignee.js"></script>
-    <!-- end -->
+    
 </head>
 <body>
     <div class="wrap ng-app:aitatask" id="ng-app" ng-app="aitatask">
@@ -92,7 +86,7 @@
                         <div class="task-content-div" ng-repeat="t in value">
 							<ul>
 								<li class="l1" ng-click="setIsCompleted(t,!t.isCompleted);"><i ng-class="completedIcon(t)"></i></li>
-								<li class="l2" title="{{t.source}}"><del ng-show="t.isCompleted==true">{{t.source}}</del>
+								<li class="l2 txtCut" title="{{t.source}}"><del ng-show="t.isCompleted==true">{{t.source}}</del>
                                 <span ng-show="t.isCompleted==false">{{t.source}}</span></li>
 								<li class="l3 txtCut " style="width:500px" title="{{t.body}}">
                                     <del ng-show="t.isCompleted==true"><a ng-href="{{openUrl(t)}}">{{t.subject}}</a>&nbsp;{{getDisplayLine(t.body)}}&nbsp;<a ng-href="{{openUrl(t)}}"><font color=#9D9D9D>{{t.body}}</font></a></del>
@@ -112,7 +106,16 @@
         </div>
         <!-- taskmain:E-->
     </div>
-
+    <script type="text/javascript" src="/js/Content/jquery/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="/js/textareaSelect.js"></script>
+    <script type="text/javascript" src="/js/comment.js"></script>
+    <script type="text/javascript" src="/js/Content/js/json3.min.js"></script>
+    <script type="text/javascript" src="/js/Content/angular/angular-1.0.1.min.js"></script>
+    <script type="text/javascript" src="/js/Content/js/moment.min.js"></script>
+    <script type="text/javascript" src="/js/Content/My97DatePicker/WdatePicker.js"></script>
+    <script type="text/javascript" src="/js/Scripts/modules/aitatask.js"></script>
+    <script type="text/javascript" src="/js/Scripts/controllers/getTasksByAssignee.js"></script>
+    <!-- end -->
     <script type="text/javascript">
         var map_url = isPhp ? '/task/request' : '/Handlers/UrlMapHandler.ashx'; //TODO:Php
         var changeDueTime_call = isPhp ? 'ChangeDueTime' : 'url_changeDueTime'; //TODO:Php
@@ -180,6 +183,9 @@
                     }
                 });
         }
+		$(function(){
+			$(".task-left-tag .a1").addClass("on");
+		});
     </script>
 </body>
 </html>

@@ -3,9 +3,15 @@
 <head>
     <title>任务详情</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <link rel="stylesheet" type="text/css" href="http://w.taobao.ali.com/css/comment.css" />
-    <link rel="stylesheet" type="text/css" href="http://w.taobao.ali.com/css/selector.css" />
-
+	<style type="text/css">
+		.task-comment-box{width:775px; margin:0px auto; padding-bottom:15px;}
+		.task-comment-box .comment-list dt .comment-list-content{ width:663px;padding-right:50px;}
+		.task-comment-box .post-box .text-area{ width:733px;}
+	</style>
+    <link rel="stylesheet" type="text/css" href="/css/comment.css?v=2.0" />
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.0" />
+    <link rel="stylesheet" type="text/css" href="/css/selector.css" />
+	
     <script type="text/javascript" src="/js/Scripts/common.js"></script>
     <script type="text/javascript">
         if (isPhp) {
@@ -18,16 +24,7 @@
         }
     </script>
 
-    <script type="text/javascript" src="/js/Content/jquery/jquery-1.7.2.min.js"></script>
-    <script type="text/javascript" src="/js/Content/js/json3.min.js"></script>
-    <script type="text/javascript" src="http://w.taobao.ali.com/js/comment.js"></script>
-    <script type="text/javascript" src="http://wfstatic.alibaba-inc.com/resources/public/js/jscore-min.js"></script>
-    <script type="text/javascript" src="/js/Content/My97DatePicker/WdatePicker.js"></script>
-    <script type="text/javascript" src="/js/Content/angular/angular-1.0.1.min.js"></script>
-    <script type="text/javascript" src="/js/Scripts/modules/aitatask.js"></script>
-    <script type="text/javascript" src="/js/Scripts/controllers/taskInfo.js"></script>
-    <script type="text/javascript" src="http://w.taobao.ali.com/js/textareaSelect.js"></script>
-</head>
+   
 <body>
     <div class="wrap ng-app:aitatask" id="ng-app" ng-app="aitatask">
         <!-- header:S -->
@@ -40,8 +37,8 @@
                 <p class="task-detail-return">
                     <a ng-click="back()">返回</a>
                 </p>
-                <div id="noViewPermissionArea" style="display:none" class="task-detail-content">您没有权限查看此页面！</div>
-                <div style="display:none" class="task-detail-content" ng-show="!editMode && hasViewPermission">
+                <div id="noViewPermissionArea" style="display:none;padding-left:55px;" class="task-detail-content">您没有权限查看此页面！</div>
+                <div style="display:none;padding-left:55px;" class="task-detail-content" ng-show="!editMode && hasViewPermission">
                     <p class="tit">
                         {{ subject }}
                         <i id="priorityIcon" class="">{{ displayPriority }}</i>
@@ -190,18 +187,82 @@
                         </div>
                     </div>
                 </div>
-                <br />
-                <br />
-                <br />
-                这里是评论，使用现有样式和功能<br />
-                <br />
-                <br />
+				
+               <!-- comment:S-->
+			    <div class="task-comment-box" style="display:none" ng-show="hasViewPermission">
+					<{if $replyNum neq 0}>
+						<p class="li-more-comment" data-url="/notice/morecomments?id=<{$v->getId()}>"><a href="javascript:;"><span class="comment-number"><{$replyNum}></span>条评论</a> <i class="more-icon">&nbsp;</i></p>
+					<{/if}>
+					<div class="com-list-box">
+						<{if $replyList}>
+							<dl class="comment-list">
+								<{foreach item=att1 from=$replyList}> 
+									<{include file='task/li_reply.phtml'}>
+								<{/foreach}>
+							</dl>
+						<{/if}>
+	
+						<div class="post-box">
+							<form method="post" action="/notice/reply">
+								<a href="javascript:;" class="close clear-text">&nbsp;</a>
+								<textarea topic="说点什么吧……" class="text-div text-area"
+										  name="content"></textarea>
+								<input type="hidden" value="<{$currentUserId}>" name="user_id" />
+								<input type="hidden" value="<{$v->getId()}>" name="reply_id" /> <input
+									type="hidden" value="<{$v->getUserId()}>"
+									name="reply_to_user_id" /> <input type="hidden"
+									name="attach_ids" value="" />
+								<div class="attach-box" id="attach-box">
+									<div class="action-error-msg">
+										<a href="javascript:;" class="close">&nbsp;</a> <i
+											class="error-icon">&nbsp;</i><span class="msg"></span><span
+											style="display: none;" class="reload-file"><input type="file" /></span>
+									</div>
+									<div class="img-attach" id="img-attach">
+										<a href="javascript:;" class="close">&nbsp;</a>
+									</div>
+									<div id="img_file_queue" class="atta-list"></div>
+								</div>
+								<div class="attachment" id="attachment2" comment="2">
+									<div class="atta-right-box">
+										<input class="gray-button mr-3 clear-text" value="取消"
+											   type="button" /> <input class="gren-button" value="发表"
+											   type="submit" />
+									</div>
+									<span class="attach-face">表情</span> <span class="attach-img"></span>
+									<span class="attach-attachment"></span>
+								</div>
+							</form>
+						</div>
+						<div id="faces-container" class="pob cardT" style="display:none; background:none; border:none;">
+            <div style="display:block" class="posBox">
+                <div id="face-tab" class="faces-content">
+                    <div id="tabs-1"></div>      
+                    <div class="clearbox"></div>
+                </div>     
+                <s class="without-top"><i></i></s>
+            </div>
+        </div>  
+
+	
+					</div>
+				</div>
+				<!-- comment:E-->
             </div>
             <div class="clearbox">
             </div>
         </div>
         <!-- taskmain:E-->
     </div>
+    <script type="text/javascript" src="/js/Content/jquery/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="/js/textareaSelect.js"></script>
+    <script type="text/javascript" src="/js/comment.js"></script>
+	<script type="text/javascript" src="/js/Content/js/json3.min.js"></script>
+    <script type="text/javascript" src="/js/selector.js"></script>
+    <script type="text/javascript" src="/js/Content/My97DatePicker/WdatePicker.js"></script>
+    <script type="text/javascript" src="/js/Content/angular/angular-1.0.1.min.js"></script>
+    <script type="text/javascript" src="/js/Scripts/modules/aitatask.js"></script>
+    <script type="text/javascript" src="/js/Scripts/controllers/taskInfo.js"></script>
     <script type="text/javascript">
 
         $(function () {
@@ -227,6 +288,11 @@
                 $("#task-yx-color").text($(this).find("i").text());
                 $("#task-edit-float").hide();
             });
+			$(".text-area").focus(comment.showText);
+			$("div.task-comment-box dt").each(comment.bindReplyLi);
+			$(".li-more-comment").click(comment.showMoreComment);
+			
+			
         });
 
     </script>

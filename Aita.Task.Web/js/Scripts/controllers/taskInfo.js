@@ -3,7 +3,8 @@
         $scope.updateTaskUrl = urls.map_url;
         $scope.taskInfoUrl = urls.map_url;
         $scope.changeCompletedUrl = urls.map_url;
-        $scope.findUserUrl = "http://w.taobao.ali.com/task/autoprompt";
+//        $scope.findUserUrl = "http://w.taobao.ali.com/task/autoprompt";
+		$scope.findUserUrl = "http://aita.alibaba-inc.com/task/autoprompt";
         $scope.returnUrl = "/task/todo";
     }
     else {
