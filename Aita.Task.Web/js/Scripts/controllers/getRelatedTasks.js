@@ -65,7 +65,7 @@ function GetRelatedTasksCtrl($scope, $rootScope, $http, $location, $routeParams,
         }
         else {
             if (task.isEditable) {
-                return '/TaskInfo.htm?userId=' + userId + '&taskId=' + task.id;
+                return '/taskdetail.htm?userId=' + userId + '&taskId=' + task.id;
             }
             else {
                 return '/ExternalTaskInfo.htm?url=' + escape(task.relatedUrl);

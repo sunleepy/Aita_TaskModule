@@ -135,7 +135,7 @@ function GetTasksByAssigneeCtrl($scope, $rootScope, $http, $location, $routePara
         }
         else {
             if (task.isEditable) {
-                return '/TaskInfo.htm?userId=' + userId + '&taskId=' + task.id;
+                return '/taskdetail.htm?userId=' + userId + '&taskId=' + task.id;
             }
             else {
                 return '/ExternalTaskInfo.htm?url=' + escape(task.relatedUrl);

@@ -75,7 +75,7 @@ function GetTasksByCreatorCtrl($scope, $rootScope, $http, $location, $routeParam
         }
         else {
             if (task.isEditable) {
-                return '/TaskInfo.htm?userId=' + userId + '&taskId=' + task.id;
+                return '/taskdetail.htm?userId=' + userId + '&taskId=' + task.id;
             }
             else {
                 return '/ExternalTaskInfo.htm?url=' + escape(task.relatedUrl);
