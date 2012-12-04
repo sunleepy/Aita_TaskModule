@@ -3,7 +3,7 @@ function CreateTaskCtrl($scope, $rootScope, $http, $location, $routeParams, $ele
     if (isPhp) {
         $scope.createTaskUrl = urls.map_url;
         $scope.userInfoUrl = "http://api.w.taobao.ali.com/sys/userinfo";
-        $scope.findUserUrl = "http://w.taobao.ali.com/task/autoprompt";
+        $scope.findUserUrl = "http://w.taobao.ali.com/task/autoprompt?self=1";
         $scope.returnUrl = "/task/created";
     }
     else {
