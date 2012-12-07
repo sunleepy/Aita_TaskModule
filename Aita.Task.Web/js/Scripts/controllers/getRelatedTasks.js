@@ -119,6 +119,7 @@ function GetRelatedTasksCtrl($scope, $rootScope, $http, $location, $routeParams,
         var key = $('#task-keyword').val();
         var data = {
             userId: userId,
+            isCompleted: $scope.isCompletedOption,
             key: key == '搜索任务来源或摘要' ? '' : key,
             isCreator: $scope.isOtherAssignToMe ? false : null,
             externalTaskSourceJson: sourcesJson,
@@ -129,19 +130,28 @@ function GetRelatedTasksCtrl($scope, $rootScope, $http, $location, $routeParams,
     ////////////////////////////////////////////////////////////////////////////////////////
     //事件绑定
     $('#task-keyword').bind({ focus: function () {
-        if ($(this).val() == '搜索任务来源或摘要') {
-            $(this).val('');
+            if ($(this).val() == '搜索任务来源或摘要') {
+                $(this).val('');
+            }
+        }, blur: function () {
+            if ($(this).val() == '' || $(this).val() == null) {
+                $(this).val('搜索任务来源或摘要');
+            }
+        }, keyup: function () {
+            if ($(this).val() != '搜索任务来源或摘要') {
+                clearTimeout($scope.time);
+                $scope.time = setTimeout(reloadPage, 1000);
+            }
         }
-    }, blur: function () {
-        if ($(this).val() == '' || $(this).val() == null) {
-            $(this).val('搜索任务来源或摘要');
+    });
+    $('#hideCompletedOption').click(function () {
+        if ($(this).attr('checked')) {
+            $scope.isCompletedOption = 'false';
         }
-    }, keyup: function () {
-        if ($(this).val() != '搜索任务来源或摘要') {
-            clearTimeout($scope.time);
-            $scope.time = setTimeout(reloadPage, 1000);
+        else {
+            $scope.isCompletedOption = '';
         }
-    }
+        reloadPage();
     });
     ////////////////////////////////////////////////////////////////////////////////////////
     //外部来源筛选条件处理和判断
@@ -194,9 +204,11 @@ function GetRelatedTasksCtrl($scope, $rootScope, $http, $location, $routeParams,
     $scope.sourceDict = [];
     $scope.isOtherAssignToMe = false;
     $scope.userId = userId;
+    $scope.isCompletedOption = 'false';
     $scope.taskloaded = false;
     var data = {
         userId: userId,
+        isCompleted: 'false',
         isCreator: null,
         key: '',
         externalTaskSourceJson: '',
